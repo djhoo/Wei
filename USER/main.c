@@ -33,9 +33,9 @@
 /* Private function prototypes -----------------------------------------------*/
 
 /* Public value  -----------------------------------------------*/
-//È«¾Ö±äÁ¿
+//å…¨å±€å˜é‡
 u8 number[4] ;
-u16 eepromaddress = 0x4000;   //ÉèEEPROMµÄÊ×µØÖ·Îª0X4000
+u16 eepromaddress = 0x4000;   //è®¾EEPROMçš„é¦–åœ°å€ä¸º0X4000
 
 u16  g_margin = 6666;
 u16  g_width = 6666;
@@ -49,7 +49,7 @@ u16  g_height = 6666;
 void delay(unsigned int ms)
 {
   unsigned int x , y;
-  for(x = ms; x > 0; x--)           /*  Í¨¹ıÒ»¶¨ÖÜÆÚÑ­»·½øĞĞÑÓÊ±*/
+  for(x = ms; x > 0; x--)           /*  é€šè¿‡ä¸€å®šå‘¨æœŸå¾ªç¯è¿›è¡Œå»¶æ—¶*/
     for(y = 3000 ; y > 0 ; y--);
 }
 
@@ -57,13 +57,13 @@ void delay(unsigned int ms)
 
 void NumericDisplay_Init()
 {
-  //ÉèÖÃPA1ÎªÊä³ö £¬HC164 CLK
+  //è®¾ç½®PA1ä¸ºè¾“å‡º ï¼ŒHC164 CLK
   GPIO_Init(GPIOB , GPIO_PIN_4 , GPIO_MODE_OUT_PP_LOW_FAST);  
     
-  //ÉèÖÃPA2ÎªÊä³ö £¬HC164DAT
+  //è®¾ç½®PA2ä¸ºè¾“å‡º ï¼ŒHC164DAT
   GPIO_Init(GPIOB , GPIO_PIN_5 , GPIO_MODE_OUT_PP_LOW_FAST);  
     
-  //ÉèÖÃPC3ÎªÊä³ö £¬Î»ÂëÊı
+  //è®¾ç½®PC3ä¸ºè¾“å‡º ï¼Œä½ç æ•°
   GPIO_Init(GPIOB , GPIO_PIN_7 , GPIO_MODE_OUT_PP_LOW_FAST); 
 }
 
@@ -71,10 +71,10 @@ void NumericDisplay_Init()
 key Init
 *******************************************************************************/
 /*******************************************************************************
-**º¯ÊıÃû³Æ£ºvoid KEYInit()
-**¹¦ÄÜÃèÊö£ºÅäÖÃÊäÈë°´¼ü
-**Èë¿Ú²ÎÊı£ºÎŞ
-**Êä³ö£ºÎŞ
+**å‡½æ•°åç§°ï¼švoid KEYInit()
+**åŠŸèƒ½æè¿°ï¼šé…ç½®è¾“å…¥æŒ‰é”®
+**å…¥å£å‚æ•°ï¼šæ— 
+**è¾“å‡ºï¼šæ— 
 *******************************************************************************/
 void BeepInit()
 {
@@ -83,7 +83,7 @@ void BeepInit()
 
 void KEYInit()
 {
-    //GPD->PIN7 ÉèÖÃÎªÊäÈëÄ£Ê½ , ÉÏÀ­µç×èÊäÈë , ½ûÖ¹Íâ²¿ÖĞ¶Ï
+    //GPD->PIN7 è®¾ç½®ä¸ºè¾“å…¥æ¨¡å¼ , ä¸Šæ‹‰ç”µé˜»è¾“å…¥ , ç¦æ­¢å¤–éƒ¨ä¸­æ–­
     GPIO_Init(GPIOD , GPIO_PIN_7 , GPIO_MODE_IN_FL_NO_IT);  //key1 
     GPIO_Init(GPIOD , GPIO_PIN_6 , GPIO_MODE_IN_FL_NO_IT);  //key2
     GPIO_Init(GPIOD , GPIO_PIN_5 , GPIO_MODE_IN_FL_NO_IT);  //key3
@@ -110,54 +110,59 @@ void MotorInit()
 }
 
 /*******************************************************************************
-**º¯ÊıÃû³Æ£ºvoid TIM1_PWM_Init()
-**¹¦ÄÜÃèÊö£º¶¨Ê±Æ÷1 PWM³õÊ¼»¯ Mortor1
-**Èë¿Ú²ÎÊı£ºÎŞ
-**Êä³ö£ºÎŞ
+**å‡½æ•°åç§°ï¼švoid TIM1_PWM_Init()
+**åŠŸèƒ½æè¿°ï¼šå®šæ—¶å™¨1 PWMåˆå§‹åŒ– Mortor1
+**å…¥å£å‚æ•°ï¼šæ— 
+**è¾“å‡ºï¼šæ— 
 *******************************************************************************/
-#define     Fpwm          200            //150HZ
+int    Fpwm = 400;            //150HZ
+
 void TIM1_PWM_Init()
 {
-  TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
-                    TIM1_COUNTERMODE_UP , //ÏòÉÏ¼ÆÊı
-                     10000/Fpwm,      //×Ô¶¯ÖØÔØÖµ
-                     0
-                    );
-  
-  TIM1_OC3Init(TIM1_OCMODE_PWM2 ,  //ÉèÖÃÎªPWM2Êä³öÄ£Ê½
-               TIM1_OUTPUTSTATE_ENABLE , //Êä³öÊ¹ÄÜ
-               TIM1_OUTPUTNSTATE_DISABLE,
-               0  ,   //ÏÈÉèÖÃÎª0
-               TIM1_OCPOLARITY_HIGH ,//OC1 HI
-               TIM1_OCNPOLARITY_LOW,
-               TIM1_OCIDLESTATE_SET,
-               TIM1_OCNIDLESTATE_SET
-               );
-  TIM1_CCxCmd(TIM1_CHANNEL_3 , ENABLE);
-  TIM1_OC3PreloadConfig(ENABLE);
-  
-  TIM1_CtrlPWMOutputs(ENABLE);
-  TIM1_Cmd(ENABLE);
-  
-  TIM1_SetCompare3(10000/Fpwm/2);
+    TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
+                        TIM1_COUNTERMODE_UP , //å‘ä¸Šè®¡æ•°
+                        10000/Fpwm,      //è‡ªåŠ¨é‡è½½å€¼
+                        0
+                        );
+    
+    TIM1_OC3Init(TIM1_OCMODE_PWM2 ,  //è®¾ç½®ä¸ºPWM2è¾“å‡ºæ¨¡å¼
+                TIM1_OUTPUTSTATE_ENABLE , //è¾“å‡ºä½¿èƒ½
+                TIM1_OUTPUTNSTATE_DISABLE,
+                0  ,   //å…ˆè®¾ç½®ä¸º0
+                TIM1_OCPOLARITY_HIGH ,//OC1 HI
+                TIM1_OCNPOLARITY_LOW,
+                TIM1_OCIDLESTATE_SET,
+                TIM1_OCNIDLESTATE_SET
+                );
+    TIM1_CCxCmd(TIM1_CHANNEL_3 , ENABLE);
+    TIM1_OC3PreloadConfig(ENABLE);
+    
+    TIM1_CtrlPWMOutputs(ENABLE);
+    TIM1_Cmd(ENABLE);
+    
+    TIM1_SetCompare3(10000/Fpwm/2);
+
+    TIM1_ITConfig(TIM1_IT_UPDATE , ENABLE);
+
+
 }
 
 /*******************************************************************************
-**º¯ÊıÃû³Æ£ºvoid TIM2_PWM_Init()
-**¹¦ÄÜÃèÊö£º¶¨Ê±Æ÷1 PWM³õÊ¼»¯ Mortor2
-**Èë¿Ú²ÎÊı£ºÎŞ
-**Êä³ö£ºÎŞ
+**å‡½æ•°åç§°ï¼švoid TIM2_PWM_Init()
+**åŠŸèƒ½æè¿°ï¼šå®šæ—¶å™¨1 PWMåˆå§‹åŒ– Mortor2
+**å…¥å£å‚æ•°ï¼šæ— 
+**è¾“å‡ºï¼šæ— 
 *******************************************************************************/
 #define     Fpwm2          50            //50HZ
 void TIM2_PWM_Init()
 {
   TIM2_TimeBaseInit(TIM2_PRESCALER_512 , //16Mhz / 512 = 31250 HZ
-                     (31250 / Fpwm2)      //×Ô¶¯ÖØÔØÖµ
+                     (31250 / Fpwm2)      //è‡ªåŠ¨é‡è½½å€¼
                     );
   
-  TIM2_OC3Init(TIM2_OCMODE_PWM2 ,  //ÉèÖÃÎªPWM2Êä³öÄ£Ê½
-               TIM2_OUTPUTSTATE_ENABLE , //Êä³öÊ¹ÄÜ
-               0  ,   //ÏÈÉèÖÃÎª0
+  TIM2_OC3Init(TIM2_OCMODE_PWM2 ,  //è®¾ç½®ä¸ºPWM2è¾“å‡ºæ¨¡å¼
+               TIM2_OUTPUTSTATE_ENABLE , //è¾“å‡ºä½¿èƒ½
+               0  ,   //å…ˆè®¾ç½®ä¸º0
                TIM2_OCPOLARITY_HIGH //OC1 HI
                );
   
@@ -168,25 +173,25 @@ void TIM2_PWM_Init()
 
 
 /*******************************************************************************
-**º¯ÊıÃû³Æ£ºvoid EEPROM_Byte_Write(unsigned int address , unsigned char date)
-**¹¦ÄÜÃèÊö£ºÏòEEPROMÖĞ¹Ì¶¨µØÖ·Ğ´ÈëÒ»¸ö×Ö½ÚÊı¾İ
-**Èë¿Ú²ÎÊı£ºunsigned int address , unsigned char date
-            address  £ºÒªĞ´ÈëÊı¾İµÄ´æ´¢µØÖ·
-              date   £ºÒ»¸ö×Ö½ÚÊı¾İ
-**Êä³ö£ºÎŞ
+**å‡½æ•°åç§°ï¼švoid EEPROM_Byte_Write(unsigned int address , unsigned char date)
+**åŠŸèƒ½æè¿°ï¼šå‘EEPROMä¸­å›ºå®šåœ°å€å†™å…¥ä¸€ä¸ªå­—èŠ‚æ•°æ®
+**å…¥å£å‚æ•°ï¼šunsigned int address , unsigned char date
+            address  ï¼šè¦å†™å…¥æ•°æ®çš„å­˜å‚¨åœ°å€
+              date   ï¼šä¸€ä¸ªå­—èŠ‚æ•°æ®
+**è¾“å‡ºï¼šæ— 
 *******************************************************************************/
 void EEPROM_Byte_Write(unsigned int address , unsigned char date)
 {
   eepromaddress = address;
   
-  FLASH_SetProgrammingTime(FLASH_PROGRAMTIME_TPROG);              //Éè¶¨±à³ÌÊ±¼äÎª±ê×¼±à³ÌÊ±¼ä
+  FLASH_SetProgrammingTime(FLASH_PROGRAMTIME_TPROG);              //è®¾å®šç¼–ç¨‹æ—¶é—´ä¸ºæ ‡å‡†ç¼–ç¨‹æ—¶é—´
   
-  //MASS ÃÜÔ¿£¬½â³ıEEPROMµÄ±£»¤
+  //MASS å¯†é’¥ï¼Œè§£é™¤EEPROMçš„ä¿æŠ¤
   FLASH_Unlock(FLASH_MEMTYPE_DATA);
   
-  FLASH_ProgramByte(address , date);  //°ÑÊı¾İĞ´ÈëÏàÓ¦µÄ´æ´¢µØÖ·
+  FLASH_ProgramByte(address , date);  //æŠŠæ•°æ®å†™å…¥ç›¸åº”çš„å­˜å‚¨åœ°å€
  
- while(FLASH_GetFlagStatus(FLASH_FLAG_EOP) == SET);     //µÈ´ı±à³Ì½áÊø
+ while(FLASH_GetFlagStatus(FLASH_FLAG_EOP) == SET);     //ç­‰å¾…ç¼–ç¨‹ç»“æŸ
 }
 
 
@@ -196,7 +201,7 @@ void EEPROM_Byte_Write(unsigned int address , unsigned char date)
 void main(void)
 {
   u32 keeptime = 0;
-  disableInterrupts();  //¹Ø±ÕÏµÍ³×ÜÖĞ¶Ï
+  disableInterrupts();  //å…³é—­ç³»ç»Ÿæ€»ä¸­æ–­
 
   CLK_SYSCLKConfig(CLK_PRESCALER_HSIDIV1);
 #if 0
@@ -224,18 +229,18 @@ void main(void)
     TIM1_PWM_Init();
     
   
-    enableInterrupts(); //´ò¿ªÏµÍ³×ÜÖĞ¶Ï
+    enableInterrupts(); //æ‰“å¼€ç³»ç»Ÿæ€»ä¸­æ–­
   /* Infinite loop */
     while (1)
     {
       
         //margin Down
-        if(GPIO_ReadInputPin(GPIOD , GPIO_PIN_7) != RESET)      //ÈçºÎKEY1±»°´ÏÂ
+        if(GPIO_ReadInputPin(GPIOD , GPIO_PIN_7) != RESET)      //å¦‚ä½•KEY1è¢«æŒ‰ä¸‹
         {
             keeptime = 0;
-            delay(10);                     //ÏÈÑÓÊ±½øĞĞÏû¶¶
+            delay(10);                     //å…ˆå»¶æ—¶è¿›è¡Œæ¶ˆæŠ–
             BEEP_Cmd(ENABLE);
-            while(GPIO_ReadInputPin(GPIOD , GPIO_PIN_7) != RESET)  //µÈ´ı°´Å¥±»ËÉ¿ª
+            while(GPIO_ReadInputPin(GPIOD , GPIO_PIN_7) != RESET)  //ç­‰å¾…æŒ‰é’®è¢«æ¾å¼€
             {
                 keeptime++;
                 if((keeptime >100000) && ( keeptime%10 == 0))
@@ -245,18 +250,18 @@ void main(void)
                 }
             };    
             BEEP_Cmd(DISABLE);;
-            delay(10);                     //ÔÙ´ÎÑÓÊ±Ïû¶¶
+            delay(10);                     //å†æ¬¡å»¶æ—¶æ¶ˆæŠ–
             if(g_margin > 0) g_margin--;
             display_margin(g_margin);
         }
    
         //margin UP
-        if(GPIO_ReadInputPin(GPIOD , GPIO_PIN_6) != RESET)      //ÈçºÎKEY1±»°´ÏÂ
+        if(GPIO_ReadInputPin(GPIOD , GPIO_PIN_6) != RESET)      //å¦‚ä½•KEY1è¢«æŒ‰ä¸‹
         {
             keeptime = 0;
-            delay(10);                     //ÏÈÑÓÊ±½øĞĞÏû¶¶
+            delay(10);                     //å…ˆå»¶æ—¶è¿›è¡Œæ¶ˆæŠ–
             BEEP_Cmd(ENABLE);
-            while(GPIO_ReadInputPin(GPIOD , GPIO_PIN_6) != RESET)    //µÈ´ı°´Å¥±»ËÉ¿ª
+            while(GPIO_ReadInputPin(GPIOD , GPIO_PIN_6) != RESET)    //ç­‰å¾…æŒ‰é’®è¢«æ¾å¼€
             {
                 keeptime++;
                 if((keeptime >100000) && ( keeptime%10 == 0))
@@ -267,17 +272,17 @@ void main(void)
                 
             }; 
             BEEP_Cmd(DISABLE);;
-            delay(10);                     //ÔÙ´ÎÑÓÊ±Ïû¶¶
+            delay(10);                     //å†æ¬¡å»¶æ—¶æ¶ˆæŠ–
             if(g_margin < 9999) g_margin++;
             display_margin(g_margin);
         }
      
-        if(GPIO_ReadInputPin(GPIOD , GPIO_PIN_5) != RESET)      //ÈçºÎKEY1±»°´ÏÂ
+        if(GPIO_ReadInputPin(GPIOD , GPIO_PIN_5) != RESET)      //å¦‚ä½•KEY1è¢«æŒ‰ä¸‹
         {
             keeptime = 0;
-            delay(10);                     //ÏÈÑÓÊ±½øĞĞÏû¶¶
+            delay(10);                     //å…ˆå»¶æ—¶è¿›è¡Œæ¶ˆæŠ–
             BEEP_Cmd(ENABLE);
-            while(GPIO_ReadInputPin(GPIOD , GPIO_PIN_5) != RESET)    //µÈ´ı°´Å¥±»ËÉ¿ª
+            while(GPIO_ReadInputPin(GPIOD , GPIO_PIN_5) != RESET)    //ç­‰å¾…æŒ‰é’®è¢«æ¾å¼€
             {
                 keeptime++;
                 if((keeptime >100000) && ( keeptime%10 == 0))
@@ -288,17 +293,17 @@ void main(void)
                 
            }; 
           BEEP_Cmd(DISABLE);;
-          delay(10);                     //ÔÙ´ÎÑÓÊ±Ïû¶¶
+          delay(10);                     //å†æ¬¡å»¶æ—¶æ¶ˆæŠ–
           if(g_width > 0) g_width--;
           display_width(g_width);
         }
      
-        if(GPIO_ReadInputPin(GPIOD , GPIO_PIN_3) != RESET)      //ÈçºÎKEY1±»°´ÏÂ
+        if(GPIO_ReadInputPin(GPIOD , GPIO_PIN_3) != RESET)      //å¦‚ä½•KEY1è¢«æŒ‰ä¸‹
         {
             keeptime = 0;
-            delay(10);                     //ÏÈÑÓÊ±½øĞĞÏû¶¶
+            delay(10);                     //å…ˆå»¶æ—¶è¿›è¡Œæ¶ˆæŠ–
             BEEP_Cmd(ENABLE);
-            while(GPIO_ReadInputPin(GPIOD , GPIO_PIN_3) != RESET)    //µÈ´ı°´Å¥±»ËÉ¿ª
+            while(GPIO_ReadInputPin(GPIOD , GPIO_PIN_3) != RESET)    //ç­‰å¾…æŒ‰é’®è¢«æ¾å¼€
             {
                 keeptime++;
                 if((keeptime >100000) && ( keeptime%10 == 0))
@@ -309,17 +314,17 @@ void main(void)
                 
             };   
             BEEP_Cmd(DISABLE);;
-            delay(10);                     //ÔÙ´ÎÑÓÊ±Ïû¶¶
+            delay(10);                     //å†æ¬¡å»¶æ—¶æ¶ˆæŠ–
             if(g_width < 9999) g_width++;
             display_width(g_width);
         }
       
-        if(GPIO_ReadInputPin(GPIOD , GPIO_PIN_2) != RESET)      //ÈçºÎKEY1±»°´ÏÂ
+        if(GPIO_ReadInputPin(GPIOD , GPIO_PIN_2) != RESET)      //å¦‚ä½•KEY1è¢«æŒ‰ä¸‹
         {
             keeptime = 0;
-            delay(10);                     //ÏÈÑÓÊ±½øĞĞÏû¶¶
+            delay(10);                     //å…ˆå»¶æ—¶è¿›è¡Œæ¶ˆæŠ–
             BEEP_Cmd(ENABLE);
-            while(GPIO_ReadInputPin(GPIOD , GPIO_PIN_2) != RESET)    //µÈ´ı°´Å¥±»ËÉ¿ª
+            while(GPIO_ReadInputPin(GPIOD , GPIO_PIN_2) != RESET)    //ç­‰å¾…æŒ‰é’®è¢«æ¾å¼€
             {
                 keeptime++;
                 if((keeptime >100000) && ( keeptime%10 == 0))
@@ -330,17 +335,17 @@ void main(void)
                 
             }; 
             BEEP_Cmd(DISABLE);;
-            delay(10);                     //ÔÙ´ÎÑÓÊ±Ïû¶¶
+            delay(10);                     //å†æ¬¡å»¶æ—¶æ¶ˆæŠ–
             if(g_height < 9999) g_height++;
             display_height(g_height);
         }
    
-        if(GPIO_ReadInputPin(GPIOD , GPIO_PIN_0) != RESET)      //ÈçºÎKEY1±»°´ÏÂ
+        if(GPIO_ReadInputPin(GPIOD , GPIO_PIN_0) != RESET)      //å¦‚ä½•KEY1è¢«æŒ‰ä¸‹
         {
             keeptime = 0;
-            delay(10);                     //ÏÈÑÓÊ±½øĞĞÏû¶¶
+            delay(10);                     //å…ˆå»¶æ—¶è¿›è¡Œæ¶ˆæŠ–
             BEEP_Cmd(ENABLE);
-            while(GPIO_ReadInputPin(GPIOD , GPIO_PIN_0) != RESET)    //µÈ´ı°´Å¥±»ËÉ¿ª
+            while(GPIO_ReadInputPin(GPIOD , GPIO_PIN_0) != RESET)    //ç­‰å¾…æŒ‰é’®è¢«æ¾å¼€
             {
                 keeptime++;
                 if((keeptime >100000) && ( keeptime%10 == 0))
@@ -351,27 +356,27 @@ void main(void)
                 
             }; 
             BEEP_Cmd(DISABLE);;
-            delay(10);                     //ÔÙ´ÎÑÓÊ±Ïû¶¶
+            delay(10);                     //å†æ¬¡å»¶æ—¶æ¶ˆæŠ–
             if(g_height > 0) g_height--;
             display_height(g_height);
         }
 #if 0        
-        if(GPIO_ReadInputPin(GPIOC , GPIO_PIN_7) != RESET)      //ÈçºÎKEY1±»°´ÏÂ
+        if(GPIO_ReadInputPin(GPIOC , GPIO_PIN_7) != RESET)      //å¦‚ä½•KEY1è¢«æŒ‰ä¸‹
         {
-            delay(10);                     //ÏÈÑÓÊ±½øĞĞÏû¶¶
+            delay(10);                     //å…ˆå»¶æ—¶è¿›è¡Œæ¶ˆæŠ–
             BEEP_Cmd(ENABLE);
-            while(GPIO_ReadInputPin(GPIOC , GPIO_PIN_7) != RESET);    //µÈ´ı°´Å¥±»ËÉ¿ª
+            while(GPIO_ReadInputPin(GPIOC , GPIO_PIN_7) != RESET);    //ç­‰å¾…æŒ‰é’®è¢«æ¾å¼€
             BEEP_Cmd(DISABLE);;
-            delay(10);                     //ÔÙ´ÎÑÓÊ±Ïû¶¶
+            delay(10);                     //å†æ¬¡å»¶æ—¶æ¶ˆæŠ–
         }
       
-        if(GPIO_ReadInputPin(GPIOC , GPIO_PIN_6) != RESET)      //ÈçºÎKEY1±»°´ÏÂ
+        if(GPIO_ReadInputPin(GPIOC , GPIO_PIN_6) != RESET)      //å¦‚ä½•KEY1è¢«æŒ‰ä¸‹
         {
-            delay(10);                     //ÏÈÑÓÊ±½øĞĞÏû¶¶
+            delay(10);                     //å…ˆå»¶æ—¶è¿›è¡Œæ¶ˆæŠ–
             BEEP_Cmd(ENABLE);
-            while(GPIO_ReadInputPin(GPIOC , GPIO_PIN_6) != RESET);    //µÈ´ı°´Å¥±»ËÉ¿ª
+            while(GPIO_ReadInputPin(GPIOC , GPIO_PIN_6) != RESET);    //ç­‰å¾…æŒ‰é’®è¢«æ¾å¼€
             BEEP_Cmd(DISABLE);;
-            delay(10);                     //ÔÙ´ÎÑÓÊ±Ïû¶¶
+            delay(10);                     //å†æ¬¡å»¶æ—¶æ¶ˆæŠ–
         }
 #endif
         
