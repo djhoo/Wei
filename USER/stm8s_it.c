@@ -228,9 +228,83 @@ INTERRUPT_HANDLER(SPI_IRQHandler, 10)
   */
 INTERRUPT_HANDLER(TIM1_UPD_OVF_TRG_BRK_IRQHandler, 11)
 {
-  /* In order to detect unexpected events during development,
-     it is recommended to set a breakpoint on the following instruction.
-  */
+    /* In order to detect unexpected events during development,
+      it is recommended to set a breakpoint on the following instruction.
+    */
+    static count = 0;
+    int CRR[5] = {10000/400, 10000/600, 10000/800,10000/1000,10000/1200};
+    int ARR[5] = {10000/800, 10000/1200, 10000/1600,10000/2000,10000/2400};
+    count++;
+    if( count == 4 ){
+        TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
+                            TIM1_COUNTERMODE_UP , //向上计数
+                            CRR[1],      //自动重载值
+                            0
+                            );
+         TIM1_SetCompare3(ARR[1]);
+    }
+    else if(count == 8){
+        TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
+                        TIM1_COUNTERMODE_UP , //向上计数
+                        CRR[2],      //自动重载值
+                        0
+                        );
+        TIM1_SetCompare3(ARR[2]);
+    }
+    else if(count == 12){
+        TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
+                        TIM1_COUNTERMODE_UP , //向上计数
+                        CRR[3],      //自动重载值
+                        0
+                        );
+        TIM1_SetCompare3(ARR[3]);
+    }
+    else if(count == 16){
+        TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
+                        TIM1_COUNTERMODE_UP , //向上计数
+                        CRR[4],      //自动重载值
+                        0
+                        );
+        TIM1_SetCompare3(ARR[4]);
+    }
+    else if(count == XXX-16){
+        TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
+                        TIM1_COUNTERMODE_UP , //向上计数
+                        CRR[3],      //自动重载值
+                        0
+                        );
+        TIM1_SetCompare3(ARR[3]);
+
+    }
+    else if(count == (XXX-12){
+        TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
+                        TIM1_COUNTERMODE_UP , //向上计数
+                        CRR[2],      //自动重载值
+                        0
+                        );
+        TIM1_SetCompare3(ARR[2]);
+    }
+    else if(count == (XXX-8){
+        TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
+                        TIM1_COUNTERMODE_UP , //向上计数
+                        CRR[1],      //自动重载值
+                        0
+                        );
+        TIM1_SetCompare3(ARR[1]);
+    }
+    else if(count == (XXX-4){
+        TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
+                        TIM1_COUNTERMODE_UP , //向上计数
+                        CRR[0],      //自动重载值
+                        0
+                        );
+        TIM1_SetCompare3(ARR[0]);
+    }
+    else if(count == XXX){
+       Disable();
+    }
+
+    TIM1_ClearITPendingBit(TIM1_IT_UPDATE);
 }
 
 /**
