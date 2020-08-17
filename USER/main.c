@@ -37,13 +37,23 @@
 u8 number[4] ;
 u16 eepromaddress = 0x4000;   //设EEPROM的首地址为0X4000
 
-u16  g_margin = 6666;
-u16  g_width = 6666;
-u16  g_height = 6666;
+u16  g_margin = 200;
+u16  g_width = 1000;
+u16  g_height = 160;
+volatile int XXX = 36;     //中框移动总得马达的脉冲数目
+volatile int MarginPulse = 0;  //页边距马达的脉冲数目 要加上10的
+volatile int WidthPulse = 0;  //页边距马达的脉冲数目 要加上10的
+volatile  int MovePulse = 0;  //当次移动距离
+volatile int TotalWidthPulse = 0;
+
+volatile  int ForwardBackwardNum = 0; //总共来回的次数
+volatile  int ForwardBackwardCur = 0; //现在的次数
+
+volatile  bool bCancel = false; //现在的次数
 
 
 /* Private defines -----------------------------------------------------------*/
-
+#define MOTOR_DIV   (4)
 
 /* Private functions ---------------------------------------------------------*/
 void delay(unsigned int ms)
@@ -115,31 +125,65 @@ void MotorInit()
 **入口参数：无
 **输出：无
 *******************************************************************************/
-#define     Fpwm          200            //150HZ
+int    Fpwm = 400;            //150HZ
+
 void TIM1_PWM_Init()
 {
-  TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
-                    TIM1_COUNTERMODE_UP , //向上计数
-                     10000/Fpwm,      //自动重载值
-                     0
-                    );
+    TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
+                        TIM1_COUNTERMODE_UP , //向上计数
+                        10000/Fpwm,      //自动重载值
+                        0
+                        );
+    
+    TIM1_OC3Init(TIM1_OCMODE_PWM2 ,  //设置为PWM2输出模式
+                TIM1_OUTPUTSTATE_ENABLE , //输出使能
+                TIM1_OUTPUTNSTATE_DISABLE,
+                0  ,   //先设置为0
+                TIM1_OCPOLARITY_HIGH ,//OC1 HI
+                TIM1_OCNPOLARITY_LOW,
+                TIM1_OCIDLESTATE_SET,
+                TIM1_OCNIDLESTATE_SET
+                );
+    TIM1_OC3PreloadConfig(ENABLE);
+    TIM1_ARRPreloadConfig(ENABLE);
+    TIM1_CtrlPWMOutputs(DISABLE);
+    TIM1_CCxCmd(TIM1_CHANNEL_3 , DISABLE);
+    TIM1_Cmd(DISABLE);
+        
+    TIM1_SetCompare3(10000/Fpwm/2);
+
+}
+    
+
+void StartMotor1()
+{
+    GPIO_WriteHigh(GPIOC , GPIO_PIN_5);
+    delay(10);
+ 
+    TIM1_CCxCmd(TIM1_CHANNEL_3 , ENABLE);
+    TIM1_Cmd(ENABLE);
   
-  TIM1_OC3Init(TIM1_OCMODE_PWM2 ,  //设置为PWM2输出模式
-               TIM1_OUTPUTSTATE_ENABLE , //输出使能
-               TIM1_OUTPUTNSTATE_DISABLE,
-               0  ,   //先设置为0
-               TIM1_OCPOLARITY_HIGH ,//OC1 HI
-               TIM1_OCNPOLARITY_LOW,
-               TIM1_OCIDLESTATE_SET,
-               TIM1_OCNIDLESTATE_SET
-               );
-  TIM1_CCxCmd(TIM1_CHANNEL_3 , ENABLE);
-  TIM1_OC3PreloadConfig(ENABLE);
-  
-  TIM1_CtrlPWMOutputs(ENABLE);
-  TIM1_Cmd(ENABLE);
-  
-  TIM1_SetCompare3(10000/Fpwm/2);
+    TIM1_CtrlPWMOutputs(ENABLE);
+    TIM1_ITConfig(TIM1_IT_UPDATE , ENABLE);
+}
+
+void StopMotor1()
+{
+    GPIO_WriteLow(GPIOC , GPIO_PIN_5);
+    TIM1_CtrlPWMOutputs(DISABLE);
+    TIM1_ITConfig(TIM1_IT_UPDATE , DISABLE);
+    TIM1_CCxCmd(TIM1_CHANNEL_3 , DISABLE);
+    TIM1_Cmd(DISABLE);
+}
+
+void ForwardMotor1()
+{
+    GPIO_WriteLow(GPIOC , GPIO_PIN_4);
+}
+
+void ReverseMotor1()
+{
+    GPIO_WriteHigh(GPIOC , GPIO_PIN_4);
 }
 
 /*******************************************************************************
@@ -148,24 +192,48 @@ void TIM1_PWM_Init()
 **入口参数：无
 **输出：无
 *******************************************************************************/
-#define     Fpwm2          50            //50HZ
+#define     Fpwm2          200            //50HZ
 void TIM2_PWM_Init()
 {
-  TIM2_TimeBaseInit(TIM2_PRESCALER_512 , //16Mhz / 512 = 31250 HZ
+    TIM2_TimeBaseInit(TIM2_PRESCALER_512 , //16Mhz / 512 = 31250 HZ
                      (31250 / Fpwm2)      //自动重载值
                     );
   
-  TIM2_OC3Init(TIM2_OCMODE_PWM2 ,  //设置为PWM2输出模式
+    TIM2_OC3Init(TIM2_OCMODE_PWM2 ,  //设置为PWM2输出模式
                TIM2_OUTPUTSTATE_ENABLE , //输出使能
-               0  ,   //先设置为0
+               (31250 / Fpwm2 / 2)  ,   //先设置为0
                TIM2_OCPOLARITY_HIGH //OC1 HI
                );
-  
-  TIM2_CCxCmd(TIM2_CHANNEL_3 , ENABLE);
-  TIM2_Cmd(ENABLE);
+
+    TIM2_OC3PreloadConfig(ENABLE);
+    TIM2_ARRPreloadConfig(ENABLE);
+    TIM2_CCxCmd(TIM2_CHANNEL_3 , DISABLE);  
+
+   
+}
+                 
+
+
+void StartMotor2()
+{
+    GPIO_WriteHigh(GPIOC , GPIO_PIN_2);
+    delay(10);
+
+    TIM2_CCxCmd(TIM2_CHANNEL_3 , ENABLE);  
+    TIM2_Cmd(ENABLE);
+    TIM2_ITConfig(TIM2_IT_UPDATE , ENABLE);
+
 }
 
 
+void StopMotor2()
+{
+    GPIO_WriteLow(GPIOC , GPIO_PIN_2);
+    TIM2_CCxCmd(TIM2_CHANNEL_3 , DISABLE);  
+    TIM2_Cmd(DISABLE);
+    TIM2_ITConfig(TIM2_IT_UPDATE , DISABLE);
+
+}
 
 /*******************************************************************************
 **函数名称：void EEPROM_Byte_Write(unsigned int address , unsigned char date)
@@ -213,21 +281,24 @@ void main(void)
     display_width(g_width);
     display_height(g_height);
     
+    
     MotorInit();
 
-    GPIO_WriteHigh(GPIOC , GPIO_PIN_5);
-//    GPIO_WriteHigh(GPIOC , GPIO_PIN_4);
-    
- //   GPIO_WriteLow(GPIOC , GPIO_PIN_5);
-    GPIO_WriteLow(GPIOC , GPIO_PIN_4);
-    
     TIM1_PWM_Init();
+  //  ForwardMotor1();
+  //  StartMotor1();
+    
+    
+    TIM2_PWM_Init();
+    
+    //StartMotor2();
     
   
     enableInterrupts(); //打开系统总中断
   /* Infinite loop */
     while (1)
     {
+
       
         //margin Down
         if(GPIO_ReadInputPin(GPIOD , GPIO_PIN_7) != RESET)      //如何KEY1被按下
@@ -355,16 +426,31 @@ void main(void)
             if(g_height > 0) g_height--;
             display_height(g_height);
         }
-#if 0        
+        
+        //确认
         if(GPIO_ReadInputPin(GPIOC , GPIO_PIN_7) != RESET)      //如何KEY1被按下
         {
             delay(10);                     //先延时进行消抖
             BEEP_Cmd(ENABLE);
-            while(GPIO_ReadInputPin(GPIOC , GPIO_PIN_7) != RESET);    //等待按钮被松开
+            while(GPIO_ReadInputPin(GPIOC , GPIO_PIN_7) != RESET);    //等待按钮被松开            
             BEEP_Cmd(DISABLE);;
             delay(10);                     //再次延时消抖
+
+            //马达1正转
+            MarginPulse = (int)(((g_margin + 10) * 0.3667 / 1.8) * MOTOR_DIV);
+            WidthPulse = (int)(((g_width) * 0.3667 / 1.8) * MOTOR_DIV);  
+            TotalWidthPulse = (int)(((g_margin + 10 + g_width) * 0.3667 / 1.8) * MOTOR_DIV);            
+            
+            ForwardBackwardNum = g_height / 16;
+            ForwardBackwardCur = 0;
+
+            MovePulse = MarginPulse; //第一次移动变宽距离。            
+            ForwardMotor1();
+            StartMotor1();
+            
         }
-      
+     
+        //取消
         if(GPIO_ReadInputPin(GPIOC , GPIO_PIN_6) != RESET)      //如何KEY1被按下
         {
             delay(10);                     //先延时进行消抖
@@ -372,7 +458,10 @@ void main(void)
             while(GPIO_ReadInputPin(GPIOC , GPIO_PIN_6) != RESET);    //等待按钮被松开
             BEEP_Cmd(DISABLE);;
             delay(10);                     //再次延时消抖
+            
+            bCancel = true;
         }
+#if 0 
 #endif
         
     }

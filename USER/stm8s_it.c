@@ -38,6 +38,19 @@
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
+    int CRR[5] = {10000/400, 10000/600, 10000/800,10000/1000,10000/1200};
+    int ARR[5] = {10000/800, 10000/1200, 10000/1600,10000/2000,10000/2400};
+extern int XXX;
+extern int count;
+extern int MovePulse;
+extern int MarginPulse;  //页边距马达的脉冲数目 要加上10的
+extern int WidthPulse;  //页边距马达的脉冲数目 要加上10的
+
+extern int ForwardBackwardNum; //总共来回的次数
+extern int ForwardBackwardCur; //现在的次数 他的总数是上面来回次数的两倍 + 2(因为还要加上两次的页边距移动)
+
+extern bool bCancel; //现在的次数
+
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 /* Public functions ----------------------------------------------------------*/
@@ -228,9 +241,138 @@ INTERRUPT_HANDLER(SPI_IRQHandler, 10)
   */
 INTERRUPT_HANDLER(TIM1_UPD_OVF_TRG_BRK_IRQHandler, 11)
 {
-  /* In order to detect unexpected events during development,
-     it is recommended to set a breakpoint on the following instruction.
-  */
+    /* In order to detect unexpected events during development,
+      it is recommended to set a breakpoint on the following instruction.
+    */
+    static int count = 0;
+    count++;
+    if( MovePulse < 33 ){ //TODO 脉冲数目太小来不及慢起慢落
+        //TODO
+      BEEP_Cmd(ENABLE);
+    }
+    else if( count == 4 ){
+        TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
+                            TIM1_COUNTERMODE_UP , //向上计数
+                            CRR[1],      //自动重载值
+                            0
+                            );
+         TIM1_SetCompare3(ARR[1]);
+    }
+    else if(count == 8){
+        TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
+                        TIM1_COUNTERMODE_UP , //向上计数
+                        CRR[2],      //自动重载值
+                        0
+                        );
+        TIM1_SetCompare3(ARR[2]);
+    }
+    else if(count == 12){
+        TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
+                        TIM1_COUNTERMODE_UP , //向上计数
+                        CRR[3],      //自动重载值
+                        0
+                        );
+        TIM1_SetCompare3(ARR[3]);
+    }
+    else if(count == 16){
+        TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
+                        TIM1_COUNTERMODE_UP , //向上计数
+                        CRR[4],      //自动重载值
+                        0
+                        );
+        TIM1_SetCompare3(ARR[4]);
+    }
+    else if(count == (MovePulse-16)){
+        TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
+                        TIM1_COUNTERMODE_UP , //向上计数
+                        CRR[3],      //自动重载值
+                        0
+                        );
+        TIM1_SetCompare3(ARR[3]);
+
+    }
+    else if(count == (MovePulse-12)){
+        TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
+                        TIM1_COUNTERMODE_UP , //向上计数
+                        CRR[2],      //自动重载值
+                        0
+                        );
+        TIM1_SetCompare3(ARR[2]);
+    }
+    else if(count == (MovePulse-8)){
+        TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
+                        TIM1_COUNTERMODE_UP , //向上计数
+                        CRR[1],      //自动重载值
+                        0
+                        );
+        TIM1_SetCompare3(ARR[1]);
+    }
+    else if(count == (MovePulse-4)){
+        TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
+                        TIM1_COUNTERMODE_UP , //向上计数
+                        CRR[0],      //自动重载值
+                        0
+                        );
+        TIM1_SetCompare3(ARR[0]);
+    }
+    else if(count == MovePulse){
+        count = 0;
+        StopMotor1();
+        ForwardBackwardCur++; //移动完毕以后，当前的移动次数加一。
+        delay(50);     
+
+        if(bCancel){  //取消键按下以后
+             if( ForwardBackwardCur == 1 ){ //第一次页边距移动后，不要放下电磁阀，继续反转马达1,返回远点距离是页边距
+                //不放下电磁阀
+               
+                MovePulse = MarginPulse;
+                ReverseMotor1();
+                StartMotor1();
+            }
+            else if(ForwardBackwardCur == (ForwardBackwardNum*2 +1)){ //最后一次中宽移动以后，要继续移动马达1，距离是页边距
+                //提高电磁阀
+                MovePulse = MarginPulse;
+                ReverseMotor1();
+                StartMotor1();
+            }
+            else if(ForwardBackwardCur == (ForwardBackwardNum*2 + 2)){ //最后一次的页边距移动完毕后，就停止马达
+                //TODO 初始化
+            }
+            else{  //其余的情况下，都要重启马达2
+
+              //抬起电磁阀
+                StartMotor2();
+            }
+            
+            
+        }
+        else{        
+            if( ForwardBackwardCur == 1 ){ //第一次页边距移动后，要放下电磁阀，继续启动马达1,距离是中宽
+                //放下电磁阀
+                MovePulse = WidthPulse;
+                ForwardMotor1();
+                StartMotor1();
+            }
+            else if(ForwardBackwardCur == (ForwardBackwardNum*2 +1)){ //最后一次中宽移动以后，要继续移动马达1，距离是页边距
+                //提高电磁阀
+                MovePulse = MarginPulse;
+                ReverseMotor1();
+                StartMotor1();
+            }
+            else if(ForwardBackwardCur == (ForwardBackwardNum*2 + 2)){ //最后一次的页边距移动完毕后，就停止马达
+                //TODO 初始化
+            }
+            else{  //其余的情况下，都要重启马达2
+
+              //抬起电磁阀
+                StartMotor2();
+            }
+        }
+                       
+        
+    }
+
+    TIM1_ClearITPendingBit(TIM1_IT_UPDATE);
 }
 
 /**
@@ -281,6 +423,25 @@ INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
+     static int count2 = 0;
+     count2++;
+     if(count2 == 36){  //马达2移动结束的时候
+        count2 = 0;
+        StopMotor2();
+        delay(50);
+        
+        if( ForwardBackwardCur%2 == 0 ){ //正方向移动完毕，下次准备移动反方向
+            ReverseMotor1();
+        }
+        else{
+            ForwardMotor1();
+        }        
+        MovePulse = WidthPulse;
+        StartMotor1();
+     
+     }
+   
+     TIM2_ClearITPendingBit(TIM2_IT_UPDATE);
  }
 
 /**
