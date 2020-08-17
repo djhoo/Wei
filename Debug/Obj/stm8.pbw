@@ -49690,34 +49690,6 @@
     "scope": null
   },
   {
-    "ID": "c:@number",
-    "What": "Variable",
-    "defdec": "Dec",
-    "display": "number",
-    "location": {
-      "column": "4",
-      "line": "37",
-      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
-    },
-    "name": "number",
-    "origin": "project_file",
-    "scope": null
-  },
-  {
-    "ID": "c:@eepromaddress",
-    "What": "Variable",
-    "defdec": "Def",
-    "display": "eepromaddress",
-    "location": {
-      "column": "5",
-      "line": "38",
-      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
-    },
-    "name": "eepromaddress",
-    "origin": "project_file",
-    "scope": null
-  },
-  {
     "ID": "c:@g_margin",
     "What": "Variable",
     "defdec": "Def",
@@ -49860,7 +49832,7 @@
   {
     "ID": "c:@bCancel",
     "What": "Variable",
-    "defdec": "Dec",
+    "defdec": "Def",
     "display": "bCancel",
     "location": {
       "column": "16",
@@ -49872,7 +49844,7 @@
     "scope": null
   },
   {
-    "ID": "c:main.c@2067@macro@MOTOR_DIV",
+    "ID": "c:main.c@2071@macro@MOTOR_DIV",
     "What": "MacroDef",
     "defdec": "Def",
     "display": "MOTOR_DIV",
@@ -49900,7 +49872,7 @@
     "scope": null
   },
   {
-    "ID": "c:main.c@2202@F@delay@x",
+    "ID": "c:main.c@2206@F@delay@x",
     "What": "Variable",
     "defdec": "Def",
     "display": "x",
@@ -49914,7 +49886,7 @@
     "scope": null
   },
   {
-    "ID": "c:main.c@2202@F@delay@y",
+    "ID": "c:main.c@2206@F@delay@y",
     "What": "Variable",
     "defdec": "Dec",
     "display": "y",
@@ -50068,7 +50040,7 @@
     "scope": null
   },
   {
-    "ID": "c:main.c@6532@macro@Fpwm2",
+    "ID": "c:main.c@6536@macro@Fpwm2",
     "What": "MacroDef",
     "defdec": "Def",
     "display": "Fpwm2",
@@ -50124,27 +50096,13 @@
     "scope": null
   },
   {
-    "ID": "c:@F@EEPROM_Byte_Write",
-    "What": "Function",
-    "defdec": "Def",
-    "display": "void EEPROM_Byte_Write(unsigned int, unsigned char)",
-    "location": {
-      "column": "6",
-      "line": "246",
-      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
-    },
-    "name": "EEPROM_Byte_Write",
-    "origin": "project_file",
-    "scope": null
-  },
-  {
     "ID": "c:@F@main",
     "What": "Function",
     "defdec": "Def",
     "display": "void main(void)",
     "location": {
       "column": "6",
-      "line": "264",
+      "line": "265",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "main",
@@ -50152,13 +50110,13 @@
     "scope": null
   },
   {
-    "ID": "c:main.c@8412@F@main@keeptime",
+    "ID": "c:main.c@8429@F@main@keeptime",
     "What": "Variable",
     "defdec": "Def",
     "display": "keeptime",
     "location": {
       "column": "7",
-      "line": "266",
+      "line": "267",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "keeptime",
@@ -50172,7 +50130,7 @@
     "display": "void assert_failed(u8 *, u32)",
     "location": {
       "column": "6",
-      "line": "485",
+      "line": "486",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "assert_failed",

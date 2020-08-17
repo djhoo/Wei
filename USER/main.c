@@ -34,8 +34,8 @@
 
 /* Public value  -----------------------------------------------*/
 //全局变量
-u8 number[4] ;
-u16 eepromaddress = 0x4000;   //设EEPROM的首地址为0X4000
+//u8 number[4] ;
+//u16 eepromaddress = 0x4000;   //设EEPROM的首地址为0X4000
 
 u16  g_margin = 200;
 u16  g_width = 1000;
@@ -49,7 +49,7 @@ volatile int TotalWidthPulse = 0;
 volatile  int ForwardBackwardNum = 0; //总共来回的次数
 volatile  int ForwardBackwardCur = 0; //现在的次数
 
-volatile  bool bCancel = false; //现在的次数
+volatile  bool bCancel = FALSE; //现在的次数
 
 
 /* Private defines -----------------------------------------------------------*/
@@ -235,6 +235,7 @@ void StopMotor2()
 
 }
 
+#if 0
 /*******************************************************************************
 **函数名称：void EEPROM_Byte_Write(unsigned int address , unsigned char date)
 **功能描述：向EEPROM中固定地址写入一个字节数据
@@ -257,7 +258,7 @@ void EEPROM_Byte_Write(unsigned int address , unsigned char date)
  while(FLASH_GetFlagStatus(FLASH_FLAG_EOP) == SET);     //等待编程结束
 }
 
-
+#endif
 
 
 
@@ -459,7 +460,7 @@ void main(void)
             BEEP_Cmd(DISABLE);;
             delay(10);                     //再次延时消抖
             
-            bCancel = true;
+            bCancel = TRUE;
         }
 #if 0 
 #endif
