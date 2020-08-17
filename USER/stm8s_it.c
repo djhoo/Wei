@@ -244,6 +244,7 @@ INTERRUPT_HANDLER(TIM1_UPD_OVF_TRG_BRK_IRQHandler, 11)
     /* In order to detect unexpected events during development,
       it is recommended to set a breakpoint on the following instruction.
     */
+<<<<<<< HEAD
     static int count = 0;
     count++;
     if( MovePulse < 33 ){ //TODO Âö³åÊýÄ¿Ì«Ð¡À´²»¼°ÂýÆðÂýÂä
@@ -254,67 +255,121 @@ INTERRUPT_HANDLER(TIM1_UPD_OVF_TRG_BRK_IRQHandler, 11)
         TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
                             TIM1_COUNTERMODE_UP , //ÏòÉÏ¼ÆÊý
                             CRR[1],      //×Ô¶¯ÖØÔØÖµ
+=======
+    static count = 0;
+    int CRR[5] = {10000/400, 10000/600, 10000/800,10000/1000,10000/1200};
+    int ARR[5] = {10000/800, 10000/1200, 10000/1600,10000/2000,10000/2400};
+    count++;
+    if( count == 4 ){
+        TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
+                            TIM1_COUNTERMODE_UP , //å‘ä¸Šè®¡æ•°
+                            CRR[1],      //è‡ªåŠ¨é‡è½½å€¼
+>>>>>>> b96a279dd7bbb5a2e6255f032afe2d28e7c8dc8b
                             0
                             );
          TIM1_SetCompare3(ARR[1]);
     }
     else if(count == 8){
         TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
+<<<<<<< HEAD
                         TIM1_COUNTERMODE_UP , //ÏòÉÏ¼ÆÊý
                         CRR[2],      //×Ô¶¯ÖØÔØÖµ
+=======
+                        TIM1_COUNTERMODE_UP , //å‘ä¸Šè®¡æ•°
+                        CRR[2],      //è‡ªåŠ¨é‡è½½å€¼
+>>>>>>> b96a279dd7bbb5a2e6255f032afe2d28e7c8dc8b
                         0
                         );
         TIM1_SetCompare3(ARR[2]);
     }
     else if(count == 12){
         TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
+<<<<<<< HEAD
                         TIM1_COUNTERMODE_UP , //ÏòÉÏ¼ÆÊý
                         CRR[3],      //×Ô¶¯ÖØÔØÖµ
+=======
+                        TIM1_COUNTERMODE_UP , //å‘ä¸Šè®¡æ•°
+                        CRR[3],      //è‡ªåŠ¨é‡è½½å€¼
+>>>>>>> b96a279dd7bbb5a2e6255f032afe2d28e7c8dc8b
                         0
                         );
         TIM1_SetCompare3(ARR[3]);
     }
     else if(count == 16){
         TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
+<<<<<<< HEAD
                         TIM1_COUNTERMODE_UP , //ÏòÉÏ¼ÆÊý
                         CRR[4],      //×Ô¶¯ÖØÔØÖµ
+=======
+                        TIM1_COUNTERMODE_UP , //å‘ä¸Šè®¡æ•°
+                        CRR[4],      //è‡ªåŠ¨é‡è½½å€¼
+>>>>>>> b96a279dd7bbb5a2e6255f032afe2d28e7c8dc8b
                         0
                         );
         TIM1_SetCompare3(ARR[4]);
     }
+<<<<<<< HEAD
     else if(count == (MovePulse-16)){
         TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
                         TIM1_COUNTERMODE_UP , //ÏòÉÏ¼ÆÊý
                         CRR[3],      //×Ô¶¯ÖØÔØÖµ
+=======
+    else if(count == XXX-16){
+        TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
+                        TIM1_COUNTERMODE_UP , //å‘ä¸Šè®¡æ•°
+                        CRR[3],      //è‡ªåŠ¨é‡è½½å€¼
+>>>>>>> b96a279dd7bbb5a2e6255f032afe2d28e7c8dc8b
                         0
                         );
         TIM1_SetCompare3(ARR[3]);
 
     }
+<<<<<<< HEAD
     else if(count == (MovePulse-12)){
         TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
                         TIM1_COUNTERMODE_UP , //ÏòÉÏ¼ÆÊý
                         CRR[2],      //×Ô¶¯ÖØÔØÖµ
+=======
+    else if(count == (XXX-12){
+        TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
+                        TIM1_COUNTERMODE_UP , //å‘ä¸Šè®¡æ•°
+                        CRR[2],      //è‡ªåŠ¨é‡è½½å€¼
+>>>>>>> b96a279dd7bbb5a2e6255f032afe2d28e7c8dc8b
                         0
                         );
         TIM1_SetCompare3(ARR[2]);
     }
+<<<<<<< HEAD
     else if(count == (MovePulse-8)){
         TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
                         TIM1_COUNTERMODE_UP , //ÏòÉÏ¼ÆÊý
                         CRR[1],      //×Ô¶¯ÖØÔØÖµ
+=======
+    else if(count == (XXX-8){
+        TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
+                        TIM1_COUNTERMODE_UP , //å‘ä¸Šè®¡æ•°
+                        CRR[1],      //è‡ªåŠ¨é‡è½½å€¼
+>>>>>>> b96a279dd7bbb5a2e6255f032afe2d28e7c8dc8b
                         0
                         );
         TIM1_SetCompare3(ARR[1]);
     }
+<<<<<<< HEAD
     else if(count == (MovePulse-4)){
         TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
                         TIM1_COUNTERMODE_UP , //ÏòÉÏ¼ÆÊý
                         CRR[0],      //×Ô¶¯ÖØÔØÖµ
+=======
+    else if(count == (XXX-4){
+        TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
+                        TIM1_COUNTERMODE_UP , //å‘ä¸Šè®¡æ•°
+                        CRR[0],      //è‡ªåŠ¨é‡è½½å€¼
+>>>>>>> b96a279dd7bbb5a2e6255f032afe2d28e7c8dc8b
                         0
                         );
         TIM1_SetCompare3(ARR[0]);
     }
+<<<<<<< HEAD
     else if(count == MovePulse){
         count = 0;
         StopMotor1();
@@ -370,6 +425,10 @@ INTERRUPT_HANDLER(TIM1_UPD_OVF_TRG_BRK_IRQHandler, 11)
         }
                        
         
+=======
+    else if(count == XXX){
+       Disable();
+>>>>>>> b96a279dd7bbb5a2e6255f032afe2d28e7c8dc8b
     }
 
     TIM1_ClearITPendingBit(TIM1_IT_UPDATE);
