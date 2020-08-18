@@ -50130,7 +50130,7 @@
     "display": "void assert_failed(u8 *, u32)",
     "location": {
       "column": "6",
-      "line": "486",
+      "line": "487",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "assert_failed",
@@ -50143,7 +50143,7 @@
     "defdec": "Def",
     "display": "CRR",
     "location": {
-      "column": "9",
+      "column": "5",
       "line": "41",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
@@ -50157,7 +50157,7 @@
     "defdec": "Def",
     "display": "ARR",
     "location": {
-      "column": "9",
+      "column": "5",
       "line": "42",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
@@ -50432,7 +50432,7 @@
     "scope": null
   },
   {
-    "ID": "c:stm8s_it.c@7076@F@TIM1_UPD_OVF_TRG_BRK_IRQHandler@count",
+    "ID": "c:stm8s_it.c@6922@F@TIM1_UPD_OVF_TRG_BRK_IRQHandler@count",
     "What": "Variable",
     "defdec": "Def",
     "display": "count",
@@ -50446,13 +50446,27 @@
     "scope": null
   },
   {
+    "ID": "c:stm8s_it.c@6949@F@TIM1_UPD_OVF_TRG_BRK_IRQHandler@bCancelFinished",
+    "What": "Variable",
+    "defdec": "Def",
+    "display": "bCancelFinished",
+    "location": {
+      "column": "16",
+      "line": "248",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
+    },
+    "name": "bCancelFinished",
+    "origin": "project_file",
+    "scope": null
+  },
+  {
     "ID": "c:@F@TIM1_CAP_COM_IRQHandler",
     "What": "Function",
     "defdec": "Def",
     "display": "void TIM1_CAP_COM_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "383",
+      "line": "412",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "TIM1_CAP_COM_IRQHandler",
@@ -50465,8 +50479,8 @@
     "defdec": "Def",
     "display": "void TIM2_UPD_OVF_BRK_IRQHandler(void)",
     "location": {
-      "column": "2",
-      "line": "421",
+      "column": "1",
+      "line": "450",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "TIM2_UPD_OVF_BRK_IRQHandler",
@@ -50474,13 +50488,13 @@
     "scope": null
   },
   {
-    "ID": "c:stm8s_it.c@13088@F@TIM2_UPD_OVF_BRK_IRQHandler@count2",
+    "ID": "c:stm8s_it.c@14218@F@TIM2_UPD_OVF_BRK_IRQHandler@count2",
     "What": "Variable",
     "defdec": "Def",
     "display": "count2",
     "location": {
-      "column": "17",
-      "line": "426",
+      "column": "16",
+      "line": "455",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "count2",
@@ -50493,8 +50507,8 @@
     "defdec": "Def",
     "display": "void TIM2_CAP_COM_IRQHandler(void)",
     "location": {
-      "column": "2",
-      "line": "452",
+      "column": "1",
+      "line": "481",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "TIM2_CAP_COM_IRQHandler",
@@ -50507,8 +50521,8 @@
     "defdec": "Def",
     "display": "void UART1_TX_IRQHandler(void)",
     "location": {
-      "column": "2",
-      "line": "494",
+      "column": "1",
+      "line": "523",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "UART1_TX_IRQHandler",
@@ -50521,8 +50535,8 @@
     "defdec": "Def",
     "display": "void UART1_RX_IRQHandler(void)",
     "location": {
-      "column": "2",
-      "line": "506",
+      "column": "1",
+      "line": "535",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "UART1_RX_IRQHandler",
@@ -50536,7 +50550,7 @@
     "display": "void I2C_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "545",
+      "line": "574",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "I2C_IRQHandler",
@@ -50549,8 +50563,8 @@
     "defdec": "Def",
     "display": "void ADC1_IRQHandler(void)",
     "location": {
-      "column": "2",
-      "line": "624",
+      "column": "1",
+      "line": "653",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "ADC1_IRQHandler",
@@ -50563,8 +50577,8 @@
     "defdec": "Def",
     "display": "void TIM4_UPD_OVF_IRQHandler(void)",
     "location": {
-      "column": "2",
-      "line": "650",
+      "column": "1",
+      "line": "679",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "TIM4_UPD_OVF_IRQHandler",
@@ -50578,7 +50592,7 @@
     "display": "void EEPROM_EEC_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "665",
+      "line": "694",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "EEPROM_EEC_IRQHandler",

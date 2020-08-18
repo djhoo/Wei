@@ -294,6 +294,7 @@ void main(void)
     
     //StartMotor2();
     
+    //抬高电磁阀
   
     enableInterrupts(); //打开系统总中断
   /* Infinite loop */
@@ -437,6 +438,8 @@ void main(void)
             BEEP_Cmd(DISABLE);;
             delay(10);                     //再次延时消抖
 
+            bCancel = FALSE;
+            
             //马达1正转
             MarginPulse = (int)(((g_margin + 10) * 0.3667 / 1.8) * MOTOR_DIV);
             WidthPulse = (int)(((g_width) * 0.3667 / 1.8) * MOTOR_DIV);  
@@ -462,8 +465,6 @@ void main(void)
             
             bCancel = TRUE;
         }
-#if 0 
-#endif
         
     }
     
