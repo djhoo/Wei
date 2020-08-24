@@ -112,6 +112,38 @@ void KEYInit()
 }
 
 /*******************************************************************************
+Solenoid Valve Define
+*******************************************************************************/
+void ValveInit()
+{
+    //电磁阀的初始化
+    GPIO_Init(GPIOE , GPIO_PIN_5 , GPIO_MODE_OUT_PP_LOW_SLOW); //solenoid valve PE5
+}
+
+/*******************************************************************************
+**函数名称：void PullupValve()
+**功能描述：拉高电磁阀
+**入口参数：无
+**输出：无
+*******************************************************************************/
+void UpValve()
+{   
+   GPIO_WriteHigh(GPIOE , GPIO_PIN_5);
+}
+/*******************************************************************************
+**函数名称：void TIM1_PWM_Init()
+**功能描述：定时器1 PWM初始化 Mortor1
+**入口参数：无
+**输出：无
+*******************************************************************************/
+void DownValve()
+{    
+   GPIO_WriteLow(GPIOE , GPIO_PIN_5);
+}
+
+
+
+/*******************************************************************************
 MOTOR Init
 *******************************************************************************/
 void MotorInit()
@@ -285,20 +317,15 @@ void main(void)
     display_width(g_width);
     display_height(g_height);
     
-    
+    //马达初始化
     MotorInit();
-
     TIM1_PWM_Init();
-  //  ForwardMotor1();
-  //  StartMotor1();
-    
-    
     TIM2_PWM_Init();
     
-    //StartMotor2();
+    //初始化电磁阀，并且降低电磁阀
+    ValveInit();
+    DownValve();
     
-    //抬高电磁阀
-  
     enableInterrupts(); //打开系统总中断
   /* Infinite loop */
     while (1)
@@ -442,6 +469,11 @@ void main(void)
             delay(10);                     //再次延时消抖
 
             bCancel = FALSE;
+            
+            //拉高电磁阀
+            UpValve();
+            
+            delay(50);
             
             //马达1正转
             MarginPulse = (int)(((g_margin + 10) * 0.3667 / 1.8) * MOTOR_DIV);
