@@ -49690,13 +49690,41 @@
     "scope": null
   },
   {
+    "ID": "c:main.c@1492@macro@MOTOR_DIV",
+    "What": "MacroDef",
+    "defdec": "Def",
+    "display": "MOTOR_DIV",
+    "location": {
+      "column": "9",
+      "line": "40",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
+    },
+    "name": "MOTOR_DIV",
+    "origin": "project_file",
+    "scope": null
+  },
+  {
+    "ID": "c:main.c@1546@macro@MOTOR1_BASE_HZ",
+    "What": "MacroDef",
+    "defdec": "Def",
+    "display": "MOTOR1_BASE_HZ",
+    "location": {
+      "column": "10",
+      "line": "41",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
+    },
+    "name": "MOTOR1_BASE_HZ",
+    "origin": "project_file",
+    "scope": null
+  },
+  {
     "ID": "c:@g_margin",
     "What": "Variable",
     "defdec": "Def",
     "display": "g_margin",
     "location": {
       "column": "6",
-      "line": "40",
+      "line": "43",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "g_margin",
@@ -49710,7 +49738,7 @@
     "display": "g_width",
     "location": {
       "column": "6",
-      "line": "41",
+      "line": "44",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "g_width",
@@ -49724,7 +49752,7 @@
     "display": "g_height",
     "location": {
       "column": "6",
-      "line": "42",
+      "line": "45",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "g_height",
@@ -49738,7 +49766,7 @@
     "display": "XXX",
     "location": {
       "column": "14",
-      "line": "43",
+      "line": "46",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "XXX",
@@ -49752,7 +49780,7 @@
     "display": "MarginPulse",
     "location": {
       "column": "14",
-      "line": "44",
+      "line": "47",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "MarginPulse",
@@ -49766,7 +49794,7 @@
     "display": "WidthPulse",
     "location": {
       "column": "14",
-      "line": "45",
+      "line": "48",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "WidthPulse",
@@ -49780,7 +49808,7 @@
     "display": "MovePulse",
     "location": {
       "column": "15",
-      "line": "46",
+      "line": "49",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "MovePulse",
@@ -49794,7 +49822,7 @@
     "display": "TotalWidthPulse",
     "location": {
       "column": "14",
-      "line": "47",
+      "line": "50",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "TotalWidthPulse",
@@ -49808,7 +49836,7 @@
     "display": "ForwardBackwardNum",
     "location": {
       "column": "15",
-      "line": "49",
+      "line": "52",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "ForwardBackwardNum",
@@ -49822,7 +49850,7 @@
     "display": "ForwardBackwardCur",
     "location": {
       "column": "15",
-      "line": "50",
+      "line": "53",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "ForwardBackwardCur",
@@ -49836,7 +49864,7 @@
     "display": "bCancel",
     "location": {
       "column": "16",
-      "line": "52",
+      "line": "55",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "bCancel",
@@ -49844,16 +49872,30 @@
     "scope": null
   },
   {
-    "ID": "c:main.c@2071@macro@MOTOR_DIV",
-    "What": "MacroDef",
+    "ID": "c:@CRR",
+    "What": "Variable",
     "defdec": "Def",
-    "display": "MOTOR_DIV",
+    "display": "CRR",
     "location": {
-      "column": "9",
-      "line": "56",
+      "column": "5",
+      "line": "58",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
-    "name": "MOTOR_DIV",
+    "name": "CRR",
+    "origin": "project_file",
+    "scope": null
+  },
+  {
+    "ID": "c:@ARR",
+    "What": "Variable",
+    "defdec": "Def",
+    "display": "ARR",
+    "location": {
+      "column": "5",
+      "line": "59",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
+    },
+    "name": "ARR",
     "origin": "project_file",
     "scope": null
   },
@@ -49864,7 +49906,7 @@
     "display": "void delay(unsigned int)",
     "location": {
       "column": "6",
-      "line": "59",
+      "line": "65",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "delay",
@@ -49872,13 +49914,13 @@
     "scope": null
   },
   {
-    "ID": "c:main.c@2206@F@delay@x",
+    "ID": "c:main.c@2644@F@delay@x",
     "What": "Variable",
     "defdec": "Def",
     "display": "x",
     "location": {
       "column": "16",
-      "line": "61",
+      "line": "67",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "x",
@@ -49886,13 +49928,13 @@
     "scope": null
   },
   {
-    "ID": "c:main.c@2206@F@delay@y",
+    "ID": "c:main.c@2644@F@delay@y",
     "What": "Variable",
     "defdec": "Dec",
     "display": "y",
     "location": {
       "column": "20",
-      "line": "61",
+      "line": "67",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "y",
@@ -49906,7 +49948,7 @@
     "display": "void NumericDisplay_Init(void)",
     "location": {
       "column": "6",
-      "line": "68",
+      "line": "74",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "NumericDisplay_Init",
@@ -49920,7 +49962,7 @@
     "display": "void BeepInit(void)",
     "location": {
       "column": "6",
-      "line": "89",
+      "line": "95",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "BeepInit",
@@ -49934,7 +49976,7 @@
     "display": "void KEYInit(void)",
     "location": {
       "column": "6",
-      "line": "94",
+      "line": "100",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "KEYInit",
@@ -49948,24 +49990,10 @@
     "display": "void MotorInit(void)",
     "location": {
       "column": "6",
-      "line": "111",
+      "line": "117",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "MotorInit",
-    "origin": "project_file",
-    "scope": null
-  },
-  {
-    "ID": "c:@Fpwm",
-    "What": "Variable",
-    "defdec": "Def",
-    "display": "Fpwm",
-    "location": {
-      "column": "8",
-      "line": "128",
-      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
-    },
-    "name": "Fpwm",
     "origin": "project_file",
     "scope": null
   },
@@ -49976,7 +50004,7 @@
     "display": "void TIM1_PWM_Init(void)",
     "location": {
       "column": "6",
-      "line": "130",
+      "line": "135",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "TIM1_PWM_Init",
@@ -49990,7 +50018,7 @@
     "display": "void StartMotor1(void)",
     "location": {
       "column": "6",
-      "line": "158",
+      "line": "163",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "StartMotor1",
@@ -50004,7 +50032,7 @@
     "display": "void StopMotor1(void)",
     "location": {
       "column": "6",
-      "line": "170",
+      "line": "175",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "StopMotor1",
@@ -50018,7 +50046,7 @@
     "display": "void ForwardMotor1(void)",
     "location": {
       "column": "6",
-      "line": "179",
+      "line": "184",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "ForwardMotor1",
@@ -50032,7 +50060,7 @@
     "display": "void ReverseMotor1(void)",
     "location": {
       "column": "6",
-      "line": "184",
+      "line": "189",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "ReverseMotor1",
@@ -50040,13 +50068,13 @@
     "scope": null
   },
   {
-    "ID": "c:main.c@6536@macro@Fpwm2",
+    "ID": "c:main.c@6929@macro@Fpwm2",
     "What": "MacroDef",
     "defdec": "Def",
     "display": "Fpwm2",
     "location": {
       "column": "13",
-      "line": "195",
+      "line": "200",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "Fpwm2",
@@ -50060,7 +50088,7 @@
     "display": "void TIM2_PWM_Init(void)",
     "location": {
       "column": "6",
-      "line": "196",
+      "line": "201",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "TIM2_PWM_Init",
@@ -50074,7 +50102,7 @@
     "display": "void StartMotor2(void)",
     "location": {
       "column": "6",
-      "line": "217",
+      "line": "220",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "StartMotor2",
@@ -50088,7 +50116,7 @@
     "display": "void StopMotor2(void)",
     "location": {
       "column": "6",
-      "line": "229",
+      "line": "232",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "StopMotor2",
@@ -50102,7 +50130,7 @@
     "display": "void main(void)",
     "location": {
       "column": "6",
-      "line": "265",
+      "line": "268",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "main",
@@ -50110,13 +50138,13 @@
     "scope": null
   },
   {
-    "ID": "c:main.c@8429@F@main@keeptime",
+    "ID": "c:main.c@8818@F@main@keeptime",
     "What": "Variable",
     "defdec": "Def",
     "display": "keeptime",
     "location": {
       "column": "7",
-      "line": "267",
+      "line": "270",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "keeptime",
@@ -50130,7 +50158,7 @@
     "display": "void assert_failed(u8 *, u32)",
     "location": {
       "column": "6",
-      "line": "487",
+      "line": "490",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "assert_failed",
@@ -50140,11 +50168,11 @@
   {
     "ID": "c:@CRR",
     "What": "Variable",
-    "defdec": "Def",
+    "defdec": "Dec",
     "display": "CRR",
     "location": {
-      "column": "5",
-      "line": "41",
+      "column": "12",
+      "line": "49",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "CRR",
@@ -50154,11 +50182,11 @@
   {
     "ID": "c:@ARR",
     "What": "Variable",
-    "defdec": "Def",
+    "defdec": "Dec",
     "display": "ARR",
     "location": {
-      "column": "5",
-      "line": "42",
+      "column": "12",
+      "line": "50",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "ARR",
@@ -50172,7 +50200,7 @@
     "display": "XXX",
     "location": {
       "column": "12",
-      "line": "43",
+      "line": "54",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "XXX",
@@ -50186,7 +50214,7 @@
     "display": "count",
     "location": {
       "column": "12",
-      "line": "44",
+      "line": "55",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "count",
@@ -50200,7 +50228,7 @@
     "display": "MovePulse",
     "location": {
       "column": "12",
-      "line": "45",
+      "line": "56",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "MovePulse",
@@ -50214,7 +50242,7 @@
     "display": "MarginPulse",
     "location": {
       "column": "12",
-      "line": "46",
+      "line": "57",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "MarginPulse",
@@ -50228,7 +50256,7 @@
     "display": "WidthPulse",
     "location": {
       "column": "12",
-      "line": "47",
+      "line": "58",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "WidthPulse",
@@ -50242,7 +50270,7 @@
     "display": "ForwardBackwardNum",
     "location": {
       "column": "12",
-      "line": "49",
+      "line": "60",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "ForwardBackwardNum",
@@ -50256,7 +50284,7 @@
     "display": "ForwardBackwardCur",
     "location": {
       "column": "12",
-      "line": "50",
+      "line": "61",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "ForwardBackwardCur",
@@ -50270,7 +50298,7 @@
     "display": "bCancel",
     "location": {
       "column": "13",
-      "line": "52",
+      "line": "63",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "bCancel",
@@ -50284,7 +50312,7 @@
     "display": "void TRAP_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "79",
+      "line": "90",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "TRAP_IRQHandler",
@@ -50298,7 +50326,7 @@
     "display": "void TLI_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "91",
+      "line": "102",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "TLI_IRQHandler",
@@ -50312,7 +50340,7 @@
     "display": "void AWU_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "104",
+      "line": "115",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "AWU_IRQHandler",
@@ -50326,7 +50354,7 @@
     "display": "void CLK_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "116",
+      "line": "127",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "CLK_IRQHandler",
@@ -50340,7 +50368,7 @@
     "display": "void EXTI_PORTA_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "128",
+      "line": "139",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "EXTI_PORTA_IRQHandler",
@@ -50354,7 +50382,7 @@
     "display": "void EXTI_PORTB_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "140",
+      "line": "151",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "EXTI_PORTB_IRQHandler",
@@ -50368,7 +50396,7 @@
     "display": "void EXTI_PORTC_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "153",
+      "line": "164",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "EXTI_PORTC_IRQHandler",
@@ -50382,7 +50410,7 @@
     "display": "void EXTI_PORTD_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "166",
+      "line": "177",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "EXTI_PORTD_IRQHandler",
@@ -50396,7 +50424,7 @@
     "display": "void EXTI_PORTE_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "178",
+      "line": "189",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "EXTI_PORTE_IRQHandler",
@@ -50410,7 +50438,7 @@
     "display": "void SPI_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "230",
+      "line": "241",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "SPI_IRQHandler",
@@ -50424,7 +50452,7 @@
     "display": "void TIM1_UPD_OVF_TRG_BRK_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "242",
+      "line": "253",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "TIM1_UPD_OVF_TRG_BRK_IRQHandler",
@@ -50432,13 +50460,13 @@
     "scope": null
   },
   {
-    "ID": "c:stm8s_it.c@6922@F@TIM1_UPD_OVF_TRG_BRK_IRQHandler@count",
+    "ID": "c:stm8s_it.c@7097@F@TIM1_UPD_OVF_TRG_BRK_IRQHandler@count",
     "What": "Variable",
     "defdec": "Def",
     "display": "count",
     "location": {
       "column": "16",
-      "line": "247",
+      "line": "258",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "count",
@@ -50446,13 +50474,13 @@
     "scope": null
   },
   {
-    "ID": "c:stm8s_it.c@6949@F@TIM1_UPD_OVF_TRG_BRK_IRQHandler@bCancelFinished",
+    "ID": "c:stm8s_it.c@7124@F@TIM1_UPD_OVF_TRG_BRK_IRQHandler@bCancelFinished",
     "What": "Variable",
     "defdec": "Def",
     "display": "bCancelFinished",
     "location": {
       "column": "16",
-      "line": "248",
+      "line": "259",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "bCancelFinished",
@@ -50466,7 +50494,7 @@
     "display": "void TIM1_CAP_COM_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "412",
+      "line": "423",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "TIM1_CAP_COM_IRQHandler",
@@ -50480,7 +50508,7 @@
     "display": "void TIM2_UPD_OVF_BRK_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "450",
+      "line": "461",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "TIM2_UPD_OVF_BRK_IRQHandler",
@@ -50488,13 +50516,13 @@
     "scope": null
   },
   {
-    "ID": "c:stm8s_it.c@14218@F@TIM2_UPD_OVF_BRK_IRQHandler@count2",
+    "ID": "c:stm8s_it.c@14393@F@TIM2_UPD_OVF_BRK_IRQHandler@count2",
     "What": "Variable",
     "defdec": "Def",
     "display": "count2",
     "location": {
       "column": "16",
-      "line": "455",
+      "line": "466",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "count2",
@@ -50508,7 +50536,7 @@
     "display": "void TIM2_CAP_COM_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "481",
+      "line": "492",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "TIM2_CAP_COM_IRQHandler",
@@ -50522,7 +50550,7 @@
     "display": "void UART1_TX_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "523",
+      "line": "534",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "UART1_TX_IRQHandler",
@@ -50536,7 +50564,7 @@
     "display": "void UART1_RX_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "535",
+      "line": "546",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "UART1_RX_IRQHandler",
@@ -50550,7 +50578,7 @@
     "display": "void I2C_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "574",
+      "line": "585",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "I2C_IRQHandler",
@@ -50564,7 +50592,7 @@
     "display": "void ADC1_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "653",
+      "line": "664",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "ADC1_IRQHandler",
@@ -50578,7 +50606,7 @@
     "display": "void TIM4_UPD_OVF_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "679",
+      "line": "690",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "TIM4_UPD_OVF_IRQHandler",
@@ -50592,7 +50620,7 @@
     "display": "void EEPROM_EEC_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "694",
+      "line": "705",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "EEPROM_EEC_IRQHandler",

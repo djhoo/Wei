@@ -38,8 +38,19 @@
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-int CRR[5] = {10000/400, 10000/600, 10000/800,10000/1000,10000/1200};
-int ARR[5] = {10000/800, 10000/1200, 10000/1600,10000/2000,10000/2400};
+
+
+#if 0
+//细分是2的时候
+int CRR[5] = {MOTOR1_BASE_HZ/400, MOTOR1_BASE_HZ/600, MOTOR1_BASE_HZ/800,MOTOR1_BASE_HZ/1000,MOTOR1_BASE_HZ/1200};
+int ARR[5] = {MOTOR1_BASE_HZ/800, MOTOR1_BASE_HZ/1200, MOTOR1_BASE_HZ/1600,MOTOR1_BASE_HZ/2000,MOTOR1_BASE_HZ/2400};
+#endif 
+
+extern int CRR[5];
+extern int ARR[5];
+
+
+
 extern int XXX;
 extern int count;
 extern int MovePulse;

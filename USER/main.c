@@ -37,6 +37,9 @@
 //u8 number[4] ;
 //u16 eepromaddress = 0x4000;   //设EEPROM的首地址为0X4000
 
+#define MOTOR_DIV   (4)             //马达1的细分数
+#define  MOTOR1_BASE_HZ  (100000)
+
 u16  g_margin = 200;
 u16  g_width = 1000;
 u16  g_height = 160;
@@ -51,9 +54,12 @@ volatile  int ForwardBackwardCur = 0; //现在的次数
 
 volatile  bool bCancel = FALSE; //现在的次数
 
+//细分是4的时候
+int CRR[5] = {MOTOR1_BASE_HZ/(200*MOTOR_DIV), MOTOR1_BASE_HZ/(300*MOTOR_DIV), MOTOR1_BASE_HZ/(400*MOTOR_DIV), MOTOR1_BASE_HZ/(500*MOTOR_DIV), MOTOR1_BASE_HZ/(600*MOTOR_DIV)};
+int ARR[5] = {MOTOR1_BASE_HZ/(400*MOTOR_DIV), MOTOR1_BASE_HZ/(600*MOTOR_DIV), MOTOR1_BASE_HZ/(800*MOTOR_DIV), MOTOR1_BASE_HZ/(1000*MOTOR_DIV), MOTOR1_BASE_HZ/(1200*MOTOR_DIV)};
 
 /* Private defines -----------------------------------------------------------*/
-#define MOTOR_DIV   (4)
+
 
 /* Private functions ---------------------------------------------------------*/
 void delay(unsigned int ms)
@@ -125,13 +131,12 @@ void MotorInit()
 **入口参数：无
 **输出：无
 *******************************************************************************/
-int    Fpwm = 400;            //150HZ
 
 void TIM1_PWM_Init()
 {
-    TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
+    TIM1_TimeBaseInit(159 , //16Mhz / 160 = 100000 HZ 100K
                         TIM1_COUNTERMODE_UP , //向上计数
-                        10000/Fpwm,      //自动重载值
+                        CRR[0],      //自动重载值
                         0
                         );
     
@@ -150,7 +155,7 @@ void TIM1_PWM_Init()
     TIM1_CCxCmd(TIM1_CHANNEL_3 , DISABLE);
     TIM1_Cmd(DISABLE);
         
-    TIM1_SetCompare3(10000/Fpwm/2);
+    TIM1_SetCompare3(ARR[0]);
 
 }
     
@@ -208,11 +213,9 @@ void TIM2_PWM_Init()
     TIM2_OC3PreloadConfig(ENABLE);
     TIM2_ARRPreloadConfig(ENABLE);
     TIM2_CCxCmd(TIM2_CHANNEL_3 , DISABLE);  
-
    
 }
                  
-
 
 void StartMotor2()
 {
