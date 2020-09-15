@@ -49984,13 +49984,27 @@
     "scope": null
   },
   {
+    "ID": "c:@F@SensInit",
+    "What": "Function",
+    "defdec": "Def",
+    "display": "void SensInit(void)",
+    "location": {
+      "column": "6",
+      "line": "114",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
+    },
+    "name": "SensInit",
+    "origin": "project_file",
+    "scope": null
+  },
+  {
     "ID": "c:@F@ValveInit",
     "What": "Function",
     "defdec": "Def",
     "display": "void ValveInit(void)",
     "location": {
       "column": "6",
-      "line": "117",
+      "line": "122",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "ValveInit",
@@ -50004,7 +50018,7 @@
     "display": "void UpValve(void)",
     "location": {
       "column": "6",
-      "line": "129",
+      "line": "134",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "UpValve",
@@ -50018,7 +50032,7 @@
     "display": "void DownValve(void)",
     "location": {
       "column": "6",
-      "line": "139",
+      "line": "144",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "DownValve",
@@ -50032,7 +50046,7 @@
     "display": "void MotorInit(void)",
     "location": {
       "column": "6",
-      "line": "149",
+      "line": "154",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "MotorInit",
@@ -50046,7 +50060,7 @@
     "display": "void TIM1_PWM_Init(void)",
     "location": {
       "column": "6",
-      "line": "167",
+      "line": "172",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "TIM1_PWM_Init",
@@ -50060,7 +50074,7 @@
     "display": "void StartMotor1(void)",
     "location": {
       "column": "6",
-      "line": "195",
+      "line": "200",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "StartMotor1",
@@ -50074,7 +50088,7 @@
     "display": "void StopMotor1(void)",
     "location": {
       "column": "6",
-      "line": "207",
+      "line": "212",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "StopMotor1",
@@ -50088,7 +50102,7 @@
     "display": "void ForwardMotor1(void)",
     "location": {
       "column": "6",
-      "line": "216",
+      "line": "221",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "ForwardMotor1",
@@ -50102,7 +50116,7 @@
     "display": "void ReverseMotor1(void)",
     "location": {
       "column": "6",
-      "line": "221",
+      "line": "226",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "ReverseMotor1",
@@ -50110,13 +50124,13 @@
     "scope": null
   },
   {
-    "ID": "c:main.c@7900@macro@Fpwm2",
+    "ID": "c:main.c@7972@macro@Fpwm2",
     "What": "MacroDef",
     "defdec": "Def",
     "display": "Fpwm2",
     "location": {
       "column": "13",
-      "line": "232",
+      "line": "237",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "Fpwm2",
@@ -50130,7 +50144,7 @@
     "display": "void TIM2_PWM_Init(void)",
     "location": {
       "column": "6",
-      "line": "233",
+      "line": "238",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "TIM2_PWM_Init",
@@ -50144,7 +50158,7 @@
     "display": "void StartMotor2(void)",
     "location": {
       "column": "6",
-      "line": "252",
+      "line": "257",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "StartMotor2",
@@ -50158,10 +50172,24 @@
     "display": "void StopMotor2(void)",
     "location": {
       "column": "6",
-      "line": "264",
+      "line": "269",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "StopMotor2",
+    "origin": "project_file",
+    "scope": null
+  },
+  {
+    "ID": "c:@F@TIM4_Init",
+    "What": "Function",
+    "defdec": "Def",
+    "display": "void TIM4_Init(void)",
+    "location": {
+      "column": "6",
+      "line": "284",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
+    },
+    "name": "TIM4_Init",
     "origin": "project_file",
     "scope": null
   },
@@ -50172,7 +50200,7 @@
     "display": "void main(void)",
     "location": {
       "column": "6",
-      "line": "300",
+      "line": "321",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "main",
@@ -50180,13 +50208,13 @@
     "scope": null
   },
   {
-    "ID": "c:main.c@9789@F@main@keeptime",
+    "ID": "c:main.c@10523@F@main@keeptime",
     "What": "Variable",
     "defdec": "Def",
     "display": "keeptime",
     "location": {
       "column": "7",
-      "line": "302",
+      "line": "323",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "keeptime",
@@ -50200,7 +50228,7 @@
     "display": "void assert_failed(u8 *, u32)",
     "location": {
       "column": "6",
-      "line": "522",
+      "line": "543",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "assert_failed",
@@ -50348,13 +50376,27 @@
     "scope": null
   },
   {
+    "ID": "c:@bSensorON",
+    "What": "Variable",
+    "defdec": "Def",
+    "display": "bSensorON",
+    "location": {
+      "column": "15",
+      "line": "65",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
+    },
+    "name": "bSensorON",
+    "origin": "project_file",
+    "scope": null
+  },
+  {
     "ID": "c:@F@TRAP_IRQHandler",
     "What": "Function",
     "defdec": "Def",
     "display": "void TRAP_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "90",
+      "line": "92",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "TRAP_IRQHandler",
@@ -50368,7 +50410,7 @@
     "display": "void TLI_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "102",
+      "line": "104",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "TLI_IRQHandler",
@@ -50382,7 +50424,7 @@
     "display": "void AWU_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "115",
+      "line": "117",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "AWU_IRQHandler",
@@ -50396,7 +50438,7 @@
     "display": "void CLK_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "127",
+      "line": "129",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "CLK_IRQHandler",
@@ -50410,7 +50452,7 @@
     "display": "void EXTI_PORTA_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "139",
+      "line": "141",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "EXTI_PORTA_IRQHandler",
@@ -50424,7 +50466,7 @@
     "display": "void EXTI_PORTB_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "151",
+      "line": "153",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "EXTI_PORTB_IRQHandler",
@@ -50438,7 +50480,7 @@
     "display": "void EXTI_PORTC_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "164",
+      "line": "166",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "EXTI_PORTC_IRQHandler",
@@ -50452,7 +50494,7 @@
     "display": "void EXTI_PORTD_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "177",
+      "line": "179",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "EXTI_PORTD_IRQHandler",
@@ -50466,7 +50508,7 @@
     "display": "void EXTI_PORTE_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "189",
+      "line": "191",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "EXTI_PORTE_IRQHandler",
@@ -50480,7 +50522,7 @@
     "display": "void SPI_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "241",
+      "line": "243",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "SPI_IRQHandler",
@@ -50494,7 +50536,7 @@
     "display": "void TIM1_UPD_OVF_TRG_BRK_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "253",
+      "line": "255",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "TIM1_UPD_OVF_TRG_BRK_IRQHandler",
@@ -50502,13 +50544,13 @@
     "scope": null
   },
   {
-    "ID": "c:stm8s_it.c@7097@F@TIM1_UPD_OVF_TRG_BRK_IRQHandler@count",
+    "ID": "c:stm8s_it.c@7156@F@TIM1_UPD_OVF_TRG_BRK_IRQHandler@count",
     "What": "Variable",
     "defdec": "Def",
     "display": "count",
     "location": {
       "column": "16",
-      "line": "258",
+      "line": "260",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "count",
@@ -50516,13 +50558,13 @@
     "scope": null
   },
   {
-    "ID": "c:stm8s_it.c@7124@F@TIM1_UPD_OVF_TRG_BRK_IRQHandler@bCancelFinished",
+    "ID": "c:stm8s_it.c@7183@F@TIM1_UPD_OVF_TRG_BRK_IRQHandler@bCancelFinished",
     "What": "Variable",
     "defdec": "Def",
     "display": "bCancelFinished",
     "location": {
       "column": "16",
-      "line": "259",
+      "line": "261",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "bCancelFinished",
@@ -50536,7 +50578,7 @@
     "display": "void TIM1_CAP_COM_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "447",
+      "line": "449",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "TIM1_CAP_COM_IRQHandler",
@@ -50550,7 +50592,7 @@
     "display": "void TIM2_UPD_OVF_BRK_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "485",
+      "line": "487",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "TIM2_UPD_OVF_BRK_IRQHandler",
@@ -50558,13 +50600,13 @@
     "scope": null
   },
   {
-    "ID": "c:stm8s_it.c@15153@F@TIM2_UPD_OVF_BRK_IRQHandler@count2",
+    "ID": "c:stm8s_it.c@15212@F@TIM2_UPD_OVF_BRK_IRQHandler@count2",
     "What": "Variable",
     "defdec": "Def",
     "display": "count2",
     "location": {
       "column": "16",
-      "line": "490",
+      "line": "492",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "count2",
@@ -50578,7 +50620,7 @@
     "display": "void TIM2_CAP_COM_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "520",
+      "line": "522",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "TIM2_CAP_COM_IRQHandler",
@@ -50592,7 +50634,7 @@
     "display": "void UART1_TX_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "562",
+      "line": "565",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "UART1_TX_IRQHandler",
@@ -50606,7 +50648,7 @@
     "display": "void UART1_RX_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "574",
+      "line": "577",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "UART1_RX_IRQHandler",
@@ -50620,7 +50662,7 @@
     "display": "void I2C_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "613",
+      "line": "616",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "I2C_IRQHandler",
@@ -50634,7 +50676,7 @@
     "display": "void ADC1_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "692",
+      "line": "695",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "ADC1_IRQHandler",
@@ -50648,10 +50690,38 @@
     "display": "void TIM4_UPD_OVF_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "718",
+      "line": "721",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "TIM4_UPD_OVF_IRQHandler",
+    "origin": "project_file",
+    "scope": null
+  },
+  {
+    "ID": "c:stm8s_it.c@21698@F@TIM4_UPD_OVF_IRQHandler@SetCount",
+    "What": "Variable",
+    "defdec": "Def",
+    "display": "SetCount",
+    "location": {
+      "column": "15",
+      "line": "726",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
+    },
+    "name": "SetCount",
+    "origin": "project_file",
+    "scope": null
+  },
+  {
+    "ID": "c:stm8s_it.c@21698@F@TIM4_UPD_OVF_IRQHandler@ResetCount",
+    "What": "Variable",
+    "defdec": "Dec",
+    "display": "ResetCount",
+    "location": {
+      "column": "28",
+      "line": "726",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
+    },
+    "name": "ResetCount",
     "origin": "project_file",
     "scope": null
   },
@@ -50662,7 +50732,7 @@
     "display": "void EEPROM_EEC_IRQHandler(void)",
     "location": {
       "column": "1",
-      "line": "733",
+      "line": "761",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\stm8s_it.c"
     },
     "name": "EEPROM_EEC_IRQHandler",

@@ -90,9 +90,9 @@
         <Category>_ 0</Category>
     </LogFile>
     <Breakpoints>
-        <Bp0>_ "STD_CODE" "{$PROJ_DIR$\USER\stm8s_it.c}.0.1" 0 0 0 0 "" 0 ""</Bp0>
-        <Bp1>_ "STD_CODE" "{$PROJ_DIR$\USER\main.c}.0.1" 0 0 0 0 "" 0 ""</Bp1>
-        <Bp2>_ "STD_CODE" "{$PROJ_DIR$\USER\main.c}.0.1" 0 0 0 0 "" 0 ""</Bp2>
+        <Bp0>_ "STD_CODE" "{$PROJ_DIR$\USER\stm8s_it.c}.746.1" 0 0 0 0 "" 0 ""</Bp0>
+        <Bp1>_ "STD_CODE" "{$PROJ_DIR$\USER\main.c}.536.1" 0 0 0 0 "" 0 ""</Bp1>
+        <Bp2>_ "STD_CODE" "{$PROJ_DIR$\USER\main.c}.536.1" 0 0 0 0 "" 0 ""</Bp2>
         <Bp3>_ "STD_CODE" "{$PROJ_DIR$\USER\main.c}.481.13" 1 0 0 0 "" 0 ""</Bp3>
         <Bp4>_ "STD_CODE" "{$PROJ_DIR$\USER\stm8s_it.c}.273.10" 1 0 0 0 "" 0 ""</Bp4>
         <Bp5>_ "STD_CODE" "{$PROJ_DIR$\USER\stm8s_it.c}.298.9" 1 0 0 0 "" 0 ""</Bp5>

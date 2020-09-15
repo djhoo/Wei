@@ -62,6 +62,8 @@ extern int ForwardBackwardCur; //ÏÖÔÚµÄ´ÎÊý ËûµÄ×ÜÊýÊÇÉÏÃæÀ´»Ø´ÎÊýµÄÁ½±¶ + 2(ÒòÎ
 
 extern bool bCancel; //ÏÖÔÚµÄ´ÎÊý
 
+volatile bool bSensorON = FALSE; //ÏÖÔÚµÄ´«¸ÐÆ÷ÊÇ·ñ´¥·¢
+
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 /* Public functions ----------------------------------------------------------*/
@@ -537,6 +539,7 @@ INTERRUPT_HANDLER(TIM3_UPD_OVF_BRK_IRQHandler, 15)
     /* In order to detect unexpected events during development,
     it is recommended to set a breakpoint on the following instruction.
     */
+    
 }
 
 /**
@@ -720,8 +723,33 @@ INTERRUPT_HANDLER(TIM4_UPD_OVF_IRQHandler, 23)
     /* In order to detect unexpected events during development,
     it is recommended to set a breakpoint on the following instruction.
     */
+    static s8 SetCount = 0,ResetCount = 0; //Reset±íÊ¾´¥·¢£¬Set±íÊ¾Ã»ÓÐ´¥·¢
+        
+    if(TIM4_GetITStatus(TIM4_IT_UPDATE) == SET )
+    {
+        TIM4_ClearFlag(TIM4_FLAG_UPDATE);   //Çå³ýÖÐ¶Ï±êÖ¾
+        if(RESET == GPIO_ReadInputPin(GPIOB , GPIO_PIN_3)){
+            ResetCount++;
+            SetCount=0;
+        }
+        else{
+            ResetCount=0;
+            SetCount++;
+            
+        }
+        if(ResetCount == 3){
+            SetCount = 0;
+            ResetCount = 0;
+            bSensorON = TRUE;
+        }
+        if(SetCount == 3){
+            SetCount = 0;
+            ResetCount = 0;
+            bSensorON = FALSE;
+        }
     
-    
+        
+    }
 }
 #endif /* (STM8S903) || (STM8AF622x)*/
 
