@@ -54,6 +54,9 @@ volatile  int ForwardBackwardCur = 0; //现在的次数
 
 volatile  bool bCancel = FALSE; //现在的次数
 
+volatile bool bSensorON = FALSE; //现在的传感器是否触发
+volatile bool bBackward = FALSE; //是否为反转，TURE是反转，False是正转
+
 //细分是4的时候
 int CRR[5] = {MOTOR1_BASE_HZ/(200*MOTOR_DIV), MOTOR1_BASE_HZ/(300*MOTOR_DIV), MOTOR1_BASE_HZ/(400*MOTOR_DIV), MOTOR1_BASE_HZ/(500*MOTOR_DIV), MOTOR1_BASE_HZ/(600*MOTOR_DIV)};
 int ARR[5] = {MOTOR1_BASE_HZ/(400*MOTOR_DIV), MOTOR1_BASE_HZ/(600*MOTOR_DIV), MOTOR1_BASE_HZ/(800*MOTOR_DIV), MOTOR1_BASE_HZ/(1000*MOTOR_DIV), MOTOR1_BASE_HZ/(1200*MOTOR_DIV)};
@@ -221,11 +224,13 @@ void StopMotor1()
 void ForwardMotor1()
 {
     GPIO_WriteLow(GPIOC , GPIO_PIN_4);
+    bBackward = FALSE;
 }
 
 void ReverseMotor1()
 {
     GPIO_WriteHigh(GPIOC , GPIO_PIN_4);
+    bBackward = TRUE;
 }
 
 /*******************************************************************************
@@ -343,6 +348,9 @@ void main(void)
     TIM1_PWM_Init();
     TIM2_PWM_Init();
     
+    //传感器初始化
+    TIM4_Init();
+    
     //初始化电磁阀，并且降低电磁阀
     ValveInit();
     DownValve();
@@ -351,7 +359,6 @@ void main(void)
   /* Infinite loop */
     while (1)
     {
-
       
         //margin Down
         if(GPIO_ReadInputPin(GPIOD , GPIO_PIN_7) != RESET)      //如何KEY1被按下
@@ -491,19 +498,33 @@ void main(void)
 
             bCancel = FALSE;
             
+            //计算各个宽度的距离
+            MarginPulse = (int)(((g_margin + 10) * 0.3667 / 1.8) * MOTOR_DIV);
+            WidthPulse = (int)(((g_width) * 0.3667 / 1.8) * MOTOR_DIV);  
+            TotalWidthPulse = (int)(((g_margin + 10 + g_width) * 0.3667 / 1.8) * MOTOR_DIV); 
+            
             //拉高电磁阀
             UpValve();
             
             delay(50);
             
-            //马达1正转
-            MarginPulse = (int)(((g_margin + 10) * 0.3667 / 1.8) * MOTOR_DIV);
-            WidthPulse = (int)(((g_width) * 0.3667 / 1.8) * MOTOR_DIV);  
-            TotalWidthPulse = (int)(((g_margin + 10 + g_width) * 0.3667 / 1.8) * MOTOR_DIV);            
-            
+            //判断传感器是否为ON
+            if(!bSensorON){  //如果传感器没有ON，表明这个时候胶头不在Home位置，要先移到Home位置
+                //拉高电磁阀
+                UpValve();
+                
+                //马达反转
+                MovePulse = TotalWidthPulse; //第一次移动变宽距离。            
+                ReverseMotor1();
+                StartMotor1();                
+            }
+                        
+            delay(50);
+                        
             ForwardBackwardNum = g_height / 16;
             ForwardBackwardCur = 0;
-
+            
+            //马达1正转
             MovePulse = MarginPulse; //第一次移动变宽距离。            
             ForwardMotor1();
             StartMotor1();
@@ -523,9 +544,7 @@ void main(void)
         }
         
     }
-    
-
-  
+      
 }
 
 

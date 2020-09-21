@@ -62,7 +62,8 @@ extern int ForwardBackwardCur; //ÏÖÔÚµÄ´ÎÊı ËûµÄ×ÜÊıÊÇÉÏÃæÀ´»Ø´ÎÊıµÄÁ½±¶ + 2(ÒòÎ
 
 extern bool bCancel; //ÏÖÔÚµÄ´ÎÊı
 
-volatile bool bSensorON = FALSE; //ÏÖÔÚµÄ´«¸ĞÆ÷ÊÇ·ñ´¥·¢
+extern bool bSensorON; //ÏÖÔÚµÄ´«¸ĞÆ÷ÊÇ·ñ´¥·¢
+extern bool bBackward; //ÊÇ·ñÎª·´×ª£¬TUREÊÇ·´×ª£¬FalseÊÇÕı×ª
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
@@ -257,12 +258,21 @@ INTERRUPT_HANDLER(TIM1_UPD_OVF_TRG_BRK_IRQHandler, 11)
     /* In order to detect unexpected events during development,
     it is recommended to set a breakpoint on the following instruction.
     */
-    static int count = 0;
+    static int count = 0;//Âö³å´ÎÊı
     static int bCancelFinished = FALSE;
     count++;
+    
+    //·´×ªµ½HPÎ»ÖÃ£¬µ±´«¸ĞÆ÷ÎªONµÄÊ±ºò£¬ËÙ¶È¾ÍÒªÂıÂıµÄÂäÏÂÀ´
+    if(bSensorON && bBackward){
+//        count = (MovePulse-16);
+        MovePulse = count + 16;
+    }
+        
+    
     if( MovePulse < 33 ){ //TODO Âö³åÊıÄ¿Ì«Ğ¡À´²»¼°ÂıÆğÂıÂä
         //TODO
         BEEP_Cmd(ENABLE);
+        
     }
     else if( count == 4 ){
         TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
@@ -396,7 +406,7 @@ INTERRUPT_HANDLER(TIM1_UPD_OVF_TRG_BRK_IRQHandler, 11)
             }
             
         }
-        else{        
+        else{ //Õı³£ÒÆ¶¯  
             if( ForwardBackwardCur == 1 ){ //µÚÒ»´ÎÒ³±ß¾àÒÆ¶¯ºó£¬Òª·ÅÏÂµç´Å·§£¬¼ÌĞøÆô¶¯Âí´ï1,¾àÀëÊÇÖĞ¿í
                 //·ÅÏÂµç´Å·§£¬½øĞĞ´ò½º
                 DownValve();
