@@ -50026,13 +50026,41 @@
     "scope": null
   },
   {
+    "ID": "c:@F@PowerInit",
+    "What": "Function",
+    "defdec": "Def",
+    "display": "void PowerInit(void)",
+    "location": {
+      "column": "6",
+      "line": "123",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
+    },
+    "name": "PowerInit",
+    "origin": "project_file",
+    "scope": null
+  },
+  {
+    "ID": "c:@F@PowerON",
+    "What": "Function",
+    "defdec": "Def",
+    "display": "void PowerON(void)",
+    "location": {
+      "column": "6",
+      "line": "129",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
+    },
+    "name": "PowerON",
+    "origin": "project_file",
+    "scope": null
+  },
+  {
     "ID": "c:@F@ValveInit",
     "What": "Function",
     "defdec": "Def",
     "display": "void ValveInit(void)",
     "location": {
       "column": "6",
-      "line": "125",
+      "line": "138",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "ValveInit",
@@ -50046,7 +50074,7 @@
     "display": "void UpValve(void)",
     "location": {
       "column": "6",
-      "line": "137",
+      "line": "150",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "UpValve",
@@ -50060,7 +50088,7 @@
     "display": "void DownValve(void)",
     "location": {
       "column": "6",
-      "line": "147",
+      "line": "160",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "DownValve",
@@ -50074,7 +50102,7 @@
     "display": "void MotorInit(void)",
     "location": {
       "column": "6",
-      "line": "157",
+      "line": "170",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "MotorInit",
@@ -50088,7 +50116,7 @@
     "display": "void TIM1_PWM_Init(void)",
     "location": {
       "column": "6",
-      "line": "175",
+      "line": "188",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "TIM1_PWM_Init",
@@ -50102,7 +50130,7 @@
     "display": "void StartMotor1(void)",
     "location": {
       "column": "6",
-      "line": "203",
+      "line": "216",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "StartMotor1",
@@ -50116,7 +50144,7 @@
     "display": "void StopMotor1(void)",
     "location": {
       "column": "6",
-      "line": "215",
+      "line": "228",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "StopMotor1",
@@ -50130,7 +50158,7 @@
     "display": "void ForwardMotor1(void)",
     "location": {
       "column": "6",
-      "line": "224",
+      "line": "237",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "ForwardMotor1",
@@ -50144,7 +50172,7 @@
     "display": "void ReverseMotor1(void)",
     "location": {
       "column": "6",
-      "line": "230",
+      "line": "243",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "ReverseMotor1",
@@ -50152,13 +50180,13 @@
     "scope": null
   },
   {
-    "ID": "c:main.c@8150@macro@Fpwm2",
+    "ID": "c:main.c@8430@macro@Fpwm2",
     "What": "MacroDef",
     "defdec": "Def",
     "display": "Fpwm2",
     "location": {
       "column": "13",
-      "line": "242",
+      "line": "255",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "Fpwm2",
@@ -50172,7 +50200,7 @@
     "display": "void TIM2_PWM_Init(void)",
     "location": {
       "column": "6",
-      "line": "243",
+      "line": "256",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "TIM2_PWM_Init",
@@ -50186,7 +50214,7 @@
     "display": "void StartMotor2(void)",
     "location": {
       "column": "6",
-      "line": "262",
+      "line": "275",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "StartMotor2",
@@ -50200,7 +50228,7 @@
     "display": "void StopMotor2(void)",
     "location": {
       "column": "6",
-      "line": "274",
+      "line": "287",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "StopMotor2",
@@ -50214,7 +50242,7 @@
     "display": "void TIM4_Init(void)",
     "location": {
       "column": "6",
-      "line": "289",
+      "line": "302",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "TIM4_Init",
@@ -50228,7 +50256,7 @@
     "display": "void main(void)",
     "location": {
       "column": "6",
-      "line": "326",
+      "line": "339",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "main",
@@ -50236,13 +50264,13 @@
     "scope": null
   },
   {
-    "ID": "c:main.c@10701@F@main@keeptime",
+    "ID": "c:main.c@10981@F@main@keeptime",
     "What": "Variable",
     "defdec": "Def",
     "display": "keeptime",
     "location": {
       "column": "7",
-      "line": "328",
+      "line": "341",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "keeptime",
@@ -50256,7 +50284,7 @@
     "display": "void assert_failed(u8 *, u32)",
     "location": {
       "column": "6",
-      "line": "562",
+      "line": "585",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "assert_failed",

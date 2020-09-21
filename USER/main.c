@@ -119,6 +119,19 @@ void SensInit()
     GPIO_Init(GPIOB , GPIO_PIN_3 , GPIO_MODE_IN_PU_NO_IT);  //Sensor
 }
 
+//马达电源初始化
+void PowerInit()
+{
+    GPIO_Init(GPIOB , GPIO_PIN_1 , GPIO_MODE_OUT_PP_LOW_SLOW); 
+    GPIO_Init(GPIOB , GPIO_PIN_2 , GPIO_MODE_OUT_PP_LOW_SLOW); 
+}
+
+void PowerON()
+{
+    GPIO_WriteHigh(GPIOB , GPIO_PIN_1);
+    GPIO_WriteHigh(GPIOB , GPIO_PIN_2);
+}
+
 /*******************************************************************************
 Solenoid Valve Define
 *******************************************************************************/
@@ -333,15 +346,25 @@ void main(void)
    number[3] = FLASH_ReadByte(eepromaddress);         
 #endif
     
+    //马达电源初始化，并且拉高处理
+    PowerInit();
+    PowerON();
+   
+    //按键初始化
     NumericDisplay_Init();
     KEYInit();
     BEEP_Init(BEEP_FREQUENCY_2KHZ);
     
+    //数码管初始化
     HT1632C_Init();
     HT1632C_clr();
     display_margin(g_margin);
     display_width(g_width);
     display_height(g_height);
+    
+    
+    //传感器初始化
+    SensInit();
     
     //马达初始化
     MotorInit();
