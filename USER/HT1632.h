@@ -14,5 +14,6 @@ void HT1632C_Init(void);
 void display_margin(unsigned int dat);
 void display_width(unsigned int dat);
 void display_height(unsigned int dat);
-
+void display_margin_error(void);
+void display_margin_input(void); 
 #endif

@@ -180,6 +180,95 @@ void display_margin(unsigned int dat)
         HT1632C_Writer_DATA((0x00+i*4),dt); 
     } 
 }
+
+/******************************* 
+*函数名:display_margin_error 
+*描 述:数码管页边距显示Error函数 
+*参 数: 
+*返 回: 
+********************************/ 
+//显示数值，无小数点 
+void display_margin_error() 
+{ 
+    unsigned char i; 
+    unsigned char dt;    //dt为要写入到ram的值
+    unsigned char dat = 0x40;//显示一个横杆
+    dt = 0; 
+    for(i=0; i<8;i++) 
+    { 
+        dt =( dat&(1<<i))<<(7-i);//千 
+        if(i==7) 
+        { 
+            dt +=(dat&(1<<i))>>(i-6);//百 
+            dt += (dat&(1<<i))>>(i-5);//十 
+            dt += (dat&(1<<i))>>(i-4); //个 
+        } 
+        else if(i == 6) 
+        { 
+            dt +=(dat&(1<<i))>>(i-6); 
+            dt += (dat&(1<<i))>>(i-5); 
+            dt += (dat&(1<<i))>>(i-4); 
+        } 
+        else if(i == 5) 
+        { 
+            dt+=(dat&(1<<i))<<(6-i);//百 
+            dt += (dat&(1<<i))<<(5-i); 
+            dt += (dat&(1<<i))>>(i-4); 
+        } 
+        else 
+        { 
+            dt+=(dat&(1<<i))<<(6-i);//百 
+            dt += (dat&(1<<i))<<(5-i); 
+            dt += (dat&(1<<i))<<(4-i); 
+        } 
+        HT1632C_Writer_DATA((0x00+i*4),dt); 
+    } 
+}
+
+/******************************* 
+*函数名:display_margin_error 
+*描 述:数码管页边距显示Error函数 
+*参 数: 
+*返 回: 
+********************************/ 
+//显示数值，无小数点 
+void display_margin_input() 
+{ 
+    unsigned char i; 
+    unsigned char dt;    //dt为要写入到ram的值
+    unsigned char dat = 0x49;//显示一个横杆
+    dt = 0; 
+    for(i=0; i<8;i++) 
+    { 
+        dt =( dat&(1<<i))<<(7-i);//千 
+        if(i==7) 
+        { 
+            dt +=(dat&(1<<i))>>(i-6);//百 
+            dt += (dat&(1<<i))>>(i-5);//十 
+            dt += (dat&(1<<i))>>(i-4); //个 
+        } 
+        else if(i == 6) 
+        { 
+            dt +=(dat&(1<<i))>>(i-6); 
+            dt += (dat&(1<<i))>>(i-5); 
+            dt += (dat&(1<<i))>>(i-4); 
+        } 
+        else if(i == 5) 
+        { 
+            dt+=(dat&(1<<i))<<(6-i);//百 
+            dt += (dat&(1<<i))<<(5-i); 
+            dt += (dat&(1<<i))>>(i-4); 
+        } 
+        else 
+        { 
+            dt+=(dat&(1<<i))<<(6-i);//百 
+            dt += (dat&(1<<i))<<(5-i); 
+            dt += (dat&(1<<i))<<(4-i); 
+        } 
+        HT1632C_Writer_DATA((0x00+i*4),dt); 
+    } 
+}
+
 /******************************* 
 *函数名:display_width 
 *描 述:数码管中框码显示函数 

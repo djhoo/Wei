@@ -38,19 +38,8 @@
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-
-
-#if 0
-//细分是2的时候
-int CRR[5] = {MOTOR1_BASE_HZ/400, MOTOR1_BASE_HZ/600, MOTOR1_BASE_HZ/800,MOTOR1_BASE_HZ/1000,MOTOR1_BASE_HZ/1200};
-int ARR[5] = {MOTOR1_BASE_HZ/800, MOTOR1_BASE_HZ/1200, MOTOR1_BASE_HZ/1600,MOTOR1_BASE_HZ/2000,MOTOR1_BASE_HZ/2400};
-#endif 
-
-extern int CRR[5];
-extern int ARR[5];
-
-
-
+int CRR[5] = {10000/400, 10000/600, 10000/800,10000/1000,10000/1200};
+int ARR[5] = {10000/800, 10000/1200, 10000/1600,10000/2000,10000/2400};
 extern int XXX;
 extern int count;
 extern int MovePulse;
@@ -64,6 +53,7 @@ extern bool bCancel; //现在的次数
 
 extern bool bSensorON; //现在的传感器是否触发
 extern bool bBackward; //是否为反转，TURE是反转，False是正转
+extern bool bBackHP; //是否需要进行第一次到HP位置
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
@@ -258,21 +248,19 @@ INTERRUPT_HANDLER(TIM1_UPD_OVF_TRG_BRK_IRQHandler, 11)
     /* In order to detect unexpected events during development,
     it is recommended to set a breakpoint on the following instruction.
     */
-    static int count = 0;//脉冲次数
+    static int count = 0;
     static int bCancelFinished = FALSE;
     count++;
-    
     //反转到HP位置，当传感器为ON的时候，速度就要慢慢的落下来
     if(bSensorON && bBackward){
 //        count = (MovePulse-16);
-        MovePulse = count + 16;
-    }
+        //MovePulse = count + 16;
+      MovePulse = count;
         
-    
+    }
     if( MovePulse < 33 ){ //TODO 脉冲数目太小来不及慢起慢落
         //TODO
-        BEEP_Cmd(ENABLE);
-        
+       // BEEP_Cmd(ENABLE);
     }
     else if( count == 4 ){
         TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
@@ -339,31 +327,96 @@ INTERRUPT_HANDLER(TIM1_UPD_OVF_TRG_BRK_IRQHandler, 11)
                               );
         TIM1_SetCompare3(ARR[0]);
     }
-    else if(count == MovePulse){
+    else if(count >= MovePulse){
         count = 0;
         StopMotor1();
         ForwardBackwardCur++; //移动完毕以后，当前的移动次数加一。
         delay(50);     
+        if(bBackHP){ //第一次回到HP位置，这是特殊情况
+            ForwardBackwardCur = 0;
+
+            MovePulse = MarginPulse; //第一次移动变宽距离。            
+            ForwardMotor1();
+            StartMotor1();
+            bBackHP = FALSE; 
+            bCancelFinished = FALSE;
+            bCancel = FALSE;
+        }
+        else {  //不是第一次回到HP位置，这是一般情况      
         
-        if(bCancel){  //取消键按下以后，改移动完毕以后，才进行取消的返回处理
-            if( bCancelFinished ){ //第二回
-               
-                //取消的最后返回结束以后，就什么都不做了。
-                bCancelFinished = FALSE;
-                bCancel = FALSE;
-            }
-            else{ //第一回
-                
-                if( ForwardBackwardCur == 1 ){ //第一次页边距移动后，不要放下电磁阀，继续反转马达1,返回远点距离是页边距
-                    //不放下电磁阀
-                    
-                    MovePulse = MarginPulse;
-                    ReverseMotor1();
-                    StartMotor1();
-                    bCancelFinished = TRUE;
+            if(bCancel){  //取消键按下以后，改移动完毕以后，才进行取消的返回处理
+                if( bCancelFinished ){ //第二回
+                   
+                    //取消的最后返回结束以后，就什么都不做了。
+                    bCancelFinished = FALSE;
+                    bCancel = FALSE;
                 }
-                else if(ForwardBackwardCur == (ForwardBackwardNum*2 +1)){ //最后一次中宽移动以后，要继续移动马达1，距离是页边距
+                else{ //第一回
                     
+                    if( ForwardBackwardCur == 1 ){ //第一次页边距移动后，不要放下电磁阀，继续反转马达1,返回远点距离是页边距
+                        //不放下电磁阀
+                        
+                        MovePulse = MarginPulse;
+                        ReverseMotor1();
+                        StartMotor1();
+                        bCancelFinished = TRUE;
+                    }
+                    else if(ForwardBackwardCur == (ForwardBackwardNum*2 +1)){ //最后一次中宽移动以后，要继续移动马达1，距离是页边距
+                        
+                        //提高电磁阀，移动到最旁边
+                        UpValve();
+                        delay(50);
+                        
+                        MovePulse = MarginPulse;
+                        ReverseMotor1();
+                        StartMotor1();
+                        bCancelFinished = TRUE;
+                    }
+                    else if(ForwardBackwardCur == (ForwardBackwardNum*2 + 2)){ //最后一次的页边距移动完毕后，就停止马达
+                        
+                       bCancel = FALSE;
+                       bCancelFinished = FALSE;
+                       count = 0;
+                       //最后一次，就放下电磁阀
+                       DownValve();
+                    }
+                    else if(ForwardBackwardCur%2 == 0){  //已经移到最右边了，需要移动中宽+页边距的距离回去
+
+                        //提高电磁阀
+                        UpValve();
+                        delay(50);
+                        
+                        MovePulse = MarginPulse + WidthPulse;
+                        ReverseMotor1();
+                        StartMotor1();
+                        bCancelFinished = TRUE;                   
+                    }
+                    else{  //在左边，只需要移动页边距回去就行了
+                        
+                        //提高电磁阀
+                        UpValve();
+                        delay(50);
+                        
+                        MovePulse = MarginPulse;
+                        ReverseMotor1();
+                        StartMotor1();
+                        bCancelFinished = TRUE;
+                    
+                    }
+                }//if cancelfinished
+                
+            }
+            else{        
+                if( ForwardBackwardCur == 1 ){ //第一次页边距移动后，要放下电磁阀，继续启动马达1,距离是中宽
+                    //放下电磁阀，进行打胶
+                    DownValve();
+                    delay(50);
+                    
+                    MovePulse = WidthPulse;
+                    ForwardMotor1();
+                    StartMotor1();
+                }
+                else if(ForwardBackwardCur == (ForwardBackwardNum*2 + 1)){ //最后一次中宽移动以后，要继续移动马达1，距离是页边距
                     //提高电磁阀，移动到最旁边
                     UpValve();
                     delay(50);
@@ -371,81 +424,28 @@ INTERRUPT_HANDLER(TIM1_UPD_OVF_TRG_BRK_IRQHandler, 11)
                     MovePulse = MarginPulse;
                     ReverseMotor1();
                     StartMotor1();
-                    bCancelFinished = TRUE;
                 }
                 else if(ForwardBackwardCur == (ForwardBackwardNum*2 + 2)){ //最后一次的页边距移动完毕后，就停止马达
-                   bCancel = FALSE;
-                   bCancelFinished = FALSE;
-                   count = 0;
-                   //最后一次，就放下电磁阀
-                   DownValve();
+                    //TODO 初始化
+                    bCancelFinished = FALSE;
+                    bCancel = FALSE;
+                    count = 0;
+                    
+                    //放下电磁阀，最后一次，停止马达
+                    DownValve();
+                    
                 }
-                else if(ForwardBackwardCur%2 == 0){  //已经移到最右边了，需要移动中宽+页边距的距离回去
-
-                    //提高电磁阀
+                else{  //其余的情况下，都要重启马达2
+                    
+                    //提高电磁阀，移动胶布
                     UpValve();
                     delay(50);
                     
-                    MovePulse = MarginPulse + WidthPulse;
-                    ReverseMotor1();
-                    StartMotor1();
-                    bCancelFinished = TRUE;                   
+                    StartMotor2();
                 }
-                else{  //在左边，只需要移动页边距回去就行了
-                    
-                    //提高电磁阀
-                    UpValve();
-                    delay(50);
-                    
-                    MovePulse = MarginPulse;
-                    ReverseMotor1();
-                    StartMotor1();
-                    bCancelFinished = TRUE;
-                
-                }
-            }
+            }//if bcancel
             
-        }
-        else{ //正常移动  
-            if( ForwardBackwardCur == 1 ){ //第一次页边距移动后，要放下电磁阀，继续启动马达1,距离是中宽
-                //放下电磁阀，进行打胶
-                DownValve();
-                delay(50);
-                
-                MovePulse = WidthPulse;
-                ForwardMotor1();
-                StartMotor1();
-            }
-            else if(ForwardBackwardCur == (ForwardBackwardNum*2 + 1)){ //最后一次中宽移动以后，要继续移动马达1，距离是页边距
-                //提高电磁阀，移动到最旁边
-                UpValve();
-                delay(50);
-                
-                MovePulse = MarginPulse;
-                ReverseMotor1();
-                StartMotor1();
-            }
-            else if(ForwardBackwardCur == (ForwardBackwardNum*2 + 2)){ //最后一次的页边距移动完毕后，就停止马达
-                //TODO 初始化
-                bCancelFinished = FALSE;
-                bCancel = FALSE;
-                count = 0;
-                
-                //放下电磁阀，最后一次，停止马达
-                DownValve();
-                
-            }
-            else{  //其余的情况下，都要重启马达2
-                
-                //提高电磁阀，移动胶布
-                UpValve();
-                delay(50);
-                
-                StartMotor2();
-            }
-        }
-        
-        
+        }//if bBackHP
     }
     
     TIM1_ClearITPendingBit(TIM1_IT_UPDATE);
@@ -549,7 +549,6 @@ INTERRUPT_HANDLER(TIM3_UPD_OVF_BRK_IRQHandler, 15)
     /* In order to detect unexpected events during development,
     it is recommended to set a breakpoint on the following instruction.
     */
-    
 }
 
 /**
@@ -757,9 +756,8 @@ INTERRUPT_HANDLER(TIM4_UPD_OVF_IRQHandler, 23)
             ResetCount = 0;
             bSensorON = FALSE;
         }
-    
-        
     }
+    
 }
 #endif /* (STM8S903) || (STM8AF622x)*/
 

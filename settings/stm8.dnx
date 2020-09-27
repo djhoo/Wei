@@ -16,7 +16,7 @@
         <ShowSource>1</ShowSource>
     </Trace1>
     <DebugChecksum>
-        <Checksum>101431410</Checksum>
+        <Checksum>189049542</Checksum>
     </DebugChecksum>
     <Disassembly>
         <InstrCount>0</InstrCount>
@@ -90,16 +90,12 @@
         <Category>_ 0</Category>
     </LogFile>
     <Breakpoints>
-        <Bp0>_ "STD_CODE" "{$PROJ_DIR$\USER\stm8s_it.c}.746.1" 0 0 0 0 "" 0 ""</Bp0>
-        <Bp1>_ "STD_CODE" "{$PROJ_DIR$\USER\main.c}.536.1" 0 0 0 0 "" 0 ""</Bp1>
-        <Bp2>_ "STD_CODE" "{$PROJ_DIR$\USER\main.c}.536.1" 0 0 0 0 "" 0 ""</Bp2>
-        <Bp3>_ "STD_CODE" "{$PROJ_DIR$\USER\main.c}.481.13" 1 0 0 0 "" 0 ""</Bp3>
-        <Bp4>_ "STD_CODE" "{$PROJ_DIR$\USER\stm8s_it.c}.273.10" 1 0 0 0 "" 0 ""</Bp4>
-        <Bp5>_ "STD_CODE" "{$PROJ_DIR$\USER\stm8s_it.c}.298.9" 1 0 0 0 "" 0 ""</Bp5>
-        <Count>6</Count>
+        <Bp0>_ "STD_CODE" "{$PROJ_DIR$\USER\main.c}.613.13" 1 0 0 0 "" 0 ""</Bp0>
+        <Count>1</Count>
     </Breakpoints>
     <Aliases>
-        <Count>0</Count>
+        <A0>_ "D:\houdejun\Dajiao\0927\STM8S_StdPeriph_Driver\src\stm8s_tim1.c" ""</A0>
+        <Count>1</Count>
         <SuppressDialog>0</SuppressDialog>
     </Aliases>
     <DebuggerSettings>
