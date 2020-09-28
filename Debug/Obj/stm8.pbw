@@ -49200,7 +49200,7 @@
     "scope": null
   },
   {
-    "ID": "c:main.c@2494@macro@MOTOR_DIV",
+    "ID": "c:main.c@2631@macro@MOTOR_DIV",
     "What": "MacroDef",
     "defdec": "Def",
     "display": "MOTOR_DIV",
@@ -49228,7 +49228,7 @@
     "scope": null
   },
   {
-    "ID": "c:main.c@2631@F@delay@x",
+    "ID": "c:main.c@2768@F@delay@x",
     "What": "Variable",
     "defdec": "Def",
     "display": "x",
@@ -49242,7 +49242,7 @@
     "scope": null
   },
   {
-    "ID": "c:main.c@2631@F@delay@y",
+    "ID": "c:main.c@2768@F@delay@y",
     "What": "Variable",
     "defdec": "Dec",
     "display": "y",
@@ -49494,7 +49494,7 @@
     "scope": null
   },
   {
-    "ID": "c:main.c@8519@macro@Fpwm2",
+    "ID": "c:main.c@8874@macro@Fpwm2",
     "What": "MacroDef",
     "defdec": "Def",
     "display": "Fpwm2",
@@ -49592,7 +49592,7 @@
     "scope": null
   },
   {
-    "ID": "c:main.c@11408@F@Write_Total_Height@low",
+    "ID": "c:main.c@11989@F@Write_Total_Height@low",
     "What": "Variable",
     "defdec": "Def",
     "display": "low",
@@ -49606,7 +49606,7 @@
     "scope": null
   },
   {
-    "ID": "c:main.c@11408@F@Write_Total_Height@high",
+    "ID": "c:main.c@11989@F@Write_Total_Height@high",
     "What": "Variable",
     "defdec": "Dec",
     "display": "high",
@@ -49634,7 +49634,7 @@
     "scope": null
   },
   {
-    "ID": "c:main.c@11906@F@Write_Object_Height@low",
+    "ID": "c:main.c@12520@F@Write_Object_Height@low",
     "What": "Variable",
     "defdec": "Def",
     "display": "low",
@@ -49648,7 +49648,7 @@
     "scope": null
   },
   {
-    "ID": "c:main.c@11906@F@Write_Object_Height@high",
+    "ID": "c:main.c@12520@F@Write_Object_Height@high",
     "What": "Variable",
     "defdec": "Dec",
     "display": "high",
@@ -49662,13 +49662,125 @@
     "scope": null
   },
   {
+    "ID": "c:@F@get_random",
+    "What": "Function",
+    "defdec": "Def",
+    "display": "u16 get_random(void)",
+    "location": {
+      "column": "5",
+      "line": "386",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
+    },
+    "name": "get_random",
+    "origin": "project_file",
+    "scope": null
+  },
+  {
+    "ID": "c:main.c@12993@F@get_random@tem",
+    "What": "Variable",
+    "defdec": "Def",
+    "display": "tem",
+    "location": {
+      "column": "9",
+      "line": "388",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
+    },
+    "name": "tem",
+    "origin": "project_file",
+    "scope": null
+  },
+  {
+    "ID": "c:@F@get_passdata",
+    "What": "Function",
+    "defdec": "Def",
+    "display": "u16 get_passdata(u16)",
+    "location": {
+      "column": "5",
+      "line": "400",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
+    },
+    "name": "get_passdata",
+    "origin": "project_file",
+    "scope": null
+  },
+  {
+    "ID": "c:main.c@13513@F@get_passdata@retData",
+    "What": "Variable",
+    "defdec": "Def",
+    "display": "retData",
+    "location": {
+      "column": "9",
+      "line": "402",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
+    },
+    "name": "retData",
+    "origin": "project_file",
+    "scope": null
+  },
+  {
+    "ID": "c:main.c@13535@F@get_passdata@temp",
+    "What": "Variable",
+    "defdec": "Def",
+    "display": "temp",
+    "location": {
+      "column": "9",
+      "line": "403",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
+    },
+    "name": "temp",
+    "origin": "project_file",
+    "scope": null
+  },
+  {
+    "ID": "c:main.c@13535@F@get_passdata@tempHigh",
+    "What": "Variable",
+    "defdec": "Dec",
+    "display": "tempHigh",
+    "location": {
+      "column": "18",
+      "line": "403",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
+    },
+    "name": "tempHigh",
+    "origin": "project_file",
+    "scope": null
+  },
+  {
+    "ID": "c:main.c@13535@F@get_passdata@tempLow",
+    "What": "Variable",
+    "defdec": "Dec",
+    "display": "tempLow",
+    "location": {
+      "column": "31",
+      "line": "403",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
+    },
+    "name": "tempLow",
+    "origin": "project_file",
+    "scope": null
+  },
+  {
+    "ID": "c:main.c@13535@F@get_passdata@temp2",
+    "What": "Variable",
+    "defdec": "Dec",
+    "display": "temp2",
+    "location": {
+      "column": "43",
+      "line": "403",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
+    },
+    "name": "temp2",
+    "origin": "project_file",
+    "scope": null
+  },
+  {
     "ID": "c:@F@main",
     "What": "Function",
     "defdec": "Def",
     "display": "void main(void)",
     "location": {
       "column": "6",
-      "line": "381",
+      "line": "421",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "main",
@@ -49676,13 +49788,13 @@
     "scope": null
   },
   {
-    "ID": "c:main.c@12109@F@main@totalHeight",
+    "ID": "c:main.c@13903@F@main@totalHeight",
     "What": "Variable",
     "defdec": "Def",
     "display": "totalHeight",
     "location": {
       "column": "9",
-      "line": "383",
+      "line": "423",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "totalHeight",
@@ -49690,13 +49802,13 @@
     "scope": null
   },
   {
-    "ID": "c:main.c@12135@F@main@objectHeight",
+    "ID": "c:main.c@13929@F@main@objectHeight",
     "What": "Variable",
     "defdec": "Def",
     "display": "objectHeight",
     "location": {
       "column": "8",
-      "line": "384",
+      "line": "424",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "objectHeight",
@@ -49704,13 +49816,13 @@
     "scope": null
   },
   {
-    "ID": "c:main.c@12161@F@main@keeptime",
+    "ID": "c:main.c@13955@F@main@keeptime",
     "What": "Variable",
     "defdec": "Def",
     "display": "keeptime",
     "location": {
       "column": "9",
-      "line": "385",
+      "line": "425",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "keeptime",
@@ -49718,16 +49830,30 @@
     "scope": null
   },
   {
-    "ID": "c:main.c@12184@F@main@mode",
+    "ID": "c:main.c@13978@F@main@mode",
     "What": "Variable",
     "defdec": "Def",
     "display": "mode",
     "location": {
       "column": "8",
-      "line": "386",
+      "line": "426",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "mode",
+    "origin": "project_file",
+    "scope": null
+  },
+  {
+    "ID": "c:main.c@14042@F@main@random_data",
+    "What": "Variable",
+    "defdec": "Def",
+    "display": "random_data",
+    "location": {
+      "column": "9",
+      "line": "427",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
+    },
+    "name": "random_data",
     "origin": "project_file",
     "scope": null
   },
@@ -49738,7 +49864,7 @@
     "display": "void assert_failed(u8 *, u32)",
     "location": {
       "column": "6",
-      "line": "716",
+      "line": "761",
       "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\main.c"
     },
     "name": "assert_failed",
@@ -50404,328 +50530,6 @@
     "scope": null
   },
   {
-    "ID": "c:HT1632.h@28@macro@__HT1632_H",
-    "What": "MacroDef",
-    "defdec": "Def",
-    "display": "__HT1632_H",
-    "location": {
-      "column": "9",
-      "line": "2",
-      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
-    },
-    "name": "__HT1632_H",
-    "origin": "user_include",
-    "scope": null
-  },
-  {
-    "ID": "c:@F@HT1632C_Writer",
-    "What": "Function",
-    "defdec": "Dec",
-    "display": "void HT1632C_Writer(unsigned char, unsigned char)",
-    "location": {
-      "column": "6",
-      "line": "8",
-      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
-    },
-    "name": "HT1632C_Writer",
-    "origin": "user_include",
-    "scope": null
-  },
-  {
-    "ID": "c:@F@HT1632C_Writer",
-    "What": "Function",
-    "defdec": "Dec",
-    "display": "void HT1632C_Writer(unsigned char, unsigned char)",
-    "location": {
-      "column": "6",
-      "line": "8",
-      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
-    },
-    "name": "HT1632C_Writer",
-    "origin": "user_include",
-    "scope": null
-  },
-  {
-    "ID": "c:@F@HT1632C_Writer_CMD",
-    "What": "Function",
-    "defdec": "Dec",
-    "display": "void HT1632C_Writer_CMD(unsigned char)",
-    "location": {
-      "column": "6",
-      "line": "9",
-      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
-    },
-    "name": "HT1632C_Writer_CMD",
-    "origin": "user_include",
-    "scope": null
-  },
-  {
-    "ID": "c:@F@HT1632C_Writer_CMD",
-    "What": "Function",
-    "defdec": "Dec",
-    "display": "void HT1632C_Writer_CMD(unsigned char)",
-    "location": {
-      "column": "6",
-      "line": "9",
-      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
-    },
-    "name": "HT1632C_Writer_CMD",
-    "origin": "user_include",
-    "scope": null
-  },
-  {
-    "ID": "c:@F@HT1632C_Writer_DATA",
-    "What": "Function",
-    "defdec": "Dec",
-    "display": "void HT1632C_Writer_DATA(unsigned char, unsigned char)",
-    "location": {
-      "column": "6",
-      "line": "10",
-      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
-    },
-    "name": "HT1632C_Writer_DATA",
-    "origin": "user_include",
-    "scope": null
-  },
-  {
-    "ID": "c:@F@HT1632C_Writer_DATA",
-    "What": "Function",
-    "defdec": "Dec",
-    "display": "void HT1632C_Writer_DATA(unsigned char, unsigned char)",
-    "location": {
-      "column": "6",
-      "line": "10",
-      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
-    },
-    "name": "HT1632C_Writer_DATA",
-    "origin": "user_include",
-    "scope": null
-  },
-  {
-    "ID": "c:@F@HT1632C_Writer_AllDATA",
-    "What": "Function",
-    "defdec": "Dec",
-    "display": "void HT1632C_Writer_AllDATA(unsigned char, unsigned char *, unsigned char)",
-    "location": {
-      "column": "6",
-      "line": "11",
-      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
-    },
-    "name": "HT1632C_Writer_AllDATA",
-    "origin": "user_include",
-    "scope": null
-  },
-  {
-    "ID": "c:@F@HT1632C_Writer_AllDATA",
-    "What": "Function",
-    "defdec": "Dec",
-    "display": "void HT1632C_Writer_AllDATA(unsigned char, unsigned char *, unsigned char)",
-    "location": {
-      "column": "6",
-      "line": "11",
-      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
-    },
-    "name": "HT1632C_Writer_AllDATA",
-    "origin": "user_include",
-    "scope": null
-  },
-  {
-    "ID": "c:@F@HT1632C_clr",
-    "What": "Function",
-    "defdec": "Dec",
-    "display": "void HT1632C_clr(void)",
-    "location": {
-      "column": "6",
-      "line": "12",
-      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
-    },
-    "name": "HT1632C_clr",
-    "origin": "user_include",
-    "scope": null
-  },
-  {
-    "ID": "c:@F@HT1632C_clr",
-    "What": "Function",
-    "defdec": "Dec",
-    "display": "void HT1632C_clr(void)",
-    "location": {
-      "column": "6",
-      "line": "12",
-      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
-    },
-    "name": "HT1632C_clr",
-    "origin": "user_include",
-    "scope": null
-  },
-  {
-    "ID": "c:@F@HT1632C_Init",
-    "What": "Function",
-    "defdec": "Dec",
-    "display": "void HT1632C_Init(void)",
-    "location": {
-      "column": "6",
-      "line": "13",
-      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
-    },
-    "name": "HT1632C_Init",
-    "origin": "user_include",
-    "scope": null
-  },
-  {
-    "ID": "c:@F@HT1632C_Init",
-    "What": "Function",
-    "defdec": "Dec",
-    "display": "void HT1632C_Init(void)",
-    "location": {
-      "column": "6",
-      "line": "13",
-      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
-    },
-    "name": "HT1632C_Init",
-    "origin": "user_include",
-    "scope": null
-  },
-  {
-    "ID": "c:@F@display_margin",
-    "What": "Function",
-    "defdec": "Dec",
-    "display": "void display_margin(unsigned int)",
-    "location": {
-      "column": "6",
-      "line": "14",
-      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
-    },
-    "name": "display_margin",
-    "origin": "user_include",
-    "scope": null
-  },
-  {
-    "ID": "c:@F@display_margin",
-    "What": "Function",
-    "defdec": "Dec",
-    "display": "void display_margin(unsigned int)",
-    "location": {
-      "column": "6",
-      "line": "14",
-      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
-    },
-    "name": "display_margin",
-    "origin": "user_include",
-    "scope": null
-  },
-  {
-    "ID": "c:@F@display_width",
-    "What": "Function",
-    "defdec": "Dec",
-    "display": "void display_width(unsigned int)",
-    "location": {
-      "column": "6",
-      "line": "15",
-      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
-    },
-    "name": "display_width",
-    "origin": "user_include",
-    "scope": null
-  },
-  {
-    "ID": "c:@F@display_width",
-    "What": "Function",
-    "defdec": "Dec",
-    "display": "void display_width(unsigned int)",
-    "location": {
-      "column": "6",
-      "line": "15",
-      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
-    },
-    "name": "display_width",
-    "origin": "user_include",
-    "scope": null
-  },
-  {
-    "ID": "c:@F@display_height",
-    "What": "Function",
-    "defdec": "Dec",
-    "display": "void display_height(unsigned int)",
-    "location": {
-      "column": "6",
-      "line": "16",
-      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
-    },
-    "name": "display_height",
-    "origin": "user_include",
-    "scope": null
-  },
-  {
-    "ID": "c:@F@display_height",
-    "What": "Function",
-    "defdec": "Dec",
-    "display": "void display_height(unsigned int)",
-    "location": {
-      "column": "6",
-      "line": "16",
-      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
-    },
-    "name": "display_height",
-    "origin": "user_include",
-    "scope": null
-  },
-  {
-    "ID": "c:@F@display_margin_error",
-    "What": "Function",
-    "defdec": "Dec",
-    "display": "void display_margin_error(void)",
-    "location": {
-      "column": "6",
-      "line": "17",
-      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
-    },
-    "name": "display_margin_error",
-    "origin": "user_include",
-    "scope": null
-  },
-  {
-    "ID": "c:@F@display_margin_error",
-    "What": "Function",
-    "defdec": "Dec",
-    "display": "void display_margin_error(void)",
-    "location": {
-      "column": "6",
-      "line": "17",
-      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
-    },
-    "name": "display_margin_error",
-    "origin": "user_include",
-    "scope": null
-  },
-  {
-    "ID": "c:@F@display_margin_input",
-    "What": "Function",
-    "defdec": "Dec",
-    "display": "void display_margin_input(void)",
-    "location": {
-      "column": "6",
-      "line": "18",
-      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
-    },
-    "name": "display_margin_input",
-    "origin": "user_include",
-    "scope": null
-  },
-  {
-    "ID": "c:@F@display_margin_input",
-    "What": "Function",
-    "defdec": "Dec",
-    "display": "void display_margin_input(void)",
-    "location": {
-      "column": "6",
-      "line": "18",
-      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
-    },
-    "name": "display_margin_input",
-    "origin": "user_include",
-    "scope": null
-  },
-  {
     "ID": "c:@CRR",
     "What": "Variable",
     "defdec": "Def",
@@ -51255,6 +51059,328 @@
     },
     "name": "EEPROM_EEC_IRQHandler",
     "origin": "project_file",
+    "scope": null
+  },
+  {
+    "ID": "c:HT1632.h@28@macro@__HT1632_H",
+    "What": "MacroDef",
+    "defdec": "Def",
+    "display": "__HT1632_H",
+    "location": {
+      "column": "9",
+      "line": "2",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
+    },
+    "name": "__HT1632_H",
+    "origin": "user_include",
+    "scope": null
+  },
+  {
+    "ID": "c:@F@HT1632C_Writer",
+    "What": "Function",
+    "defdec": "Dec",
+    "display": "void HT1632C_Writer(unsigned char, unsigned char)",
+    "location": {
+      "column": "6",
+      "line": "8",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
+    },
+    "name": "HT1632C_Writer",
+    "origin": "user_include",
+    "scope": null
+  },
+  {
+    "ID": "c:@F@HT1632C_Writer",
+    "What": "Function",
+    "defdec": "Dec",
+    "display": "void HT1632C_Writer(unsigned char, unsigned char)",
+    "location": {
+      "column": "6",
+      "line": "8",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
+    },
+    "name": "HT1632C_Writer",
+    "origin": "user_include",
+    "scope": null
+  },
+  {
+    "ID": "c:@F@HT1632C_Writer_CMD",
+    "What": "Function",
+    "defdec": "Dec",
+    "display": "void HT1632C_Writer_CMD(unsigned char)",
+    "location": {
+      "column": "6",
+      "line": "9",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
+    },
+    "name": "HT1632C_Writer_CMD",
+    "origin": "user_include",
+    "scope": null
+  },
+  {
+    "ID": "c:@F@HT1632C_Writer_CMD",
+    "What": "Function",
+    "defdec": "Dec",
+    "display": "void HT1632C_Writer_CMD(unsigned char)",
+    "location": {
+      "column": "6",
+      "line": "9",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
+    },
+    "name": "HT1632C_Writer_CMD",
+    "origin": "user_include",
+    "scope": null
+  },
+  {
+    "ID": "c:@F@HT1632C_Writer_DATA",
+    "What": "Function",
+    "defdec": "Dec",
+    "display": "void HT1632C_Writer_DATA(unsigned char, unsigned char)",
+    "location": {
+      "column": "6",
+      "line": "10",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
+    },
+    "name": "HT1632C_Writer_DATA",
+    "origin": "user_include",
+    "scope": null
+  },
+  {
+    "ID": "c:@F@HT1632C_Writer_DATA",
+    "What": "Function",
+    "defdec": "Dec",
+    "display": "void HT1632C_Writer_DATA(unsigned char, unsigned char)",
+    "location": {
+      "column": "6",
+      "line": "10",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
+    },
+    "name": "HT1632C_Writer_DATA",
+    "origin": "user_include",
+    "scope": null
+  },
+  {
+    "ID": "c:@F@HT1632C_Writer_AllDATA",
+    "What": "Function",
+    "defdec": "Dec",
+    "display": "void HT1632C_Writer_AllDATA(unsigned char, unsigned char *, unsigned char)",
+    "location": {
+      "column": "6",
+      "line": "11",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
+    },
+    "name": "HT1632C_Writer_AllDATA",
+    "origin": "user_include",
+    "scope": null
+  },
+  {
+    "ID": "c:@F@HT1632C_Writer_AllDATA",
+    "What": "Function",
+    "defdec": "Dec",
+    "display": "void HT1632C_Writer_AllDATA(unsigned char, unsigned char *, unsigned char)",
+    "location": {
+      "column": "6",
+      "line": "11",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
+    },
+    "name": "HT1632C_Writer_AllDATA",
+    "origin": "user_include",
+    "scope": null
+  },
+  {
+    "ID": "c:@F@HT1632C_clr",
+    "What": "Function",
+    "defdec": "Dec",
+    "display": "void HT1632C_clr(void)",
+    "location": {
+      "column": "6",
+      "line": "12",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
+    },
+    "name": "HT1632C_clr",
+    "origin": "user_include",
+    "scope": null
+  },
+  {
+    "ID": "c:@F@HT1632C_clr",
+    "What": "Function",
+    "defdec": "Dec",
+    "display": "void HT1632C_clr(void)",
+    "location": {
+      "column": "6",
+      "line": "12",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
+    },
+    "name": "HT1632C_clr",
+    "origin": "user_include",
+    "scope": null
+  },
+  {
+    "ID": "c:@F@HT1632C_Init",
+    "What": "Function",
+    "defdec": "Dec",
+    "display": "void HT1632C_Init(void)",
+    "location": {
+      "column": "6",
+      "line": "13",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
+    },
+    "name": "HT1632C_Init",
+    "origin": "user_include",
+    "scope": null
+  },
+  {
+    "ID": "c:@F@HT1632C_Init",
+    "What": "Function",
+    "defdec": "Dec",
+    "display": "void HT1632C_Init(void)",
+    "location": {
+      "column": "6",
+      "line": "13",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
+    },
+    "name": "HT1632C_Init",
+    "origin": "user_include",
+    "scope": null
+  },
+  {
+    "ID": "c:@F@display_margin",
+    "What": "Function",
+    "defdec": "Dec",
+    "display": "void display_margin(unsigned int)",
+    "location": {
+      "column": "6",
+      "line": "14",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
+    },
+    "name": "display_margin",
+    "origin": "user_include",
+    "scope": null
+  },
+  {
+    "ID": "c:@F@display_margin",
+    "What": "Function",
+    "defdec": "Dec",
+    "display": "void display_margin(unsigned int)",
+    "location": {
+      "column": "6",
+      "line": "14",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
+    },
+    "name": "display_margin",
+    "origin": "user_include",
+    "scope": null
+  },
+  {
+    "ID": "c:@F@display_width",
+    "What": "Function",
+    "defdec": "Dec",
+    "display": "void display_width(unsigned int)",
+    "location": {
+      "column": "6",
+      "line": "15",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
+    },
+    "name": "display_width",
+    "origin": "user_include",
+    "scope": null
+  },
+  {
+    "ID": "c:@F@display_width",
+    "What": "Function",
+    "defdec": "Dec",
+    "display": "void display_width(unsigned int)",
+    "location": {
+      "column": "6",
+      "line": "15",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
+    },
+    "name": "display_width",
+    "origin": "user_include",
+    "scope": null
+  },
+  {
+    "ID": "c:@F@display_height",
+    "What": "Function",
+    "defdec": "Dec",
+    "display": "void display_height(unsigned int)",
+    "location": {
+      "column": "6",
+      "line": "16",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
+    },
+    "name": "display_height",
+    "origin": "user_include",
+    "scope": null
+  },
+  {
+    "ID": "c:@F@display_height",
+    "What": "Function",
+    "defdec": "Dec",
+    "display": "void display_height(unsigned int)",
+    "location": {
+      "column": "6",
+      "line": "16",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
+    },
+    "name": "display_height",
+    "origin": "user_include",
+    "scope": null
+  },
+  {
+    "ID": "c:@F@display_margin_error",
+    "What": "Function",
+    "defdec": "Dec",
+    "display": "void display_margin_error(void)",
+    "location": {
+      "column": "6",
+      "line": "17",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
+    },
+    "name": "display_margin_error",
+    "origin": "user_include",
+    "scope": null
+  },
+  {
+    "ID": "c:@F@display_margin_error",
+    "What": "Function",
+    "defdec": "Dec",
+    "display": "void display_margin_error(void)",
+    "location": {
+      "column": "6",
+      "line": "17",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
+    },
+    "name": "display_margin_error",
+    "origin": "user_include",
+    "scope": null
+  },
+  {
+    "ID": "c:@F@display_margin_input",
+    "What": "Function",
+    "defdec": "Dec",
+    "display": "void display_margin_input(void)",
+    "location": {
+      "column": "6",
+      "line": "18",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
+    },
+    "name": "display_margin_input",
+    "origin": "user_include",
+    "scope": null
+  },
+  {
+    "ID": "c:@F@display_margin_input",
+    "What": "Function",
+    "defdec": "Dec",
+    "display": "void display_margin_input(void)",
+    "location": {
+      "column": "6",
+      "line": "18",
+      "path": "F:\\dajiaoji\\workspace\\Dajiao\\USER\\HT1632.h"
+    },
+    "name": "display_margin_input",
+    "origin": "user_include",
     "scope": null
   },
   {

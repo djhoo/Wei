@@ -388,6 +388,7 @@ u16 get_random()
     u16 tem = 0;
     srand(* ( u16 * ) ( 0x000008 )); 
     tem = rand() % 10000;
+    return tem;
 }
 
 /*******************************************************************************
@@ -399,10 +400,10 @@ u16 get_random()
 u16 get_passdata(u16 indata)
 {
     u16 retData = 0;
-    u32 temp = 0,tempHigh = 0,tempLow = 0;
-    temp = 0644 * indata;
+    u32 temp = 0,tempHigh = 0,tempLow = 0,temp2 = indata;
+    temp = 644 * temp2;
     if(indata == 0){
-        retData = 0644;
+        retData = 644;
     }
     else{
         tempHigh = temp;
@@ -454,10 +455,10 @@ void main(void)
     }
     else{
         display_margin(g_margin);
+        display_width(g_width);
+        display_height(g_height);
     }
-    
-    display_width(g_width);
-    display_height(g_height);
+ 
     
     //传感器初始化
     SensInit();
@@ -716,9 +717,8 @@ void main(void)
                 //如果输入的是超级密码，就把模式改成1，设定到eeprom里面去,画面显示4个0
                 if( g_width == SUPPER_PASSWD ){
                     EEPROM_Byte_Write(modeAddress,NORMAL);
-                    display_width(0)                    
-                }
-                
+                    display_width(0);                    
+                }                
                 break;
             default:
                 break;
