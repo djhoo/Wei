@@ -44,6 +44,7 @@ u16 eepromaddress = 0x4000;   //设EEPROM的首地址为0X4000
 u16 totalHeightAddress = 0x4000;   //到现在为止的总得长度地址
 u16 objectHeightAddress = 0x4004;  //设定的目标长度地址
 u16 modeAddress = 0x4008;          //现在模式的地址
+u16 randomAddress = 0x400a;     //为了产生随机数，用一个自动加1的数字
 
 u16  g_margin = 200;
 u16  g_width = 500;
@@ -386,8 +387,17 @@ void Write_Object_Height(u16 data)
 u16 get_random()
 {
     u16 tem = 0;
+    u8 memData = 0;
+
+    memData = FLASH_ReadByte(randomAddress); //得到内存得值
+
     srand(* ( u16 * ) ( 0x000008 )); 
     tem = rand() % 10000;
+
+    tem = (tem * (u16)(memData+33)) % 10000;  //把eeprom里面的值+33，然后乘以内存随机值，然后取后面4位
+    memData = (tem * (u16)(memData+33)) % 256; //把eeprom里面的值+33，然后乘以内存随机值，然后得到后面8bit
+    EEPROM_Byte_Write(randomAddress,memData);  //把这个8bit的值，存到内存里面去
+
     return tem;
 }
 
@@ -598,7 +608,7 @@ void main(void)
                 }
                 
             };   
-            BEEP_Cmd(DISABLE);;
+            BEEP_Cmd(DISABLE);
             delay(10);                     //再次延时消抖
             if(g_width < 9999) g_width++;
             display_width(g_width);
@@ -656,8 +666,6 @@ void main(void)
             delay(10);                     //再次延时消抖
             bCancel = FALSE;
             
-            
-            
             switch (mode){
             case TRIAL: //trial
             case NORMAL: //normal
@@ -713,12 +721,14 @@ void main(void)
                 break;
             case INPUT: //input
                 //把height输入到eeprom里面去
-                Write_Object_Height(g_height);                
+                Write_Object_Height(g_height);   
+                display_height(0); //并且第三行显示0               
                 //如果输入的是超级密码，就把模式改成1，设定到eeprom里面去,画面显示4个0
                 if( g_width == SUPPER_PASSWD ){
                     EEPROM_Byte_Write(modeAddress,NORMAL);
                     display_width(0);                    
-                }                
+                }
+                                 
                 break;
             default:
                 break;
