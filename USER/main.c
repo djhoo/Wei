@@ -63,6 +63,8 @@ volatile  bool bCancel = FALSE; //现在的次数
 volatile bool bSensorON = FALSE; //现在的传感器是否触发
 volatile bool bBackward = FALSE; //是否为反转，TURE是反转，False是正转
 volatile bool bBackHP = FALSE; //是否需要进行第一次到HP位置
+volatile bool bIsRuning = FALSE; //是否在打胶运行中
+
 
 /* Private defines -----------------------------------------------------------*/
 #define MOTOR_DIV   (4)
@@ -660,6 +662,9 @@ void main(void)
         if(GPIO_ReadInputPin(GPIOC , GPIO_PIN_7) != RESET)      //如何KEY1被按下
         {
             delay(10);                     //先延时进行消抖
+            if(bIsRuning){  //正在运行中的话，确认按钮无效，立即返回
+                return;
+            }
             BEEP_Cmd(ENABLE);
             while(GPIO_ReadInputPin(GPIOC , GPIO_PIN_7) != RESET);    //等待按钮被松开            
             BEEP_Cmd(DISABLE);;
@@ -681,6 +686,7 @@ void main(void)
                 }
                 
                 //下面是正常的打胶程序
+                bIsRuning = TRUE; //进入打胶运行程序
                 //马达1正转
                 MarginPulse = (int)(((g_margin + 10) * 0.3667 / 1.8) * MOTOR_DIV);
                 WidthPulse = (int)(((g_width) * 0.3667 / 1.8) * MOTOR_DIV);  
@@ -751,8 +757,7 @@ void main(void)
         }
         
     }
-    
-    
+       
     
 }
 
