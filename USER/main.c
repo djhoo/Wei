@@ -50,13 +50,13 @@ u16  g_margin = 200;
 u16  g_width = 500;
 u16  g_height = 160;
 volatile int XXX = 36;     //中框移动总得马达的脉冲数目
-volatile int MarginPulse = 0;  //页边距马达的脉冲数目 要加上10的
-volatile int WidthPulse = 0;  //页边距马达的脉冲数目 要加上10的
-volatile  int MovePulse = 0;  //当次移动距离
-volatile int TotalWidthPulse = 0;
+volatile u16 MarginPulse = 0;  //页边距马达的脉冲数目 要加上10的
+volatile u16 WidthPulse = 0;  //页边距马达的脉冲数目 要加上10的
+volatile  u16 MovePulse = 0;  //当次移动距离
+volatile u16 TotalWidthPulse = 0;
 
-volatile  int ForwardBackwardNum = 0; //总共来回的次数
-volatile  int ForwardBackwardCur = 0; //现在的次数
+volatile  u16 ForwardBackwardNum = 0; //总共来回的次数
+volatile  u16 ForwardBackwardCur = 0; //现在的次数
 
 volatile  bool bCancel = FALSE; //现在的次数
 
@@ -433,7 +433,7 @@ u16 get_passdata(u16 indata)
 void main(void)
 {
     u16 totalHeight = 0;
-    u8 objectHeight = 0;
+    u16 objectHeight = 0;
     u32 keeptime = 0;
     u8 mode = 0; //0：trial; 1: normal  2: error 3:input mode
     u16 random_data = 0;
@@ -441,8 +441,8 @@ void main(void)
     
     CLK_SYSCLKConfig(CLK_PRESCALER_HSIDIV1);
 
-    totalHeight = (FLASH_ReadByte(totalHeightAddress+1) < 8) + FLASH_ReadByte(totalHeightAddress);
-    objectHeight = (FLASH_ReadByte(objectHeightAddress+1) < 8) + FLASH_ReadByte(objectHeightAddress);
+    totalHeight = (FLASH_ReadByte(totalHeightAddress+1) << 8) + FLASH_ReadByte(totalHeightAddress);
+    objectHeight = (FLASH_ReadByte(objectHeightAddress+1) << 8) + FLASH_ReadByte(objectHeightAddress);
     mode = FLASH_ReadByte(modeAddress);
         
     //马达电源初始化，并且拉高处理
@@ -462,13 +462,16 @@ void main(void)
     if(mode == ERROR){ //错误模式，显示错误编码
         display_margin_error();
         random_data = get_random();
-        display_width(random_data);
-        display_height(0);
+        g_width = random_data;
+        g_height = 0;
+        display_width(g_width);
+        display_height(g_height);
     }
     else{
         display_margin(g_margin);
         display_width(g_width);
         display_height(g_height);
+
     }
  
     
@@ -663,7 +666,7 @@ void main(void)
         {
             delay(10);                     //先延时进行消抖
             if(bIsRuning){  //正在运行中的话，确认按钮无效，立即返回
-                return;
+                continue;
             }
             BEEP_Cmd(ENABLE);
             while(GPIO_ReadInputPin(GPIOC , GPIO_PIN_7) != RESET);    //等待按钮被松开            
@@ -676,8 +679,15 @@ void main(void)
             case NORMAL: //normal
                 if((mode == TRIAL) && ( totalHeight > objectHeight )){ //超出长度，进入错误模式
                     display_margin_error(); //显示错误模式
-                    mode = ERROR;
+                    mode = ERROR;           //写入错误模式
                     EEPROM_Byte_Write(modeAddress,mode);
+                    //显示随机数
+                    random_data = get_random();
+                    g_width = random_data;
+                    g_height = 0;
+                    display_width(g_width);
+                    display_height(g_height);;
+                    
                     break; 
                 }
                 else if( mode == TRIAL ){
@@ -718,21 +728,28 @@ void main(void)
                 
                 break;
             case ERROR: //error
-                //要进行密码的比对，如果是正确的，就把模式改成trial，设定到eeprom里面去,画面显示4个0
+                //要进行密码的比对，如果是正确的，就把模式改成trial，设定到eeprom里面去,画面显示4个0,并且把totalheight的值写成0
                 if (get_passdata(random_data) == g_height){
                     EEPROM_Byte_Write(modeAddress,TRIAL);
-                    display_height(0);
+                    g_height = 0;
+                    display_height(g_height);
+                    Write_Total_Height(0);
                 }
                 
                 break;
             case INPUT: //input
                 //把height输入到eeprom里面去
-                Write_Object_Height(g_height);   
-                display_height(0); //并且第三行显示0               
+                if(g_height>0){
+                    Write_Object_Height(g_height);
+                    g_height = 0;
+                    display_height(g_height); //并且第三行显示0
+                    
+                }
                 //如果输入的是超级密码，就把模式改成1，设定到eeprom里面去,画面显示4个0
                 if( g_width == SUPPER_PASSWD ){
                     EEPROM_Byte_Write(modeAddress,NORMAL);
-                    display_width(0);                    
+                    g_width = 0;
+                    display_width(g_width);                    
                 }
                                  
                 break;

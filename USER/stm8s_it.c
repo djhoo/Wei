@@ -38,16 +38,15 @@
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-int CRR[5] = {10000/400, 10000/600, 10000/800,10000/1000,10000/1200};
-int ARR[5] = {10000/800, 10000/1200, 10000/1600,10000/2000,10000/2400};
+u16 CRR[5] = {10000/400, 10000/600, 10000/800,10000/1000,10000/1200};
+u16 ARR[5] = {10000/800, 10000/1200, 10000/1600,10000/2000,10000/2400};
 extern int XXX;
-extern int count;
-extern int MovePulse;
-extern int MarginPulse;  //页边距马达的脉冲数目 要加上10的
-extern int WidthPulse;  //页边距马达的脉冲数目 要加上10的
+extern u16 MovePulse;
+extern u16 MarginPulse;  //页边距马达的脉冲数目 要加上10的
+extern u16 WidthPulse;  //页边距马达的脉冲数目 要加上10的
 
-extern int ForwardBackwardNum; //总共来回的次数
-extern int ForwardBackwardCur; //现在的次数 他的总数是上面来回次数的两倍 + 2(因为还要加上两次的页边距移动)
+extern u16 ForwardBackwardNum; //总共来回的次数
+extern u16 ForwardBackwardCur; //现在的次数 他的总数是上面来回次数的两倍 + 2(因为还要加上两次的页边距移动)
 
 extern bool bCancel; //现在的次数
 
@@ -250,7 +249,7 @@ INTERRUPT_HANDLER(TIM1_UPD_OVF_TRG_BRK_IRQHandler, 11)
     it is recommended to set a breakpoint on the following instruction.
     */
     static int count = 0;
-    static int bCancelFinished = FALSE;
+    static bool bCancelFinished = FALSE;
     count++;
     //反转到HP位置，当传感器为ON的时候，速度就要慢慢的落下来
     if(bSensorON && bBackward){
@@ -389,7 +388,7 @@ INTERRUPT_HANDLER(TIM1_UPD_OVF_TRG_BRK_IRQHandler, 11)
                        count = 0;
                        //最后一次，就放下电磁阀
                        DownValve();
-                       bIsRuning = FALSE；//运行结束了
+                       bIsRuning = FALSE;//运行结束了
                     }
                     else if(ForwardBackwardCur%2 == 0){  //已经移到最右边了，需要移动中宽+页边距的距离回去
 
