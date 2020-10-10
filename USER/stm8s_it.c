@@ -1,10 +1,12 @@
 /**
 ******************************************************************************
-* @file    Project/main.c 
+* @file    stm8s_it.c
 * @author  MCD Application Team
 * @version V2.3.0
 * @date    16-June-2017
-* @brief   Main program body
+* @brief   Main Interrupt Service Routines.
+*          This file provides template for all peripherals interrupt service 
+*          routine.
 ******************************************************************************
 * @attention
 *
@@ -25,760 +27,767 @@
 ******************************************************************************
 */ 
 
-
 /* Includes ------------------------------------------------------------------*/
-#include "stm8s.h"
-#include "HT1632.h"
+#include "stm8s_it.h"
+
+/** @addtogroup Template_Project
+* @{
+*/
+
+/* Private typedef -----------------------------------------------------------*/
+/* Private define ------------------------------------------------------------*/
+/* Private macro -------------------------------------------------------------*/
+/* Private variables ---------------------------------------------------------*/
+int CRR[5] = {10000/400, 10000/600, 10000/800,10000/1000,10000/1200};
+int ARR[5] = {10000/800, 10000/1200, 10000/1600,10000/2000,10000/2400};
+extern int XXX;
+extern int count;
+extern int MovePulse;
+extern int MarginPulse;  //页边距马达的脉冲数目 要加上10的
+extern int WidthPulse;  //页边距马达的脉冲数目 要加上10的
+
+extern int ForwardBackwardNum; //总共来回的次数
+extern int ForwardBackwardCur; //现在的次数 他的总数是上面来回次数的两倍 + 2(因为还要加上两次的页边距移动)
+
+extern bool bCancel; //现在的次数
+
+extern bool bSensorON; //现在的传感器是否触发
+extern bool bBackward; //是否为反转，TURE是反转，False是正转
+extern bool bBackHP; //是否需要进行第一次到HP位置
+extern bool bIsRuning; //是否在打胶运行中
 
 /* Private function prototypes -----------------------------------------------*/
-#define TRIAL   (0)
-#define NORMAL  (1)
-#define ERROR   (2)
-#define INPUT   (3)
-#define SUPPER_PASSWD  (644)
-
-/* Public value  -----------------------------------------------*/
-//全局变量
-//u8 number[4] ;
-u16 eepromaddress = 0x4000;   //设EEPROM的首地址为0X4000
-u16 totalHeightAddress = 0x4000;   //到现在为止的总得长度地址
-u16 objectHeightAddress = 0x4004;  //设定的目标长度地址
-u16 modeAddress = 0x4008;          //现在模式的地址
-u16 randomAddress = 0x400a;     //为了产生随机数，用一个自动加1的数字
-
-u16  g_margin = 200;
-u16  g_width = 500;
-u16  g_height = 160;
-volatile int XXX = 36;     //中框移动总得马达的脉冲数目
-volatile int MarginPulse = 0;  //页边距马达的脉冲数目 要加上10的
-volatile int WidthPulse = 0;  //页边距马达的脉冲数目 要加上10的
-volatile  int MovePulse = 0;  //当次移动距离
-volatile int TotalWidthPulse = 0;
-
-volatile  int ForwardBackwardNum = 0; //总共来回的次数
-volatile  int ForwardBackwardCur = 0; //现在的次数
-
-volatile  bool bCancel = FALSE; //现在的次数
-
-volatile bool bSensorON = FALSE; //现在的传感器是否触发
-volatile bool bBackward = FALSE; //是否为反转，TURE是反转，False是正转
-volatile bool bBackHP = FALSE; //是否需要进行第一次到HP位置
-
-/* Private defines -----------------------------------------------------------*/
-#define MOTOR_DIV   (4)
-
 /* Private functions ---------------------------------------------------------*/
-void delay(unsigned int ms)
+/* Public functions ----------------------------------------------------------*/
+
+#ifdef _COSMIC_
+/**
+* @brief Dummy Interrupt routine
+* @par Parameters:
+* None
+* @retval
+* None
+*/
+INTERRUPT_HANDLER(NonHandledInterrupt, 25)
 {
-    unsigned int x , y;
-    for(x = ms; x > 0; x--)           /*  通过一定周期循环进行延时*/
-        for(y = 3000 ; y > 0 ; y--);
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
 }
-
-void NumericDisplay_Init()
-{
-    //设置PA1为输出 ，HC164 CLK
-    GPIO_Init(GPIOB , GPIO_PIN_4 , GPIO_MODE_OUT_PP_LOW_FAST);  
-    
-    //设置PA2为输出 ，HC164DAT
-    GPIO_Init(GPIOB , GPIO_PIN_5 , GPIO_MODE_OUT_PP_LOW_FAST);  
-    
-    //设置PC3为输出 ，位码数
-    GPIO_Init(GPIOB , GPIO_PIN_7 , GPIO_MODE_OUT_PP_LOW_FAST); 
-}
-
-/*******************************************************************************
-key Init
-*******************************************************************************/
-/*******************************************************************************
-**函数名称：void KEYInit()
-**功能描述：配置输入按键
-**入口参数：无
-**输出：无
-*******************************************************************************/
-void BeepInit()
-{
-    BEEP_Init(BEEP_FREQUENCY_2KHZ);
-}
-
-void KEYInit()
-{
-    //GPD->PIN7 设置为输入模式 , 上拉电阻输入 , 禁止外部中断
-    GPIO_Init(GPIOD , GPIO_PIN_7 , GPIO_MODE_IN_FL_NO_IT);  //key1 
-    GPIO_Init(GPIOD , GPIO_PIN_6 , GPIO_MODE_IN_FL_NO_IT);  //key2
-    GPIO_Init(GPIOD , GPIO_PIN_5 , GPIO_MODE_IN_FL_NO_IT);  //key3
-    GPIO_Init(GPIOD , GPIO_PIN_3 , GPIO_MODE_IN_FL_NO_IT);  //key4
-    GPIO_Init(GPIOD , GPIO_PIN_2 , GPIO_MODE_IN_FL_NO_IT);  //key5
-    GPIO_Init(GPIOD , GPIO_PIN_0 , GPIO_MODE_IN_FL_NO_IT);  //key6
-    GPIO_Init(GPIOC , GPIO_PIN_7 , GPIO_MODE_IN_FL_NO_IT);  //key7
-    GPIO_Init(GPIOC , GPIO_PIN_6 , GPIO_MODE_IN_FL_NO_IT);  //key8
-    
-}
-
-void SensInit()
-{
-    GPIO_Init(GPIOB , GPIO_PIN_3 , GPIO_MODE_IN_PU_NO_IT);  //Sensor
-}
-
-//马达电源初始化
-void PowerInit()
-{
-    GPIO_Init(GPIOB , GPIO_PIN_1 , GPIO_MODE_OUT_PP_LOW_SLOW); 
-    GPIO_Init(GPIOB , GPIO_PIN_2 , GPIO_MODE_OUT_PP_LOW_SLOW); 
-}
-
-void PowerON()
-{
-    GPIO_WriteHigh(GPIOB , GPIO_PIN_1);
-    GPIO_WriteHigh(GPIOB , GPIO_PIN_2);
-}
-
-void PowerOFF()
-{
-    GPIO_WriteLow(GPIOB , GPIO_PIN_1);
-    GPIO_WriteLow(GPIOB , GPIO_PIN_2);
-}
-
-/*******************************************************************************
-Solenoid Valve Define
-*******************************************************************************/
-void ValveInit()
-{
-    //电磁阀的初始化
-    GPIO_Init(GPIOE , GPIO_PIN_5 , GPIO_MODE_OUT_PP_LOW_SLOW); //solenoid valve PE5
-}
-
-/*******************************************************************************
-**函数名称：void UpValve()
-**功能描述：拉高电磁阀
-**入口参数：无
-**输出：无
-*******************************************************************************/
-void UpValve()
-{   
-    GPIO_WriteHigh(GPIOE , GPIO_PIN_5);
-    delay(500);
-}
-/*******************************************************************************
-**函数名称：void DownValve()
-**功能描述：放下电磁阀
-**入口参数：无
-**输出：无
-*******************************************************************************/
-void DownValve()
-{    
-    GPIO_WriteLow(GPIOE , GPIO_PIN_5);
-    delay(500);
-    
-}
-
-/*******************************************************************************
-MOTOR Init
-*******************************************************************************/
-void MotorInit()
-{
-    GPIO_Init(GPIOC , GPIO_PIN_5 , GPIO_MODE_OUT_PP_LOW_SLOW); //motor ena PC5
-    GPIO_Init(GPIOC , GPIO_PIN_4 , GPIO_MODE_OUT_PP_LOW_SLOW); //motor dir PC4
-    GPIO_Init(GPIOC , GPIO_PIN_3 , GPIO_MODE_OUT_PP_LOW_SLOW); //motor CP  PC3  Tim1_CH3 
-    
-    GPIO_Init(GPIOC , GPIO_PIN_2 , GPIO_MODE_OUT_PP_LOW_SLOW); //motor2 ena PC2
-    GPIO_Init(GPIOC , GPIO_PIN_1 , GPIO_MODE_OUT_PP_LOW_SLOW); //motor2 dir PC1
-    GPIO_Init(GPIOA , GPIO_PIN_3 , GPIO_MODE_OUT_PP_LOW_SLOW); //motor2 CP  PA3 Tim2_CH3
-}
-
-/*******************************************************************************
-**函数名称：void TIM1_PWM_Init()
-**功能描述：定时器1 PWM初始化 Mortor1
-**入口参数：无
-**输出：无
-*******************************************************************************/
-int    Fpwm = 400;            //150HZ
-
-void TIM1_PWM_Init()
-{
-    TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
-                      TIM1_COUNTERMODE_UP , //向上计数
-                      10000/Fpwm,      //自动重载值
-                      0
-                          );
-    
-    TIM1_OC3Init(TIM1_OCMODE_PWM2 ,  //设置为PWM2输出模式
-                 TIM1_OUTPUTSTATE_ENABLE , //输出使能
-                 TIM1_OUTPUTNSTATE_DISABLE,
-                 0  ,   //先设置为0
-                 TIM1_OCPOLARITY_HIGH ,//OC1 HI
-                 TIM1_OCNPOLARITY_LOW,
-                 TIM1_OCIDLESTATE_SET,
-                 TIM1_OCNIDLESTATE_SET
-                     );
-    TIM1_OC3PreloadConfig(ENABLE);
-    TIM1_ARRPreloadConfig(ENABLE);
-    TIM1_CtrlPWMOutputs(DISABLE);
-    TIM1_CCxCmd(TIM1_CHANNEL_3 , DISABLE);
-    TIM1_Cmd(DISABLE);
-    
-    TIM1_SetCompare3(10000/Fpwm/2);
-    
-}
-
-
-void StartMotor1()
-{
-    GPIO_WriteHigh(GPIOC , GPIO_PIN_5);
-    delay(10);
-    
-    TIM1_CCxCmd(TIM1_CHANNEL_3 , ENABLE);
-    TIM1_Cmd(ENABLE);
-    
-    TIM1_CtrlPWMOutputs(ENABLE);
-    TIM1_ITConfig(TIM1_IT_UPDATE , ENABLE);
-}
-
-void StopMotor1()
-{
-    GPIO_WriteLow(GPIOC , GPIO_PIN_5);
-    TIM1_CtrlPWMOutputs(DISABLE);
-    TIM1_ITConfig(TIM1_IT_UPDATE , DISABLE);
-    TIM1_CCxCmd(TIM1_CHANNEL_3 , DISABLE);
-    TIM1_Cmd(DISABLE);
-    delay(500);
-}
-
-void ForwardMotor1()
-{
-    GPIO_WriteLow(GPIOC , GPIO_PIN_4);
-    bBackward = FALSE;
-}
-
-void ReverseMotor1()
-{
-    GPIO_WriteHigh(GPIOC , GPIO_PIN_4);
-    bBackward = TRUE;
-}
-
-/*******************************************************************************
-**函数名称：void TIM2_PWM_Init()
-**功能描述：定时器1 PWM初始化 Mortor2
-**入口参数：无
-**输出：无
-*******************************************************************************/
-#define     Fpwm2          200            //50HZ
-void TIM2_PWM_Init()
-{
-    TIM2_TimeBaseInit(TIM2_PRESCALER_512 , //16Mhz / 512 = 31250 HZ
-                      (31250 / Fpwm2)      //自动重载值
-                          );
-    
-    TIM2_OC3Init(TIM2_OCMODE_PWM2 ,  //设置为PWM2输出模式
-                 TIM2_OUTPUTSTATE_ENABLE , //输出使能
-                 (31250 / Fpwm2 / 2)  ,   //先设置为0
-                 TIM2_OCPOLARITY_HIGH //OC1 HI
-                     );
-    
-    TIM2_OC3PreloadConfig(ENABLE);
-    TIM2_ARRPreloadConfig(ENABLE);
-    TIM2_CCxCmd(TIM2_CHANNEL_3 , DISABLE);  
-    
-    
-}
-
-
-
-void StartMotor2()
-{
-    GPIO_WriteHigh(GPIOC , GPIO_PIN_2);
-    delay(10);
-    
-    TIM2_CCxCmd(TIM2_CHANNEL_3 , ENABLE);  
-    TIM2_Cmd(ENABLE);
-    TIM2_ITConfig(TIM2_IT_UPDATE , ENABLE);
-    
-}
-
-
-void StopMotor2()
-{
-    GPIO_WriteLow(GPIOC , GPIO_PIN_2);
-    TIM2_CCxCmd(TIM2_CHANNEL_3 , DISABLE);  
-    TIM2_Cmd(DISABLE);
-    TIM2_ITConfig(TIM2_IT_UPDATE , DISABLE);
-    delay(500);
-    
-}
-
-/*******************************************************************************
-**函数名称：void TIM4_Init()
-**功能描述：定时器4参数初始化
-**入口参数：无
-**输出：无
-*******************************************************************************/
-void TIM4_Init()
-{
-    TIM4_TimeBaseInit(TIM4_PRESCALER_128,    //定时器4预分频数为 16 分频，即定时器时钟 = 系统时钟 = 16MHz/128=125 000
-                      125                 //设置1毫秒时间自动重载 125
-                          );
-    TIM4_ITConfig(TIM4_IT_UPDATE , ENABLE); //使能定时器2更新中断
-    TIM4_ARRPreloadConfig(ENABLE);          //允许自动仲裁
-    TIM4_Cmd(ENABLE);        //启动定时器2开始计数
-}
-
-
-/*******************************************************************************
-**函数名称：void EEPROM_Byte_Write(unsigned int address , unsigned char date)
-**功能描述：向EEPROM中固定地址写入一个字节数据
-**入口参数：unsigned int address , unsigned char date
-address  ：要写入数据的存储地址
-date   ：一个字节数据
-**输出：无
-*******************************************************************************/
-void EEPROM_Byte_Write(unsigned int address , unsigned char date)
-{
- //   eepromaddress = address;
-    
-    FLASH_SetProgrammingTime(FLASH_PROGRAMTIME_TPROG);              //设定编程时间为标准编程时间
-    
-    //MASS 密钥，解除EEPROM的保护
-    FLASH_Unlock(FLASH_MEMTYPE_DATA);
-    
-    FLASH_ProgramByte(address , date);  //把数据写入相应的存储地址
-    
-    while(FLASH_GetFlagStatus(FLASH_FLAG_EOP) == SET);     //等待编程结束
-}
-
-/*******************************************************************************
-**函数名称：void Write_Total_Height()
-**功能描述：把现在总得长度写入到eeprom里面去
-**入口参数：无
-**输出：无
-*******************************************************************************/
-void Write_Total_Height(u16 data)
-{
-    u8 low,high = 0;
-    low = data % 256;
-    high = data / 256;
-    EEPROM_Byte_Write(totalHeightAddress,low);
-    EEPROM_Byte_Write(totalHeightAddress+1,high);
-    
-}
-
-
-/*******************************************************************************
-**函数名称：void Write_Object_Height()
-**功能描述：把目标总得长度写入到eeprom里面去
-**入口参数：无
-**输出：无
-*******************************************************************************/
-void Write_Object_Height(u16 data)
-{
-    u8 low,high = 0;
-    low = data % 256;
-    high = data / 256;
-    EEPROM_Byte_Write(objectHeightAddress,low);
-    EEPROM_Byte_Write(objectHeightAddress+1,high);
-    
-}
-
-/*******************************************************************************
-**函数名称：int get_random()
-**功能描述：获取随机数
-**入口参数：无
-**输出：无
-*******************************************************************************/
-u16 get_random()
-{
-    u16 tem = 0;
-    u8 memData = 0;
-
-    memData = FLASH_ReadByte(randomAddress); //得到内存得值
-
-    srand(* ( u16 * ) ( 0x000008 )); 
-    tem = rand() % 10000;
-
-    tem = (tem * (u16)(memData+33)) % 10000;  //把eeprom里面的值+33，然后乘以内存随机值，然后取后面4位
-    memData = (tem * (u16)(memData+33)) % 256; //把eeprom里面的值+33，然后乘以内存随机值，然后得到后面8bit
-    EEPROM_Byte_Write(randomAddress,memData);  //把这个8bit的值，存到内存里面去
-
-    return tem;
-}
-
-/*******************************************************************************
-**函数名称：int get_passdata()
-**功能描述：获取密码数字,如果是0，就是0644,如果是以外的的话，就是数字*0644，然后取得前两位和后两位
-**入口参数：u16
-**输出：无
-*******************************************************************************/
-u16 get_passdata(u16 indata)
-{
-    u16 retData = 0;
-    u32 temp = 0,tempHigh = 0,tempLow = 0,temp2 = indata;
-    temp = 644 * temp2;
-    if(indata == 0){
-        retData = 644;
-    }
-    else{
-        tempHigh = temp;
-        while(tempHigh>=100)
-            tempHigh=tempHigh/10;
-
-        tempLow = temp%100;
-        retData = tempHigh*100+tempLow;
-    }
-    return retData;
-}
-
-
-
-void main(void)
-{
-    u16 totalHeight = 0;
-    u8 objectHeight = 0;
-    u32 keeptime = 0;
-    u8 mode = 0; //0：trial; 1: normal  2: error 3:input mode
-    u16 random_data = 0;
-    disableInterrupts();  //关闭系统总中断
-    
-    CLK_SYSCLKConfig(CLK_PRESCALER_HSIDIV1);
-
-    totalHeight = (FLASH_ReadByte(totalHeightAddress+1) < 8) + FLASH_ReadByte(totalHeightAddress);
-    objectHeight = (FLASH_ReadByte(objectHeightAddress+1) < 8) + FLASH_ReadByte(objectHeightAddress);
-    mode = FLASH_ReadByte(modeAddress);
-        
-    //马达电源初始化，并且拉高处理
-    PowerInit();    
-    PowerOFF();
-    delay(1000);  
-    PowerON();
-    
-    NumericDisplay_Init();
-    KEYInit();
-    BEEP_Init(BEEP_FREQUENCY_2KHZ);
-    
-    //数码管初始化
-    HT1632C_Init();
-    HT1632C_clr();
-    
-    if(mode == ERROR){ //错误模式，显示错误编码
-        display_margin_error();
-        random_data = get_random();
-        display_width(random_data);
-        display_height(0);
-    }
-    else{
-        display_margin(g_margin);
-        display_width(g_width);
-        display_height(g_height);
-    }
- 
-    
-    //传感器初始化
-    SensInit();
-    
-    //马达初始化
-    MotorInit();
-    
-    TIM1_PWM_Init();
-    
-    TIM2_PWM_Init();
-    
-    //传感器时间初始化
-    TIM4_Init();
-    
-    //初始化电磁阀，并且降低电磁阀
-    ValveInit();
-    DownValve();
-    
-    enableInterrupts(); //打开系统总中断
-    /* Infinite loop */
-    while (1)
-    {
-        //margin Down
-        if(GPIO_ReadInputPin(GPIOD , GPIO_PIN_7) != RESET)      //边距的减号键被按下
-        {
-            keeptime = 0;
-            delay(10);                     //先延时进行消抖
-            BEEP_Cmd(ENABLE);
-            while(GPIO_ReadInputPin(GPIOD , GPIO_PIN_7) != RESET)  //等待按钮被松开
-            {
-                keeptime++;
-                if(keeptime >100000){ //判断是否同时按下去
-                    if(GPIO_ReadInputPin(GPIOD , GPIO_PIN_6) != RESET){      //边距的加号键被按下被按下       
-                        delay(10);
-                        while(GPIO_ReadInputPin(GPIOD , GPIO_PIN_6) != RESET){
-                            keeptime++;
-                            if( keeptime >200000 ){
-                                display_margin_input();
-                                keeptime = 0;
-                                mode = INPUT;
-                                
-                            }
-                        }
-                    }                    
-                }                    
-                if(( mode == 0) || (mode == 1)){    
-                    if((keeptime >150000) && ( keeptime%30 == 0))
-                    {
-                        if(g_margin > 0) g_margin--;
-                        display_margin(g_margin);
-                    }
-                }
-            };    
-            BEEP_Cmd(DISABLE);
-            delay(10);      //再次延时消抖
-            if(( mode == 0) || (mode == 1)){
-                if(g_margin > 0) g_margin--;
-                display_margin(g_margin);
-            }
-        }
-        
-        //margin UP
-        if(GPIO_ReadInputPin(GPIOD , GPIO_PIN_6) != RESET)      //如何KEY1被按下
-        {
-            keeptime = 0;
-            delay(10);                     //先延时进行消抖
-            BEEP_Cmd(ENABLE);
-            while(GPIO_ReadInputPin(GPIOD , GPIO_PIN_6) != RESET)    //等待按钮被松开
-            {
-                keeptime++;
-                
-                if(keeptime >100000){ //判断是否同时按下去
-                    if(GPIO_ReadInputPin(GPIOD , GPIO_PIN_7) != RESET){      //边距的加号键被按下被按下       
-                        delay(10);
-                        while(GPIO_ReadInputPin(GPIOD , GPIO_PIN_7) != RESET){
-                            keeptime++;
-                            if( keeptime >200000 ){
-                                display_margin_input();
-                                keeptime = 0;
-                                mode = INPUT;
-                                
-                            }
-                        }
-                    }                    
-                }        
-                
-                if(( mode == 0) || (mode == 1)){    
-                    if((keeptime >150000) && ( keeptime%30 == 0))
-                    {
-                        if(g_margin < 9999) g_margin++;
-                        display_margin(g_margin);
-                    }
-                }
-                
-            }; 
-            BEEP_Cmd(DISABLE);;
-            if(( mode == 0) || (mode == 1)){    
-                delay(10);                     //再次延时消抖
-                if(g_margin < 9999) g_margin++;
-                display_margin(g_margin);
-            }
-        }
-        
-        if(GPIO_ReadInputPin(GPIOD , GPIO_PIN_5) != RESET)      //如何KEY1被按下
-        {
-            keeptime = 0;
-            delay(10);                     //先延时进行消抖
-            BEEP_Cmd(ENABLE);
-            while(GPIO_ReadInputPin(GPIOD , GPIO_PIN_5) != RESET)    //等待按钮被松开
-            {
-                keeptime++;
-                if((keeptime >150000) && ( keeptime%30 == 0))
-                {
-                    if(g_width > 0) g_width--;
-                    display_width(g_width);
-                }
-                
-            }; 
-            BEEP_Cmd(DISABLE);;
-            delay(10);                     //再次延时消抖
-            if(g_width > 0) g_width--;
-            display_width(g_width);
-        }
-        
-        if(GPIO_ReadInputPin(GPIOD , GPIO_PIN_3) != RESET)      //如何KEY1被按下
-        {
-            keeptime = 0;
-            delay(10);                     //先延时进行消抖
-            BEEP_Cmd(ENABLE);
-            while(GPIO_ReadInputPin(GPIOD , GPIO_PIN_3) != RESET)    //等待按钮被松开
-            {
-                keeptime++;
-                if((keeptime >150000) && ( keeptime%30 == 0))
-                {
-                    if(g_width < 9999) g_width++;
-                    display_width(g_width);
-                }
-                
-            };   
-            BEEP_Cmd(DISABLE);
-            delay(10);                     //再次延时消抖
-            if(g_width < 9999) g_width++;
-            display_width(g_width);
-        }
-        
-        if(GPIO_ReadInputPin(GPIOD , GPIO_PIN_2) != RESET)      //如何KEY1被按下
-        {
-            keeptime = 0;
-            delay(10);                     //先延时进行消抖
-            BEEP_Cmd(ENABLE);
-            while(GPIO_ReadInputPin(GPIOD , GPIO_PIN_2) != RESET)    //等待按钮被松开
-            {
-                keeptime++;
-                if((keeptime >150000) && ( keeptime%30 == 0))
-                {
-                    if(g_height < 9999) g_height++;
-                    display_height(g_height);
-                }
-                
-            }; 
-            BEEP_Cmd(DISABLE);;
-            delay(10);                     //再次延时消抖
-            if(g_height < 9999) g_height++;
-            display_height(g_height);
-        }
-        
-        if(GPIO_ReadInputPin(GPIOD , GPIO_PIN_0) != RESET)      //如何KEY1被按下
-        {
-            keeptime = 0;
-            delay(10);                     //先延时进行消抖
-            BEEP_Cmd(ENABLE);
-            while(GPIO_ReadInputPin(GPIOD , GPIO_PIN_0) != RESET)    //等待按钮被松开
-            {
-                keeptime++;
-                if((keeptime >150000) && ( keeptime%30 == 0))
-                {
-                    if(g_height > 0) g_height--;
-                    display_height(g_height);
-                }
-                
-            }; 
-            BEEP_Cmd(DISABLE);;
-            delay(10);                     //再次延时消抖
-            if(g_height > 0) g_height--;
-            display_height(g_height);
-        }
-        
-        //确认
-        if(GPIO_ReadInputPin(GPIOC , GPIO_PIN_7) != RESET)      //如何KEY1被按下
-        {
-            delay(10);                     //先延时进行消抖
-            BEEP_Cmd(ENABLE);
-            while(GPIO_ReadInputPin(GPIOC , GPIO_PIN_7) != RESET);    //等待按钮被松开            
-            BEEP_Cmd(DISABLE);;
-            delay(10);                     //再次延时消抖
-            bCancel = FALSE;
-            
-            switch (mode){
-            case TRIAL: //trial
-            case NORMAL: //normal
-                if((mode == TRIAL) && ( totalHeight > objectHeight )){ //超出长度，进入错误模式
-                    display_margin_error(); //显示错误模式
-                    mode = ERROR;
-                    EEPROM_Byte_Write(modeAddress,mode);
-                    break; 
-                }
-                else if( mode == TRIAL ){
-                    totalHeight = g_height + totalHeight;
-                    Write_Total_Height(totalHeight); //把长度写入到EEPROM里面去
-                }
-                
-                //下面是正常的打胶程序
-                //马达1正转
-                MarginPulse = (int)(((g_margin + 10) * 0.3667 / 1.8) * MOTOR_DIV);
-                WidthPulse = (int)(((g_width) * 0.3667 / 1.8) * MOTOR_DIV);  
-                TotalWidthPulse = (int)(((g_margin + 10 + g_width) * 0.3667 / 1.8) * MOTOR_DIV);  
-                //拉高电磁阀
-                UpValve();
-                
-                delay(50);
-                
-                ForwardBackwardNum = g_height / 16;
-                
-                //判断传感器是否为ON
-                if(!bSensorON){  //如果传感器没有ON，表明这个时候胶头不在Home位置，要先移到Home位置
-                    
-                    //马达反转
-                    MovePulse = TotalWidthPulse; //第一次移动变宽距离。            
-                    ReverseMotor1();
-                    StartMotor1();     
-                    bBackHP = TRUE;
-                }
-                else{            
-                    ForwardBackwardCur = 0;
-                    
-                    MovePulse = MarginPulse; //第一次移动变宽距离。            
-                    ForwardMotor1();
-                    StartMotor1();
-                    bBackHP = FALSE;
-                }
-                
-                break;
-            case ERROR: //error
-                //要进行密码的比对，如果是正确的，就把模式改成trial，设定到eeprom里面去,画面显示4个0
-                if (get_passdata(random_data) == g_height){
-                    EEPROM_Byte_Write(modeAddress,TRIAL);
-                    display_height(0);
-                }
-                
-                break;
-            case INPUT: //input
-                //把height输入到eeprom里面去
-                Write_Object_Height(g_height);   
-                display_height(0); //并且第三行显示0               
-                //如果输入的是超级密码，就把模式改成1，设定到eeprom里面去,画面显示4个0
-                if( g_width == SUPPER_PASSWD ){
-                    EEPROM_Byte_Write(modeAddress,NORMAL);
-                    display_width(0);                    
-                }
-                                 
-                break;
-            default:
-                break;
-         
-            
-            }
-            
-        }
-        
-        //取消
-        if(GPIO_ReadInputPin(GPIOC , GPIO_PIN_6) != RESET)      //如何KEY1被按下
-        {
-            delay(10);                     //先延时进行消抖
-            BEEP_Cmd(ENABLE);
-            while(GPIO_ReadInputPin(GPIOC , GPIO_PIN_6) != RESET);    //等待按钮被松开
-            BEEP_Cmd(DISABLE);;
-            delay(10);                     //再次延时消抖
-            
-            bCancel = TRUE;
-        }
-        
-    }
-    
-    
-    
-}
-
-
-
-
-#ifdef USE_FULL_ASSERT
+#endif /*_COSMIC_*/
 
 /**
-* @brief  Reports the name of the source file and the source line number
-*   where the assert_param error has occurred.
-* @param file: pointer to the source file name
-* @param line: assert_param error line source number
-* @retval : None
+* @brief TRAP Interrupt routine
+* @param  None
+* @retval None
 */
-void assert_failed(u8* file, u32 line)
-{ 
-    /* User can add his own implementation to report the file name and line number,
-    ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
-    
-    /* Infinite loop */
-    while (1)
-    {
-    }
+INTERRUPT_HANDLER_TRAP(TRAP_IRQHandler)
+{
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
 }
-#endif
+
+/**
+* @brief Top Level Interrupt routine.
+* @param  None
+* @retval None
+*/
+INTERRUPT_HANDLER(TLI_IRQHandler, 0)
+
+{
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
+}
+
+/**
+* @brief Auto Wake Up Interrupt routine.
+* @param  None
+* @retval None
+*/
+INTERRUPT_HANDLER(AWU_IRQHandler, 1)
+{
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
+}
+
+/**
+* @brief Clock Controller Interrupt routine.
+* @param  None
+* @retval None
+*/
+INTERRUPT_HANDLER(CLK_IRQHandler, 2)
+{
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
+}
+
+/**
+* @brief External Interrupt PORTA Interrupt routine.
+* @param  None
+* @retval None
+*/
+INTERRUPT_HANDLER(EXTI_PORTA_IRQHandler, 3)
+{
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
+}
+
+/**
+* @brief External Interrupt PORTB Interrupt routine.
+* @param  None
+* @retval None
+*/
+INTERRUPT_HANDLER(EXTI_PORTB_IRQHandler, 4)
+{
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
+}
+
+/**
+* @brief External Interrupt PORTC Interrupt routine.
+* @param  None
+* @retval None
+*/
+
+INTERRUPT_HANDLER(EXTI_PORTC_IRQHandler, 5)
+{
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
+    
+}
+
+/**
+* @brief External Interrupt PORTD Interrupt routine.
+* @param  None
+* @retval None
+*/
+INTERRUPT_HANDLER(EXTI_PORTD_IRQHandler, 6)
+{
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
+}
+
+/**
+* @brief External Interrupt PORTE Interrupt routine.
+* @param  None
+* @retval None
+*/
+INTERRUPT_HANDLER(EXTI_PORTE_IRQHandler, 7)
+{
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
+}
+
+#if defined (STM8S903) || defined (STM8AF622x) 
+/**
+* @brief External Interrupt PORTF Interrupt routine.
+* @param  None
+* @retval None
+*/
+INTERRUPT_HANDLER(EXTI_PORTF_IRQHandler, 8)
+{
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
+}
+#endif /* (STM8S903) || (STM8AF622x) */
+
+#if defined (STM8S208) || defined (STM8AF52Ax)
+/**
+* @brief CAN RX Interrupt routine.
+* @param  None
+* @retval None
+*/
+INTERRUPT_HANDLER(CAN_RX_IRQHandler, 8)
+{
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
+}
+
+/**
+* @brief CAN TX Interrupt routine.
+* @param  None
+* @retval None
+*/
+INTERRUPT_HANDLER(CAN_TX_IRQHandler, 9)
+{
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
+}
+#endif /* (STM8S208) || (STM8AF52Ax) */
+
+/**
+* @brief SPI Interrupt routine.
+* @param  None
+* @retval None
+*/
+INTERRUPT_HANDLER(SPI_IRQHandler, 10)
+{
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
+}
+
+/**
+* @brief Timer1 Update/Overflow/Trigger/Break Interrupt routine.
+* @param  None
+* @retval None
+*/
+INTERRUPT_HANDLER(TIM1_UPD_OVF_TRG_BRK_IRQHandler, 11)
+{
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
+    static int count = 0;
+    static int bCancelFinished = FALSE;
+    count++;
+    //反转到HP位置，当传感器为ON的时候，速度就要慢慢的落下来
+    if(bSensorON && bBackward){
+//        count = (MovePulse-16);
+        //MovePulse = count + 16;
+      MovePulse = count;
+        
+    }
+    if( MovePulse < 33 ){ //TODO 脉冲数目太小来不及慢起慢落
+        //TODO
+       // BEEP_Cmd(ENABLE);
+    }
+    else if( count == 4 ){
+        TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
+                          TIM1_COUNTERMODE_UP , //向上计数
+                          CRR[1],      //自动重载值
+                          0
+                              );
+        TIM1_SetCompare3(ARR[1]);
+    }
+    else if(count == 8){
+        TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
+                          TIM1_COUNTERMODE_UP , //向上计数
+                          CRR[2],      //自动重载值
+                          0
+                              );
+        TIM1_SetCompare3(ARR[2]);
+    }
+    else if(count == 12){
+        TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
+                          TIM1_COUNTERMODE_UP , //向上计数
+                          CRR[3],      //自动重载值
+                          0
+                              );
+        TIM1_SetCompare3(ARR[3]);
+    }
+    else if(count == 16){
+        TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
+                          TIM1_COUNTERMODE_UP , //向上计数
+                          CRR[4],      //自动重载值
+                          0
+                              );
+        TIM1_SetCompare3(ARR[4]);
+    }
+    else if(count == (MovePulse-16)){
+        TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
+                          TIM1_COUNTERMODE_UP , //向上计数
+                          CRR[3],      //自动重载值
+                          0
+                              );
+        TIM1_SetCompare3(ARR[3]);
+        
+    }
+    else if(count == (MovePulse-12)){
+        TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
+                          TIM1_COUNTERMODE_UP , //向上计数
+                          CRR[2],      //自动重载值
+                          0
+                              );
+        TIM1_SetCompare3(ARR[2]);
+    }
+    else if(count == (MovePulse-8)){
+        TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
+                          TIM1_COUNTERMODE_UP , //向上计数
+                          CRR[1],      //自动重载值
+                          0
+                              );
+        TIM1_SetCompare3(ARR[1]);
+    }
+    else if(count == (MovePulse-4)){
+        TIM1_TimeBaseInit(1599 , //16Mhz / 1600 = 10000 HZ
+                          TIM1_COUNTERMODE_UP , //向上计数
+                          CRR[0],      //自动重载值
+                          0
+                              );
+        TIM1_SetCompare3(ARR[0]);
+    }
+    else if(count >= MovePulse){
+        count = 0;
+        StopMotor1();
+        ForwardBackwardCur++; //移动完毕以后，当前的移动次数加一。
+        delay(50);     
+        if(bBackHP){ //不在HP位置的情况下，第一次回到HP位置，这是特殊情况
+            
+            if( bCancel ){ //刚回到HP位置就被取消了，那么就停下来
+                //取消的最后返回结束以后，就什么都不做了。
+                bCancelFinished = FALSE;
+                bCancel = FALSE;
+                bIsRuning = FALSE; //运行结束了。
+            }
+            else{ //否则继续正常的打胶
+                ForwardBackwardCur = 0;
+                MovePulse = MarginPulse; //第一次移动变宽距离。            
+                ForwardMotor1();
+                StartMotor1();
+                bBackHP = FALSE; 
+                bCancelFinished = FALSE;
+                bCancel = FALSE;
+            }
+        }
+        else {  //不是第一次回到HP位置，这是一般情况      
+        
+            if(bCancel){  //取消键按下以后，改移动完毕以后，才进行取消的返回处理
+                if( bCancelFinished ){ //第二回，取消按钮按下后，剩余的移动动作做完了
+                   
+                    //取消的最后返回结束以后，就什么都不做了。
+                    bCancelFinished = FALSE;
+                    bCancel = FALSE;
+                    bIsRuning = FALSE; //运行结束了。
+                }
+                else{ //第一回，取消按钮以后，要进行剩余的移动动作
+                    
+                    if( ForwardBackwardCur == 1 ){ //第一次页边距移动后，不要放下电磁阀，继续反转马达1,返回远点距离是页边距
+                        //不放下电磁阀
+                        
+                        MovePulse = MarginPulse;
+                        ReverseMotor1();
+                        StartMotor1();
+                        bCancelFinished = TRUE;
+                    }
+                    else if(ForwardBackwardCur == (ForwardBackwardNum*2 +1)){ //最后一次中宽移动以后，要继续移动马达1，距离是页边距
+                        
+                        //提高电磁阀，移动到最旁边
+                        UpValve();
+                        delay(50);
+                        
+                        MovePulse = MarginPulse;
+                        ReverseMotor1();
+                        StartMotor1();
+                        bCancelFinished = TRUE;
+                    }
+                    else if(ForwardBackwardCur == (ForwardBackwardNum*2 + 2)){ //最后一次的页边距移动完毕后，就停止马达
+                        
+                       bCancel = FALSE;
+                       bCancelFinished = FALSE;
+                       count = 0;
+                       //最后一次，就放下电磁阀
+                       DownValve();
+                       bIsRuning = FALSE；//运行结束了
+                    }
+                    else if(ForwardBackwardCur%2 == 0){  //已经移到最右边了，需要移动中宽+页边距的距离回去
+
+                        //提高电磁阀
+                        UpValve();
+                        delay(50);
+                        
+                        MovePulse = MarginPulse + WidthPulse;
+                        ReverseMotor1();
+                        StartMotor1();
+                        bCancelFinished = TRUE;                   
+                    }
+                    else{  //在左边，只需要移动页边距回去就行了
+                        
+                        //提高电磁阀
+                        UpValve();
+                        delay(50);
+                        
+                        MovePulse = MarginPulse;
+                        ReverseMotor1();
+                        StartMotor1();
+                        bCancelFinished = TRUE;
+                    
+                    }
+                }//if cancelfinished
+                
+            }
+            else{        
+                if( ForwardBackwardCur == 1 ){ //第一次页边距移动后，要放下电磁阀，继续启动马达1,距离是中宽
+                    //放下电磁阀，进行打胶
+                    DownValve();
+                    delay(50);
+                    
+                    MovePulse = WidthPulse;
+                    ForwardMotor1();
+                    StartMotor1();
+                }
+                else if(ForwardBackwardCur == (ForwardBackwardNum*2 + 1)){ //最后一次中宽移动以后，要继续移动马达1，距离是页边距
+                    //提高电磁阀，移动到最旁边
+                    UpValve();
+                    delay(50);
+                    
+                    MovePulse = MarginPulse;
+                    ReverseMotor1();
+                    StartMotor1();
+                }
+                else if(ForwardBackwardCur == (ForwardBackwardNum*2 + 2)){ //最后一次的页边距移动完毕后，就停止马达
+                    //TODO 初始化
+                    bCancelFinished = FALSE;
+                    bCancel = FALSE;
+                    count = 0;
+                    
+                    //放下电磁阀，最后一次，停止马达
+                    DownValve();
+                    bIsRuning = FALSE;
+                    
+                }
+                else{  //其余的情况下，都要重启马达2
+                    
+                    //提高电磁阀，移动胶布
+                    UpValve();
+                    delay(50);
+                    
+                    StartMotor2();
+                }
+            }//if bcancel
+            
+        }//if bBackHP
+    }
+    
+    TIM1_ClearITPendingBit(TIM1_IT_UPDATE);
+}
+
+/**
+* @brief Timer1 Capture/Compare Interrupt routine.
+* @param  None
+* @retval None
+*/
+INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
+{
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
+}
+
+#if defined (STM8S903) || defined (STM8AF622x)
+/**
+* @brief Timer5 Update/Overflow/Break/Trigger Interrupt routine.
+* @param  None
+* @retval None
+*/
+INTERRUPT_HANDLER(TIM5_UPD_OVF_BRK_TRG_IRQHandler, 13)
+{
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
+}
+
+/**
+* @brief Timer5 Capture/Compare Interrupt routine.
+* @param  None
+* @retval None
+*/
+INTERRUPT_HANDLER(TIM5_CAP_COM_IRQHandler, 14)
+{
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
+}
+
+#else /* (STM8S208) || (STM8S207) || (STM8S105) || (STM8S103) || (STM8AF62Ax) || (STM8AF52Ax) || (STM8AF626x) */
+/**
+* @brief Timer2 Update/Overflow/Break Interrupt routine.
+* @param  None
+* @retval None
+*/
+INTERRUPT_HANDLER(TIM2_UPD_OVF_BRK_IRQHandler, 13)
+{
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
+    static int count2 = 0;
+    count2++;
+    if(count2 == 36){  //马达2移动结束的时候
+        count2 = 0;
+        StopMotor2();
+        delay(50);
+        
+        //放下电磁阀,进行打胶
+        DownValve();
+        
+        delay(50);
+        if( ForwardBackwardCur%2 == 0 ){ //正方向移动完毕，下次准备移动反方向
+            ReverseMotor1();
+        }
+        else{
+            ForwardMotor1();
+        }        
+        MovePulse = WidthPulse;
+        StartMotor1();
+        
+    }
+    
+    TIM2_ClearITPendingBit(TIM2_IT_UPDATE);
+}
+
+/**
+* @brief Timer2 Capture/Compare Interrupt routine.
+* @param  None
+* @retval None
+*/
+INTERRUPT_HANDLER(TIM2_CAP_COM_IRQHandler, 14)
+{
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
+}
+#endif /* (STM8S903) || (STM8AF622x) */
+
+#if defined (STM8S208) || defined(STM8S207) || defined(STM8S007) || defined(STM8S105) || \
+defined(STM8S005) ||  defined (STM8AF62Ax) || defined (STM8AF52Ax) || defined (STM8AF626x)
+/**
+* @brief Timer3 Update/Overflow/Break Interrupt routine.
+* @param  None
+* @retval None
+*/
+INTERRUPT_HANDLER(TIM3_UPD_OVF_BRK_IRQHandler, 15)
+{
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
+}
+
+/**
+* @brief Timer3 Capture/Compare Interrupt routine.
+* @param  None
+* @retval None
+*/
+INTERRUPT_HANDLER(TIM3_CAP_COM_IRQHandler, 16)
+{
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
+}
+#endif /* (STM8S208) || (STM8S207) || (STM8S105) || (STM8AF62Ax) || (STM8AF52Ax) || (STM8AF626x) */
+
+#if defined (STM8S208) || defined(STM8S207) || defined(STM8S007) || defined(STM8S103) || \
+defined (STM8S003) || defined(STM8S001) || defined (STM8AF62Ax) || defined (STM8AF52Ax) || defined (STM8S903)
+/**
+* @brief UART1 TX Interrupt routine.
+* @param  None
+* @retval None
+*/
+INTERRUPT_HANDLER(UART1_TX_IRQHandler, 17)
+{
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
+}
+
+/**
+* @brief UART1 RX Interrupt routine.
+* @param  None
+* @retval None
+*/
+INTERRUPT_HANDLER(UART1_RX_IRQHandler, 18)
+{
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
+}
+#endif /* (STM8S208) || (STM8S207) || (STM8S103) || (STM8S001) || (STM8S903) || (STM8AF62Ax) || (STM8AF52Ax) */
+
+#if defined(STM8AF622x)
+/**
+* @brief UART4 TX Interrupt routine.
+* @param  None
+* @retval None
+*/
+INTERRUPT_HANDLER(UART4_TX_IRQHandler, 17)
+{
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
+}
+
+/**
+* @brief UART4 RX Interrupt routine.
+* @param  None
+* @retval None
+*/
+INTERRUPT_HANDLER(UART4_RX_IRQHandler, 18)
+{
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
+}
+#endif /* (STM8AF622x) */
+
+/**
+* @brief I2C Interrupt routine.
+* @param  None
+* @retval None
+*/
+INTERRUPT_HANDLER(I2C_IRQHandler, 19)
+{
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
+}
+
+#if defined(STM8S105) || defined(STM8S005) ||  defined (STM8AF626x)
+/**
+* @brief UART2 TX interrupt routine.
+* @param  None
+* @retval None
+*/
+INTERRUPT_HANDLER(UART2_TX_IRQHandler, 20)
+{
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
+}
+
+/**
+* @brief UART2 RX interrupt routine.
+* @param  None
+* @retval None
+*/
+INTERRUPT_HANDLER(UART2_RX_IRQHandler, 21)
+{
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
+}
+#endif /* (STM8S105) || (STM8AF626x) */
+
+#if defined(STM8S207) || defined(STM8S007) || defined(STM8S208) || defined (STM8AF52Ax) || defined (STM8AF62Ax)
+/**
+* @brief UART3 TX interrupt routine.
+* @param  None
+* @retval None
+*/
+INTERRUPT_HANDLER(UART3_TX_IRQHandler, 20)
+{
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
+}
+
+/**
+* @brief UART3 RX interrupt routine.
+* @param  None
+* @retval None
+*/
+INTERRUPT_HANDLER(UART3_RX_IRQHandler, 21)
+{
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
+}
+#endif /* (STM8S208) || (STM8S207) || (STM8AF52Ax) || (STM8AF62Ax) */
+
+#if defined(STM8S207) || defined(STM8S007) || defined(STM8S208) || defined (STM8AF52Ax) || defined (STM8AF62Ax)
+/**
+* @brief ADC2 interrupt routine.
+* @param  None
+* @retval None
+*/
+INTERRUPT_HANDLER(ADC2_IRQHandler, 22)
+{
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
+}
+#else /* STM8S105 or STM8S103 or STM8S903 or STM8AF626x or STM8AF622x */
+/**
+* @brief ADC1 interrupt routine.
+* @par Parameters:
+* None
+* @retval 
+* None
+*/
+INTERRUPT_HANDLER(ADC1_IRQHandler, 22)
+{
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
+}
+#endif /* (STM8S208) || (STM8S207) || (STM8AF52Ax) || (STM8AF62Ax) */
+
+#if defined (STM8S903) || defined (STM8AF622x)
+/**
+* @brief Timer6 Update/Overflow/Trigger Interrupt routine.
+* @param  None
+* @retval None
+*/
+INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
+{
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
+}
+#else /* STM8S208 or STM8S207 or STM8S105 or STM8S103 or STM8AF52Ax or STM8AF62Ax or STM8AF626x */
+/**
+* @brief Timer4 Update/Overflow Interrupt routine.
+* @param  None
+* @retval None
+*/ 
+INTERRUPT_HANDLER(TIM4_UPD_OVF_IRQHandler, 23)
+{
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
+    static s8 SetCount = 0,ResetCount = 0; //Reset表示触发，Set表示没有触发
+        
+    if(TIM4_GetITStatus(TIM4_IT_UPDATE) == SET )
+    {
+        TIM4_ClearFlag(TIM4_FLAG_UPDATE);   //清除中断标志
+        if(RESET == GPIO_ReadInputPin(GPIOB , GPIO_PIN_3)){
+            ResetCount++;
+            SetCount=0;
+        }
+        else{
+            ResetCount=0;
+            SetCount++;
+            
+        }
+        if(ResetCount == 3){
+            SetCount = 0;
+            ResetCount = 0;
+            bSensorON = TRUE;
+        }
+        if(SetCount == 3){
+            SetCount = 0;
+            ResetCount = 0;
+            bSensorON = FALSE;
+        }
+    }
+    
+}
+#endif /* (STM8S903) || (STM8AF622x)*/
+
+/**
+* @brief Eeprom EEC Interrupt routine.
+* @param  None
+* @retval None
+*/
+INTERRUPT_HANDLER(EEPROM_EEC_IRQHandler, 24)
+{
+    /* In order to detect unexpected events during development,
+    it is recommended to set a breakpoint on the following instruction.
+    */
+}
+
+/**
+* @}
+*/
 
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
