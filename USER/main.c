@@ -72,7 +72,7 @@ volatile bool bIsRuning = FALSE; //是否在打胶运行中
 /* Private functions ---------------------------------------------------------*/
 void delay(unsigned int ms)
 {
-    unsigned int x , y;
+    volatile unsigned int x , y;
     for(x = ms; x > 0; x--)           /*  通过一定周期循环进行延时*/
         for(y = 3000 ; y > 0 ; y--);
 }
