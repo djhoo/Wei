@@ -385,48 +385,18 @@ void Write_Object_Height(u16 data)
 }
 
 /*******************************************************************************
-**函数名称：void Write_Init_Margin()
-**功能描述：把初始页边距写入到eeprom里面去
+**函数名称：void Write_U16_Eeprom()
+**功能描述：把u16的数字存储到eeprom里面去
 **入口参数：无
 **输出：无
 *******************************************************************************/
-void Write_Init_Margin(u16 data)
+void Write_U16_Eeprom(u16 data, u16 address)
 {
     u8 low,high = 0;
     low = data % 256;
     high = data / 256;
-    EEPROM_Byte_Write(g_marginAddress,low);
-    EEPROM_Byte_Write(g_marginAddress+1,high);
-}
-
-/*******************************************************************************
-**函数名称：void Write_Init_Width()
-**功能描述：把初始宽度写入到eeprom里面去
-**入口参数：无
-**输出：无
-*******************************************************************************/
-void Write_Init_Width(u16 data)
-{
-    u8 low,high = 0;
-    low = data % 256;
-    high = data / 256;
-    EEPROM_Byte_Write(g_widthAddress,low);
-    EEPROM_Byte_Write(g_widthAddress+1,high);  
-}
-
-/*******************************************************************************
-**函数名称：void Write_Init_Height()
-**功能描述：把初始高度写入到eeprom里面去
-**入口参数：无
-**输出：无
-*******************************************************************************/
-void Write_Init_Height(u16 data)
-{
-    u8 low,high = 0;
-    low = data % 256;
-    high = data / 256;
-    EEPROM_Byte_Write(g_heightAddress,low);
-    EEPROM_Byte_Write(g_heightAddress+1,high);  
+    EEPROM_Byte_Write(address,low);
+    EEPROM_Byte_Write(address+1,high);
 }
 
 /*******************************************************************************
@@ -507,7 +477,6 @@ void main(void)
     if(0 == g_height){
         g_height = 160; 
     }
-
         
     //马达电源初始化，并且拉高处理
     PowerInit();    
@@ -758,17 +727,18 @@ void main(void)
                     totalHeight = g_height + totalHeight;
                     Write_Total_Height(totalHeight); //把长度写入到EEPROM里面去
                 }
+                
                 //把输入的页边距，宽度，和高度的值保存到EEPROM里面去
-                Write_Init_Margin(g_margin);
-                Write_Init_Width(g_width);
-                Write_Init_Height(g_height);
+                Write_U16_Eeprom(g_margin,g_marginAddress);
+                Write_U16_Eeprom(g_width,g_widthAddress);
+                Write_U16_Eeprom(g_height,g_heightAddress);
                 
                 //下面是正常的打胶程序
                 bIsRuning = TRUE; //进入打胶运行程序
                 //马达1正转
-                MarginPulse = (int)(((g_margin + 10) * 0.3667 / 1.8) * MOTOR_DIV);
-                WidthPulse = (int)(((g_width) * 0.3667 / 1.8) * MOTOR_DIV);  
-                TotalWidthPulse = (int)(((g_margin + 10 + g_width) * 0.3667 / 1.8) * MOTOR_DIV);  
+                MarginPulse = (int)(((g_margin + 10) * 2.727 / 1.8) * MOTOR_DIV);
+                WidthPulse = (int)(((g_width) * 2.727 / 1.8) * MOTOR_DIV);  
+                TotalWidthPulse = (int)(((g_margin + 10 + g_width) * 2.727 / 1.8) * MOTOR_DIV);  
                 //拉高电磁阀
                 UpValve();
                 
@@ -822,7 +792,8 @@ void main(void)
                                  
                 break;
             default:
-                break;       
+                break;
+         
             
             }
             
