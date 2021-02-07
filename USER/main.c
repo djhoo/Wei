@@ -40,11 +40,15 @@
 /* Public value  -----------------------------------------------*/
 //全局变量
 //u8 number[4] ;
+/* EEPROM的地址一栏 */
 u16 eepromaddress = 0x4000;   //设EEPROM的首地址为0X4000
 u16 totalHeightAddress = 0x4000;   //到现在为止的总得长度地址
 u16 objectHeightAddress = 0x4004;  //设定的目标长度地址
 u16 modeAddress = 0x4008;          //现在模式的地址
 u16 randomAddress = 0x400a;     //为了产生随机数，用一个自动加1的数字
+u16 g_marginAddress = 0x4010;   //为了保存现在输入页边距的数字
+u16 g_widthAddress = 0x4014;    //为了保存现在输入宽度的数字
+u16 g_heightAddress = 0x4018;   //为了保存现在输入高度的数字
 
 u16  g_margin = 200;
 u16  g_width = 500;
@@ -381,6 +385,51 @@ void Write_Object_Height(u16 data)
 }
 
 /*******************************************************************************
+**函数名称：void Write_Init_Margin()
+**功能描述：把初始页边距写入到eeprom里面去
+**入口参数：无
+**输出：无
+*******************************************************************************/
+void Write_Init_Margin(u16 data)
+{
+    u8 low,high = 0;
+    low = data % 256;
+    high = data / 256;
+    EEPROM_Byte_Write(g_marginAddress,low);
+    EEPROM_Byte_Write(g_marginAddress+1,high);
+}
+
+/*******************************************************************************
+**函数名称：void Write_Init_Width()
+**功能描述：把初始宽度写入到eeprom里面去
+**入口参数：无
+**输出：无
+*******************************************************************************/
+void Write_Init_Width(u16 data)
+{
+    u8 low,high = 0;
+    low = data % 256;
+    high = data / 256;
+    EEPROM_Byte_Write(g_widthAddress,low);
+    EEPROM_Byte_Write(g_widthAddress+1,high);  
+}
+
+/*******************************************************************************
+**函数名称：void Write_Init_Height()
+**功能描述：把初始高度写入到eeprom里面去
+**入口参数：无
+**输出：无
+*******************************************************************************/
+void Write_Init_Height(u16 data)
+{
+    u8 low,high = 0;
+    low = data % 256;
+    high = data / 256;
+    EEPROM_Byte_Write(g_heightAddress,low);
+    EEPROM_Byte_Write(g_heightAddress+1,high);  
+}
+
+/*******************************************************************************
 **函数名称：int get_random()
 **功能描述：获取随机数
 **入口参数：无
@@ -441,9 +490,24 @@ void main(void)
     
     CLK_SYSCLKConfig(CLK_PRESCALER_HSIDIV1);
 
+    //读取EEPROM里面的值
     totalHeight = (FLASH_ReadByte(totalHeightAddress+1) << 8) + FLASH_ReadByte(totalHeightAddress);
     objectHeight = (FLASH_ReadByte(objectHeightAddress+1) << 8) + FLASH_ReadByte(objectHeightAddress);
     mode = FLASH_ReadByte(modeAddress);
+    g_margin = (FLASH_ReadByte(g_marginAddress+1) << 8) + FLASH_ReadByte(g_marginAddress);
+    g_width = (FLASH_ReadByte(g_widthAddress+1) << 8) + FLASH_ReadByte(g_widthAddress);
+    g_height = (FLASH_ReadByte(g_heightAddress+1) << 8) + FLASH_ReadByte(g_heightAddress);
+    //如果EEPROM里面的值是0的话，那么就是赋值初始值
+    if(0 == g_margin){ 
+        g_margin = 200; 
+    }
+    if(0 == g_width){
+        g_width = 500; 
+    }
+    if(0 == g_height){
+        g_height = 160; 
+    }
+
         
     //马达电源初始化，并且拉高处理
     PowerInit();    
@@ -519,7 +583,7 @@ void main(void)
                         }
                     }                    
                 }                    
-                if(( mode == 0) || (mode == 1)){    
+                if(( mode == TRIAL) || (mode == NORMAL)){    //当在试用或者正常模式的时候，作为正常输入
                     if((keeptime >150000) && ( keeptime%30 == 0))
                     {
                         if(g_margin > 0) g_margin--;
@@ -529,7 +593,7 @@ void main(void)
             };    
             BEEP_Cmd(DISABLE);
             delay(10);      //再次延时消抖
-            if(( mode == 0) || (mode == 1)){
+            if(( mode == TRIAL) || (mode == NORMAL)){   ////当在试用或者正常模式的时候，作为正常输入
                 if(g_margin > 0) g_margin--;
                 display_margin(g_margin);
             }
@@ -694,6 +758,10 @@ void main(void)
                     totalHeight = g_height + totalHeight;
                     Write_Total_Height(totalHeight); //把长度写入到EEPROM里面去
                 }
+                //把输入的页边距，宽度，和高度的值保存到EEPROM里面去
+                Write_Init_Margin(g_margin);
+                Write_Init_Width(g_width);
+                Write_Init_Height(g_height);
                 
                 //下面是正常的打胶程序
                 bIsRuning = TRUE; //进入打胶运行程序
@@ -754,8 +822,7 @@ void main(void)
                                  
                 break;
             default:
-                break;
-         
+                break;       
             
             }
             
